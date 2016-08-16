@@ -122,6 +122,22 @@ public class FlexibleSearchToolController
 		if (query!=null && query.equals("") && (itemtype==null || itemtype.equals(""))) { throw new EValidationError("neither query or itemtype is specified"); }
 		if (query == null || query.equals("") && (itemtype != null && !itemtype.equals(""))) { query = "select {pk} from {"+itemtype+"}"; }
 
+		/*
+		* ref="Category:code,name" means that all CategoryModel references will be replaced to the (category.code, category name)
+		* */
+		Map<String, String> modelCodePair = createModelCodePairs(ref);
+
+		currentCatalog = catalogName;
+		currentCatalogVersion = catalogVersion;
+		currentLanguage = language;
+		currentUserId = userId;
+
+		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair);
+
+		return String.join("\n", resultStr);
+	}
+
+	private Map<String, String> createModelCodePairs(@RequestParam(value = "ref", required = false) String ref) throws EValidationError {
 		Map<String, String> modelCodePair = new HashMap<String, String>();
 		if (ref != null) {
 			List<String> refArray = Arrays.asList(ref.split(" "));
@@ -134,15 +150,7 @@ public class FlexibleSearchToolController
 				modelCodePair.put(modelCodePairEl.get(0), modelCodePairEl.get(1));
 			}
 		}
-
-		currentCatalog = catalogName;
-		currentCatalogVersion = catalogVersion;
-		currentLanguage = language;
-		currentUserId = userId;
-
-		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair);
-
-		return String.join("\n", resultStr);
+		return modelCodePair;
 	}
 
 	private List<String> flexibleSearchInternal(String query,
@@ -208,6 +216,9 @@ public class FlexibleSearchToolController
 		return processedLines;
 	}
 
+	/*
+	 * external references that looks like "CategoryModel (1237352321543@12)" are replaced with attributes
+	 * */
 	private String ResolvePK(String line, String objectName, String pk, Map<String, String> modelCodePair
 							 ) throws EValidationError {
 		List<String> res = flexibleSearchInternal("select {pk} from {"+objectName+"} where {pk} = \""+pk+"\"",
