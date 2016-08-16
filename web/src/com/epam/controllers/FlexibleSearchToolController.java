@@ -22,6 +22,7 @@ import de.hybris.platform.catalog.model.CatalogModel;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
 import de.hybris.platform.core.model.ItemModel;
 import de.hybris.platform.core.model.c2l.LanguageModel;
+import de.hybris.platform.core.model.media.MediaModel;
 import de.hybris.platform.core.model.type.AttributeDescriptorModel;
 import de.hybris.platform.core.model.type.ComposedTypeModel;
 import de.hybris.platform.core.model.user.UserModel;
@@ -61,6 +62,11 @@ public class FlexibleSearchToolController
 
 	private static final Logger LOG = Logger.getLogger(FlexibleSearchToolController.class);
 
+	private String currentLanguage;
+	private String currentCatalog;
+	private String currentCatalogVersion;
+	private String currentUserId;
+
 	@Resource(name = "modelService")
 	private ModelService modelService;
 
@@ -99,8 +105,8 @@ public class FlexibleSearchToolController
 				@RequestParam(value="catalogVersion", required = false, defaultValue = "")  String catalogVersion,
 				@RequestParam(value="outputFormat", required = false, defaultValue = "TSV") final String outputFormat,
 				@RequestParam(value="user", required = false) final String userId,
-				@RequestParam(value="debug", required = false, defaultValue = "false") final boolean debug
-
+				@RequestParam(value="debug", required = false, defaultValue = "false") final boolean debug,
+				@RequestParam(value="ref", required = false) final String ref
 				) throws EValidationError {
 
 		LOG.setLevel(Level.INFO);
@@ -116,22 +122,48 @@ public class FlexibleSearchToolController
 		if (query!=null && query.equals("") && (itemtype==null || itemtype.equals(""))) { throw new EValidationError("neither query or itemtype is specified"); }
 		if (query == null || query.equals("") && (itemtype != null && !itemtype.equals(""))) { query = "select {pk} from {"+itemtype+"}"; }
 
+		Map<String, String> modelCodePair = new HashMap<String, String>();
+		if (ref != null) {
+			List<String> refArray = Arrays.asList(ref.split(" "));
+			for (String el : refArray) {
+				List<String> modelCodePairEl = Arrays.asList(el.split(":"));
+				if (modelCodePairEl.size() != 2) {
+					throw new EValidationError("bad syntax of ref: " + el);
+				}
+				LOG.debug("ref: "+modelCodePairEl.get(0) + "=>" + modelCodePairEl.get(1));
+				modelCodePair.put(modelCodePairEl.get(0), modelCodePairEl.get(1));
+			}
+		}
 
+		currentCatalog = catalogName;
+		currentCatalogVersion = catalogVersion;
+		currentLanguage = language;
+		currentUserId = userId;
+
+		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair);
+
+		return String.join("\n", resultStr);
+	}
+
+	private List<String> flexibleSearchInternal(String query,
+												String fields,
+												Map<String, String> modelCodePair
+	) throws EValidationError {
 		String typeName = extractTypeFromFS(query);
 		LOG.debug("typeName was extracted from query, "+typeName);
 		List<String> attributes = getAllAttributes(getComposedTypeModel(typeName));
 		List<String> fieldList = verifyFieldsAndReturnTheListOfThem(fields, attributes);
-		LOG.debug("setting up the session ("+language+", "+catalogName+", "+catalogVersion);
+		LOG.debug("setting up the session ("+currentLanguage+", "+currentCatalog+", "+currentCatalogVersion);
 		prepareSession(
-				language,
-				catalogName,
-				catalogVersion
+				currentLanguage,
+				currentCatalog,
+				currentCatalogVersion
 		);
 
-		if (userId!=null && !userId.equals("")) {
-			LOG.debug("looking up for the user "+userId+"...");
-			UserModel userModel = userService.getUserForUID(userId);
-			LOG.debug("setting up the current user, "+userId+"...");
+		if (currentUserId!=null && !currentUserId.equals("")) {
+			LOG.debug("looking up for the user "+currentUserId+"...");
+			UserModel userModel = userService.getUserForUID(currentUserId);
+			LOG.debug("setting up the current user, "+currentUserId+"...");
 			userService.setCurrentUser(userModel);
 		}
 		LOG.debug("query = "+query);
@@ -139,23 +171,78 @@ public class FlexibleSearchToolController
 		SearchResult<ItemModel> searchResult = flexibleSearchService.search(flexibleSearchQuery);
 		List<ItemModel> resultList = searchResult.getResult();
 		Iterator<ItemModel> iter = resultList.iterator();
-		StringBuilder resultStr = new StringBuilder();
-		resultStr.append(String.join("\t", fieldList));
-		resultStr.append("\n");
-		while (iter.hasNext()) {
-			ItemModel data = iter.next();
+		List<String> resultStr = new ArrayList();
+		resultStr.add(String.join("\t", fieldList));
+		for (ItemModel data : resultList) {
 			ArrayList<String> values = buildValues(fieldList, data);
-			resultStr.append(String.join("\t", values));
-			resultStr.append("\n");
+			resultStr.add(String.join("\t",  values));
 		}
-		return resultStr.toString();
+		List<String> processedResultStr = processModelCodePair(resultStr, modelCodePair);
+		return resultStr;
+	}
+
+	private List<String> processModelCodePair(List<String> resultStr, Map<String, String> modelCodePair) throws EValidationError {
+		List<String> processedLines = new ArrayList<>();
+		for (String line : resultStr)
+		{
+			while (line.indexOf("Model (") != -1) {
+					int posit = line.indexOf("Model (");
+					int tabindex = line.substring(0, posit).lastIndexOf("(");
+					int commaindex = line.substring(0, posit).lastIndexOf(",");
+					if ((tabindex == -1) && (commaindex == 1)) {
+						throw new EValidationError("something strange with the data. neither '(' or ',' not found before 'Model ('");
+					}
+					int max = (tabindex > commaindex) ? tabindex + 1 : commaindex + 1;
+					String objectNameModel = line.substring(max, posit + "Model (".length() - 2);
+					String objectName = line.substring(max, posit);
+					String PK = line.substring(posit + "Model (".length(), line.length()).substring(0, 13);
+					line = ResolvePK(line, objectName, PK, modelCodePair);
+					System.out.println("[" + objectName + "]PK:[" + PK + "]");
+			}
+			processedLines.add(line);
+		}
+		return processedLines;
+	}
+
+	private String ResolvePK(String line, String objectName, String pk, Map<String, String> modelCodePair
+							 ) throws EValidationError {
+		List<String> res = flexibleSearchInternal("select {pk} from {"+objectName+"} where {pk} = \""+pk+"\"",
+								modelCodePair.get(objectName),
+								modelCodePair);
+		if (res.size()<2) { throw new EValidationError("can't find PK "+pk+" for "+objectName); }
+		String textToReplace = objectName+"Model ("+pk+"@";
+		int indexToReplace = line.indexOf(textToReplace);
+		int lastPositionToReplace = line.indexOf(")", indexToReplace);
+		line = line.substring(0,indexToReplace) + res.get(1).toString() + line.substring(lastPositionToReplace, line.length());
+		return line;
 	}
 
 	private ArrayList<String> buildValues(List<String> fieldList, ItemModel data) {
 		ArrayList<String> values = new ArrayList<>();
 		for (String field : fieldList) {
-			String v = modelService.getAttributeValue(data, field);
-            values.add(v);
+			Object v = modelService.getAttributeValue(data, field);
+			if (v instanceof ItemModel)
+			{
+				values.add(((ItemModel) v).toString());
+			}
+			if (v instanceof Collection)
+			{
+				List<String> collectionList = new ArrayList<>();
+				for (Object el : (Collection) v)
+				{
+					if (el instanceof ItemModel)
+					{
+						collectionList.add(el.toString());
+					}
+					if (el instanceof java.lang.String) {
+						collectionList.add(el.toString());
+					}
+				}
+				values.add("("+String.join(",", collectionList)+")");
+			}
+			if (v instanceof java.lang.String) {
+				values.add(v.toString());
+			}
         }
 		return values;
 	}
