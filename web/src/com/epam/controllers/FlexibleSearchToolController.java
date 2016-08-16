@@ -178,7 +178,7 @@ public class FlexibleSearchToolController
 			resultStr.add(String.join("\t",  values));
 		}
 		List<String> processedResultStr = processModelCodePair(resultStr, modelCodePair);
-		return resultStr;
+		return processedResultStr;
 	}
 
 	private List<String> processModelCodePair(List<String> resultStr, Map<String, String> modelCodePair) throws EValidationError {
@@ -213,7 +213,12 @@ public class FlexibleSearchToolController
 		String textToReplace = objectName+"Model ("+pk+"@";
 		int indexToReplace = line.indexOf(textToReplace);
 		int lastPositionToReplace = line.indexOf(")", indexToReplace);
-		line = line.substring(0,indexToReplace) + res.get(1).toString() + line.substring(lastPositionToReplace, line.length());
+		String resolved = res.get(1).toString();
+		if (resolved.indexOf("\t") != -1) {
+			resolved = resolved.replace("\t", ",");
+			resolved = "{" + resolved + "}";
+		}
+		line = line.substring(0,indexToReplace) + resolved + line.substring(lastPositionToReplace+1, line.length());
 		return line;
 	}
 
@@ -248,7 +253,7 @@ public class FlexibleSearchToolController
 	}
 
 	private List<String> verifyFieldsAndReturnTheListOfThem(String fields, List<String> attributes) throws EValidationError {
-
+		if (fields == null) { return new ArrayList<>(); }
 		List<String> fieldList = Arrays.asList(fields.split(","));
 		List<String> resultingSetOfFields = new ArrayList<>();
 		for (String field : fieldList)
