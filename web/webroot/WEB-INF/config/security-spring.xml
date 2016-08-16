@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security" xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/security/oauth2 
+     	http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
+
+	<!-- Security OAuth2 -->
+
+	<beans>
+
+ 	
+		<http pattern="/**" security="none" use-expressions="true" xmlns="http://www.springframework.org/schema/security">
+			<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
+			<intercept-url pattern="/**" access="permitAll" />
+			<port-mappings>
+				<port-mapping http="#{configurationService.configuration.getProperty('tomcat.http.port')}" https="#{configurationService.configuration.getProperty('tomcat.ssl.port')}" />
+				<port-mapping http="#{configurationService.configuration.getProperty('embeddedserver.http.port')}" https="#{configurationService.configuration.getProperty('embeddedserver.ssl.port')}" />
+			</port-mappings>
+
+			<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+			<custom-filter ref="hybrisUserFilter" after="LAST" />
+			
+			<headers>
+				<content-type-options />
+				<hsts include-subdomains="true" max-age-seconds="16070400" />
+			</headers>
+		</http>
+                
+		<bean id="hybrisUserFilter" class="de.hybris.platform.webservicescommons.oauth2.HybrisOauth2UserFilter" />
+
+<!--	
+		<import resource="classpath*:oauth2-resource-spring.xml"/>
+ 	
+		<http pattern="/**" entry-point-ref="oauthAuthenticationEntryPoint" use-expressions="true" xmlns="http://www.springframework.org/schema/security">
+
+			<intercept-url pattern="/**" access="isAuthenticated()" requires-channel="#{configurationService.configuration.getString('webservicescommons.required.channel', 'https')}" />
+			<port-mappings>
+				<port-mapping http="#{configurationService.configuration.getProperty('tomcat.http.port')}" https="#{configurationService.configuration.getProperty('tomcat.ssl.port')}" />
+				<port-mapping http="#{configurationService.configuration.getProperty('embeddedserver.http.port')}" https="#{configurationService.configuration.getProperty('embeddedserver.ssl.port')}" />
+			</port-mappings>
+
+			<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+			<custom-filter ref="hybrisUserFilter" after="LAST" />
+			<access-denied-handler ref="oauthAccessDeniedHandler" />
+			
+			<headers>
+				<content-type-options />
+				<hsts include-subdomains="true" max-age-seconds="16070400" />
+				<xss-protection />
+			</headers>
+		</http>
+
+		<bean id="hybrisUserFilter" class="de.hybris.platform.webservicescommons.oauth2.HybrisOauth2UserFilter" />
+  				
+		<bean id="oauthAuthenticationEntryPoint" class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+			<property name="realmName" value="hybris" />
+			<property name="exceptionRenderer" ref="oAuth2ExceptionRenderer" />
+		</bean>
+
+		<bean id="oauthAccessDeniedHandler" class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler">
+			<property name="exceptionRenderer" ref="oAuth2ExceptionRenderer" />
+		</bean>
+
+		<bean id="oAuth2ExceptionRenderer" class="de.hybris.platform.webservicescommons.oauth2.OAuth2ExceptionRenderer">
+			<property name="messageConverters" ref="jaxbMessageConverters" />
+			<property name="exceptionConverter" ref="exceptionConverter" />
+		</bean>
+-->
+	</beans>
+</beans>

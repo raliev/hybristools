@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+			  http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Field mapping configuration -->
+	<bean id="dataMapper"
+		class="de.hybris.platform.webservicescommons.mapping.impl.DefaultDataMapper">
+		<property name="fieldSetBuilder" ref="fieldSetBuilder" />
+	</bean>
+
+	<bean id="fieldSetBuilder"
+		class="de.hybris.platform.webservicescommons.mapping.impl.DefaultFieldSetBuilder">
+		<property name="defaultRecurrencyLevel" value="4" />
+		<property name="defaultMaxFieldSetSize" value="50000" />
+		<property name="fieldSetLevelHelper" ref="fieldSetLevelHelper" />
+	</bean>
+
+	<alias alias="fieldSetLevelHelper" name="defaultFieldSetLevelHelper" />
+	<bean id="defaultFieldSetLevelHelper"
+		class="de.hybris.platform.webservicescommons.mapping.impl.DefaultFieldSetLevelHelper">
+	</bean>
+	
+	<bean class="de.hybris.platform.webservicescommons.mapping.filters.GeneralFieldFilter">
+		<property name="fieldSelectionStrategy" ref="fieldSelectionStrategy"/>
+	</bean>
+
+	<!-- Field mapping -->
+   	<bean parent="fieldMapper">
+		<property name="sourceClass" value="com.epam.dto.UserWsDTO"/>
+		<property name="destClass"   value="com.epam.data.UserData"/>
+		<property name="fieldMapping">
+			<map>
+				<entry key="info" value="description"/>
+				<entry key="billingAddress" value="defaultBillingAddress"/>
+				<entry key="shippingAddress" value="defaultShippingAddress"/>
+			</map>
+		</property>
+	</bean>
+
+   	<bean parent="fieldMapper">
+		<property name="sourceClass" value="com.epam.dto.AddressWsDTO"/>
+		<property name="destClass"   value="com.epam.data.AddressData"/>
+		<property name="fieldMapping">
+			<map>
+				<entry key="street" value="streetname"/>
+				<entry key="streetNumber" value="streetnumber"/>
+			</map>
+		</property>
+	</bean>
+
+	<!-- Fieldset mapping -->
+	
+	<bean parent="fieldSetLevelMapping" id="usersListWsDTOFieldSetLevelMapping">
+		<property name="dtoClass"
+		          value="com.epam.dto.UsersListWsDTO"/>
+		<property name="levelMapping">
+			<map>
+				<entry key="BASIC" value="users(BASIC)"/>
+				<entry key="DEFAULT" value="users(DEFAULT)"/>
+				<entry key="FULL" value="users(FULL)"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean parent="fieldSetLevelMapping" id="userWsDTOFieldSetLevelMapping">
+		<property name="dtoClass"
+		          value="com.epam.dto.UserWsDTO"/>
+		<property name="levelMapping">
+			<map>
+				<entry key="BASIC" value="firstName,lastName"/>
+				<entry key="DEFAULT" value="firstName,lastName,addresses(DEFAULT)"/>
+				<entry key="FULL" value="firstName,lastName,info,addresses(FULL),billingAddress(FULL),shippingAddress(FULL)"/>
+			</map>
+		</property>
+	</bean>
+
+
+
+	<bean parent="fieldSetLevelMapping" id="addressWsDTOFieldSetLevelMapping">
+		<property name="dtoClass"
+		          value="com.epam.dto.AddressWsDTO"/>
+		<property name="levelMapping">
+			<map>
+				<entry key="BASIC" value="town"/>
+				<entry key="DEFAULT" value="town,street"/>
+				<entry key="FULL" value="town,street,streetNumber"/>
+			</map>
+		</property>
+	</bean>
+</beans>

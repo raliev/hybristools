@@ -1,0 +1,11 @@
+#Ant properties
+#Mon Jun 27 11:15:52 CEST 2016
+builddate=20160627 1115
+description=hybristoolsserver
+group.id=de.hybris.platform
+module.name=platform-module
+name=hybristoolsserver
+releasedate=20160625 1254
+vendor=hybris
+version=6.0.0.0-SNAPSHOT
+version.api=6.0.0

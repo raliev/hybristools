@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/web/webroot/WEB-INF/lib/jstl-1.2.jar!/" />
+    <libelement value="file://C:\hybris\h61\hybris\bin\ext-template\hybristoolsserver\resources" />
+    <libelement value="file://C:\hybris\h61\hybris\bin\custom\hybristoolsserver\resources" />
+    <src_description expected_position="5">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="6" />
+      <src_folder value="file://$MODULE_DIR$/web/src" expected_position="7" />
+      <src_folder value="file://$MODULE_DIR$/testsrc" expected_position="8" />
+      <src_folder value="file://$MODULE_DIR$/gensrc" expected_position="9" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/eclipsebin/notused" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/testsrc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gensrc" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="platform" />
+    <orderEntry type="module" module-name="webservicescommons" exported="" />
+    <orderEntry type="module-library">
+      <library name="jstl-1.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/web/webroot/WEB-INF/lib/jstl-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="resources">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/resources" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
