@@ -153,6 +153,10 @@ public class FlexibleSearchToolController
 		LOG.debug("typeName was extracted from query, "+typeName);
 		List<String> attributes = getAllAttributes(getComposedTypeModel(typeName));
 		List<String> fieldList = verifyFieldsAndReturnTheListOfThem(fields, attributes);
+		if (fieldList.size() == 0) {
+			fieldList.addAll(typeService.getUniqueAttributes(typeName));
+		}
+
 		LOG.debug("setting up the session ("+currentLanguage+", "+currentCatalog+", "+currentCatalogVersion);
 		prepareSession(
 				currentLanguage,

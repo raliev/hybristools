@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Aug 16, 2016 3:48:32 AM                     ---
+ * --- Generated at Aug 16, 2016 3:58:49 AM                     ---
  * ----------------------------------------------------------------
  */
 package com.epam.jalo;
