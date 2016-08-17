@@ -66,6 +66,8 @@ public class FlexibleSearchToolController
 	private String currentCatalog;
 	private String currentCatalogVersion;
 	private String currentUserId;
+	private int queryMaxResults;
+	private String queryOutputFormat;
 
 	@Resource(name = "modelService")
 	private ModelService modelService;
@@ -93,19 +95,21 @@ public class FlexibleSearchToolController
 
 	@Resource (name = "flexibleSearchService")
 	private FlexibleSearchService flexibleSearchService;
+	private CharSequence delimiter;
 
 	@RequestMapping(value = "/execute", method = RequestMethod.GET)
 	@ResponseBody
 	public String executeFlexibleSearch(
 				@RequestParam(value="query", required = false) String query,
 				@RequestParam(value="itemtype", required = false) final String itemtype,
-				@RequestParam(value="fields", required = true) final String fields,
+				@RequestParam(value="fields", required = false) final String fields,
 				@RequestParam(value="language", required = false, defaultValue = "en") final String language,
 				@RequestParam(value="catalogName", required = false, defaultValue = "")  String catalogName,
 				@RequestParam(value="catalogVersion", required = false, defaultValue = "")  String catalogVersion,
 				@RequestParam(value="outputFormat", required = false, defaultValue = "TSV") final String outputFormat,
 				@RequestParam(value="user", required = false) final String userId,
 				@RequestParam(value="debug", required = false, defaultValue = "false") final boolean debug,
+				@RequestParam(value="maxResults", required = false, defaultValue = "") final int maxResults,
 				@RequestParam(value="ref", required = false) final String ref
 				) throws EValidationError {
 
@@ -131,8 +135,10 @@ public class FlexibleSearchToolController
 		currentCatalogVersion = catalogVersion;
 		currentLanguage = language;
 		currentUserId = userId;
+		queryMaxResults = maxResults;
+		queryOutputFormat = outputFormat;
 
-		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair);
+		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair, true);
 
 		return String.join("\n", resultStr);
 	}
@@ -155,42 +161,76 @@ public class FlexibleSearchToolController
 
 	private List<String> flexibleSearchInternal(String query,
 												String fields,
-												Map<String, String> modelCodePair
+												Map<String, String> modelCodePair,
+												boolean rootHandler
 	) throws EValidationError {
 		String typeName = extractTypeFromFS(query);
-		LOG.debug("typeName was extracted from query, "+typeName);
+		LOG.debug("typeName was extracted from query, " + typeName);
 		List<String> attributes = getAllAttributes(getComposedTypeModel(typeName));
-		List<String> fieldList = verifyFieldsAndReturnTheListOfThem(fields, attributes);
-		if (fieldList.size() == 0) {
-			fieldList.addAll(typeService.getUniqueAttributes(typeName));
+		removeFromAttributes(attributes, Arrays.asList("allDocuments", "assignedCockpitItemTemplates", "savedValues", "synchronizationSources", "synchronizedCopies", "valueHistory", "classificationIndexString"));
+
+		//List<String> fieldList = verifyFieldsAndReturnTheListOfThem(fields, attributes);
+		List<String> fieldList = new ArrayList<>();
+		List<String> fieldList2 = new ArrayList();
+		if (fields != null && !fields.equals("*")) {
+			fieldList2.addAll(Arrays.asList(fields.split(",")));
 		}
 
-		LOG.debug("setting up the session ("+currentLanguage+", "+currentCatalog+", "+currentCatalogVersion);
+		if (fields != null && fields.equals("*")) {
+			fieldList2.addAll(attributes);
+		}
+		if (fieldList2.size() == 0) {
+			fieldList2.addAll(typeService.getUniqueAttributes(typeName));
+		}
+
+
+		LOG.debug("setting up the session (" + currentLanguage + ", " + currentCatalog + ", " + currentCatalogVersion);
 		prepareSession(
 				currentLanguage,
 				currentCatalog,
 				currentCatalogVersion
 		);
 
-		if (currentUserId!=null && !currentUserId.equals("")) {
-			LOG.debug("looking up for the user "+currentUserId+"...");
+		if (currentUserId != null && !currentUserId.equals("")) {
+			LOG.debug("looking up for the user " + currentUserId + "...");
 			UserModel userModel = userService.getUserForUID(currentUserId);
-			LOG.debug("setting up the current user, "+currentUserId+"...");
+			LOG.debug("setting up the current user, " + currentUserId + "...");
 			userService.setCurrentUser(userModel);
 		}
-		LOG.debug("query = "+query);
+		LOG.debug("query = " + query);
 		FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery(query);
 		SearchResult<ItemModel> searchResult = flexibleSearchService.search(flexibleSearchQuery);
 		List<ItemModel> resultList = searchResult.getResult();
 		Iterator<ItemModel> iter = resultList.iterator();
 		List<String> resultStr = new ArrayList();
-		resultStr.add(String.join("\t", fieldList));
+		if (rootHandler ) {
+			if (!queryOutputFormat.equals("BRD"))
+				resultStr.add(getStart_delimiter("", true) + String.join(getDelimiter("", true), fieldList2) + getEnd_delimiter(true));
+		}
+		int counter = 0;
+
 		for (ItemModel data : resultList) {
-			ArrayList<String> values = buildValues(fieldList, data);
-			resultStr.add(String.join("\t",  values));
+			ArrayList<String> values = buildValues(fieldList2, data);
+			String valuesOfFields = "";
+			for (int i = 1; i < fieldList2.size(); i++) {
+				valuesOfFields = valuesOfFields + getDelimiter(fieldList2.get(i), rootHandler) + values.get(i);
+			}
+			resultStr.add(getStart_delimiter(fieldList2.get(0), rootHandler) + values.get(0) + valuesOfFields + getEnd_delimiter(rootHandler));
+			counter++;
+			if (counter >= queryMaxResults) {
+				break;
+			}
 		}
 		List<String> processedResultStr = processModelCodePair(resultStr, modelCodePair);
 		return processedResultStr;
+	}
+
+	private void removeFromAttributes(List<String> attributes, List<String> attrToDelete) {
+		for (String attr : attrToDelete)
+		{
+			int index = attributes.indexOf(attr);
+			if (index >= 0) { attributes.remove(index);}
+		}
 	}
 
 	private List<String> processModelCodePair(List<String> resultStr, Map<String, String> modelCodePair) throws EValidationError {
@@ -198,13 +238,25 @@ public class FlexibleSearchToolController
 		for (String line : resultStr)
 		{
 			while (line.indexOf("Model (") != -1) {
+					line = line.replace("()", "");
 					int posit = line.indexOf("Model (");
-					int tabindex = line.substring(0, posit).lastIndexOf("(");
-					int commaindex = line.substring(0, posit).lastIndexOf(",");
-					if ((tabindex == -1) && (commaindex == 1)) {
-						throw new EValidationError("something strange with the data. neither '(' or ',' not found before 'Model ('");
+					//int tabindex = line.substring(0, posit).lastIndexOf("\t");
+					//int skindex = line.substring(0, posit).lastIndexOf("(");
+					//int commaindex = line.substring(0, posit).lastIndexOf(",");
+					int max = posit;
+					String a;
+					while (max >= 0 && Character.isLetter(line.substring(max, max+1).charAt(0)))
+					{
+						max --;
 					}
-					int max = (tabindex > commaindex) ? tabindex + 1 : commaindex + 1;
+					max++;
+					/*if ((tabindex == -1) && (commaindex == -1) && (skindex  == -1)) {
+						max = -1;
+					}
+					max = (tabindex > commaindex) ? tabindex  : commaindex ;
+					max = (skindex > max) ? skindex  : max ;
+				    max ++;
+					*/
 					String objectNameModel = line.substring(max, posit + "Model (".length() - 2);
 					String objectName = line.substring(max, posit);
 					String PK = line.substring(posit + "Model (".length(), line.length()).substring(0, 13);
@@ -223,18 +275,23 @@ public class FlexibleSearchToolController
 							 ) throws EValidationError {
 		List<String> res = flexibleSearchInternal("select {pk} from {"+objectName+"} where {pk} = \""+pk+"\"",
 								modelCodePair.get(objectName),
-								modelCodePair);
-		if (res.size()<2) { throw new EValidationError("can't find PK "+pk+" for "+objectName); }
+								modelCodePair,
+								false);
+		if (res.size()<1) { throw new EValidationError("can't find PK "+pk+" for "+objectName); }
 		String textToReplace = objectName+"Model ("+pk+"@";
 		int indexToReplace = line.indexOf(textToReplace);
 		int lastPositionToReplace = line.indexOf(")", indexToReplace);
-		String resolved = res.get(1).toString();
+		String resolved = res.get(0).toString();
 		if (resolved.indexOf("\t") != -1) {
 			resolved = resolved.replace("\t", ",");
 			resolved = "{" + resolved + "}";
 		}
-		line = line.substring(0,indexToReplace) + resolved + line.substring(lastPositionToReplace+1, line.length());
+		line = line.substring(0,indexToReplace) + PreprocessForOutputFormat(resolved) + line.substring(lastPositionToReplace+1, line.length());
 		return line;
+	}
+
+	private String PreprocessForOutputFormat(String resolved) {
+		return resolved.replaceAll("(\r\n|\n)", "").replace("\"", "\"\"");
 	}
 
 	private ArrayList<String> buildValues(List<String> fieldList, ItemModel data) {
@@ -243,7 +300,7 @@ public class FlexibleSearchToolController
 			Object v = modelService.getAttributeValue(data, field);
 			if (v instanceof ItemModel)
 			{
-				values.add(((ItemModel) v).toString());
+				values.add(  PreprocessForOutputFormat(((ItemModel) v).toString()));
 			}
 			if (v instanceof Collection)
 			{
@@ -258,10 +315,10 @@ public class FlexibleSearchToolController
 						collectionList.add(el.toString());
 					}
 				}
-				values.add("("+String.join(",", collectionList)+")");
+				values.add("("+PreprocessForOutputFormat(String.join(",", collectionList))+")");
 			}
 			if (v instanceof java.lang.String) {
-				values.add(v.toString());
+				values.add(PreprocessForOutputFormat(v.toString()));
 			}
         }
 		return values;
@@ -269,11 +326,12 @@ public class FlexibleSearchToolController
 
 	private List<String> verifyFieldsAndReturnTheListOfThem(String fields, List<String> attributes) throws EValidationError {
 		if (fields == null) { return new ArrayList<>(); }
+		if (fields.equals("*")) { return new ArrayList<>(); }
 		List<String> fieldList = Arrays.asList(fields.split(","));
 		List<String> resultingSetOfFields = new ArrayList<>();
 		for (String field : fieldList)
 		{
-			if (attributes.indexOf(field) == -1)
+			if (attributes.indexOf(field) == -1 )
 				{  throw new EValidationError("Field list has an wrong item (not present in the item type attributes)"); }
 			else
 			{	resultingSetOfFields.add(field); }
@@ -323,4 +381,28 @@ public class FlexibleSearchToolController
 
 	}
 
+	public CharSequence getDelimiter(String field, boolean rootHandler) {
+		if (!rootHandler) { return ":"; }
+		if (queryOutputFormat.equals("TSV")) { return "\t"; }
+		if (queryOutputFormat.equals("CSV")) { return "\", \""; }
+		if (queryOutputFormat.equals("BRD")) { return "\n"+ field + (field.equals("")? "" : ": "); }
+		return "";
+	}
+
+
+	public String getStart_delimiter(String field, boolean rootHandler) {
+		if (!rootHandler) { return ""; }
+		if (queryOutputFormat.equals("TSV")) { return ""; }
+		if (queryOutputFormat.equals("CSV")) { return "\""; }
+		if (queryOutputFormat.equals("BRD")) { return "\n\n" +field+ (field.equals("")? "" : ": "); }
+		return "";
+	}
+
+	public String getEnd_delimiter(boolean rootHandler) {
+		if (!rootHandler) { return ""; }
+		if (queryOutputFormat.equals("TSV")) { return ""; }
+		if (queryOutputFormat.equals("CSV")) { return "\""; }
+		if (queryOutputFormat.equals("BRD")) { return "\n"; }
+		return "";
+	}
 }
