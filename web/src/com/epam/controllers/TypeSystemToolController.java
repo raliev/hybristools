@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,7 +42,66 @@ public class TypeSystemToolController
 
     @RequestMapping(value = "/type/{typeName}/attributes", method = RequestMethod.GET)
     @ResponseBody
-    public String executeFlexibleSearch(@PathVariable final String typeName) throws EValidationError {
+    public String getAllAttributes(
+            @PathVariable final String typeName )
+    {
+        List<String> output = ListOfAttributesForTheType(typeName);
+        return String.join("\n", output);
+    }
+
+
+    @RequestMapping(value = "/type/{typeName}/attribute/{attr}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAttribute(
+            @PathVariable final String typeName,
+            @PathVariable final String attr
+    ) throws EValidationError {
+        List<String> output = DetailedInfoAboutTheAttribute(typeName, attr);
+        return String.join("\n", output);
+    }
+
+    private List<String> DetailedInfoAboutTheAttribute(String typeName, String attr) {
+        List<String> result = new ArrayList<>();
+        final ComposedTypeModel type = typeService.getComposedTypeForCode(typeName);
+        AttributeDescriptorModel attrModel = typeService.getAttributeDescriptor(type, attr);
+        result.add(createPair("Qualifier:", attrModel.getQualifier()));
+        result.add(createPair("Name:", attrModel.getName()));
+        result.add(createPair("Database column:", attrModel.getDatabaseColumn()));
+        result.add(createPair("Description:", attrModel.getDescription()));
+        result.add(createPair("Extension name:", attrModel.getExtensionName()));
+        result.add(createPair("Type:", attrModel.getAttributeType().getCode()));
+        result.add(createPair("Default Value:", IfNotNull(attrModel.getDefaultValue())));
+        result.add(createPair("Attribute handler:", IfNotNull(attrModel.getAttributeHandler())));
+        result.add(createPair("Flags",""));
+        result.add(createPair("* Optional flag:", attrModel.getOptional().toString()));
+        result.add(createPair("* Localized flag:", attrModel.getLocalized().toString()));
+        result.add(createPair("* Unique flag:", attrModel.getUnique().toString()));
+        result.add(createPair("",""));
+        result.add(createPair("* Don't copy flag:", IfNotNull(attrModel.getDontCopy()).toString()));
+        result.add(createPair("* Encrypted flag:", IfNotNull(attrModel.getEncrypted()).toString()));
+        result.add(createPair("* Hidden for UI flag:", IfNotNull(attrModel.getHiddenForUI()).toString()));
+        result.add(createPair("* Readonly for UI flag:", IfNotNull(attrModel.getReadOnlyForUI()).toString()));
+        result.add(createPair("* Initial flag:", IfNotNull(attrModel.getInitial()).toString()));
+        result.add(createPair("* Primitive flag:", IfNotNull(attrModel.getPrimitive()).toString()));
+        result.add(createPair("* PartOf flag:", IfNotNull(attrModel.getPartOf()).toString()));
+        result.add(createPair("* Property flag:", IfNotNull(attrModel.getProperty()).toString()));
+        result.add(createPair("* Search flag:", IfNotNull(attrModel.getSearch()).toString()));
+        result.add(createPair("* Writable flag:", IfNotNull(attrModel.getWritable()).toString()));
+        result.add(createPair("* Removable flag:", IfNotNull(attrModel.getRemovable()).toString()));
+        result.add(createPair("* Readable flag:", IfNotNull(attrModel.getReadable()).toString()));
+        result.add(createPair("* Private flag:", IfNotNull(attrModel.getPrivate()).toString()));
+        return result;
+    }
+
+    private String IfNotNull(Object value) {
+        if (value != null) { return value.toString(); } else { return "<NULL>"; }
+    }
+
+    private String createPair(String name, String value) {
+        return String.join("\t", Arrays.asList(name, value));
+    }
+
+    private List<String> ListOfAttributesForTheType(@PathVariable String typeName) {
         final ComposedTypeModel type = typeService.getComposedTypeForCode(typeName);
         Collection<AttributeDescriptorModel> inheritedDescriptors = type.getInheritedattributedescriptors();
         Collection<AttributeDescriptorModel> declaredDescriptors = type.getDeclaredattributedescriptors();
@@ -73,7 +133,7 @@ public class TypeSystemToolController
             String outline = String.join("\t", columns);
             output.add(outline);
         }
-        return String.join("\n", output);
+        return output;
     }
 
     private void processDescriptors(Collection<AttributeDescriptorModel> descriptors, TypeDescriptorsDTO descriptorsDTO, boolean  inherited) {

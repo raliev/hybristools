@@ -14,12 +14,14 @@
 package com.epam.controllers;
 
 import com.epam.FlexibleSearchDTO;
+import com.epam.controllers.helpers.CSVPrint;
 import com.epam.exception.EValidationError;
 
 import de.hybris.platform.catalog.CatalogService;
 import de.hybris.platform.catalog.CatalogVersionService;
 import de.hybris.platform.catalog.model.CatalogModel;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
+import de.hybris.platform.core.HybrisEnumValue;
 import de.hybris.platform.core.model.ItemModel;
 import de.hybris.platform.core.model.c2l.LanguageModel;
 import de.hybris.platform.core.model.media.MediaModel;
@@ -140,7 +142,17 @@ public class FlexibleSearchToolController
 
 		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair, true);
 
-		return String.join("\n", resultStr);
+		String toOut = String.join("\n", resultStr);
+		if (queryOutputFormat.equals("CON")) {
+				List<List<String>> dataToOut = new ArrayList<>();
+			for (String line : resultStr)
+				{
+					List<String> columns = Arrays.asList(line.split("\t"));
+					dataToOut.add(columns);
+				}
+				toOut = CSVPrint.writeCSV(dataToOut);
+		}
+		return toOut;
 	}
 
 	private Map<String, String> createModelCodePairs(@RequestParam(value = "ref", required = false) String ref) throws EValidationError {
@@ -300,11 +312,14 @@ public class FlexibleSearchToolController
 			Object v = modelService.getAttributeValue(data, field);
 			if (v == null) {
 				values.add ( "<NULL> ");
-			}
+			} else
 			if (v instanceof ItemModel)
 			{
 				values.add(  PreprocessForOutputFormat(((ItemModel) v).toString()));
-			}
+			} else
+			if (v instanceof HybrisEnumValue) {
+				values.add(  PreprocessForOutputFormat(((HybrisEnumValue) v).toString()));
+			} else
 			if (v instanceof Collection)
 			{
 				List<String> collectionList = new ArrayList<>();
@@ -319,8 +334,8 @@ public class FlexibleSearchToolController
 					}
 				}
 				values.add("("+PreprocessForOutputFormat(String.join(",", collectionList))+")");
-			}
-			if (v instanceof java.lang.String) {
+			} else
+			{
 				values.add(PreprocessForOutputFormat(v.toString()));
 			}
         }
@@ -388,6 +403,7 @@ public class FlexibleSearchToolController
 		if (!rootHandler) { return ":"; }
 		if (queryOutputFormat.equals("TSV")) { return "\t"; }
 		if (queryOutputFormat.equals("CSV")) { return "\", \""; }
+		if (queryOutputFormat.equals("CON")) { return "\t"; }
 		if (queryOutputFormat.equals("BRD")) { return "\n"+ field + (field.equals("")? "" : ": "); }
 		return "";
 	}
@@ -397,6 +413,7 @@ public class FlexibleSearchToolController
 		if (!rootHandler) { return ""; }
 		if (queryOutputFormat.equals("TSV")) { return ""; }
 		if (queryOutputFormat.equals("CSV")) { return "\""; }
+		if (queryOutputFormat.equals("CON")) { return ""; }
 		if (queryOutputFormat.equals("BRD")) { return "\n\n" +field+ (field.equals("")? "" : ": "); }
 		return "";
 	}
@@ -405,6 +422,7 @@ public class FlexibleSearchToolController
 		if (!rootHandler) { return ""; }
 		if (queryOutputFormat.equals("TSV")) { return ""; }
 		if (queryOutputFormat.equals("CSV")) { return "\""; }
+		if (queryOutputFormat.equals("CON")) { return ""; }
 		if (queryOutputFormat.equals("BRD")) { return "\n"; }
 		return "";
 	}
