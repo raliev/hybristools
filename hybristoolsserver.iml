@@ -43,5 +43,6 @@
       </library>
     </orderEntry>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="platformwebservices" />
   </component>
 </module>

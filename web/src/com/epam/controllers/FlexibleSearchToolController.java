@@ -298,6 +298,9 @@ public class FlexibleSearchToolController
 		ArrayList<String> values = new ArrayList<>();
 		for (String field : fieldList) {
 			Object v = modelService.getAttributeValue(data, field);
+			if (v == null) {
+				values.add ( "<NULL> ");
+			}
 			if (v instanceof ItemModel)
 			{
 				values.add(  PreprocessForOutputFormat(((ItemModel) v).toString()));
