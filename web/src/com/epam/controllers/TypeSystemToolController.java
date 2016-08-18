@@ -3,21 +3,29 @@ package com.epam.controllers;
 import com.epam.dto.DescriptorRecord;
 import com.epam.dto.TypeDescriptorsDTO;
 import com.epam.exception.EValidationError;
+import de.hybris.platform.catalog.CatalogService;
+import de.hybris.platform.catalog.CatalogVersionService;
+import de.hybris.platform.catalog.model.CatalogModel;
+import de.hybris.platform.catalog.model.CatalogVersionModel;
+import de.hybris.platform.core.model.c2l.LanguageModel;
 import de.hybris.platform.core.model.type.AttributeDescriptorModel;
 import de.hybris.platform.core.model.type.ComposedTypeModel;
+import de.hybris.platform.core.model.type.RelationDescriptorModel;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
+import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.model.ModelService;
+import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
+import de.hybris.platform.servicelayer.search.SearchResult;
+import de.hybris.platform.servicelayer.session.SessionService;
 import de.hybris.platform.servicelayer.type.TypeService;
+import de.hybris.platform.servicelayer.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Rauf_Aliev on 8/16/2016.
@@ -28,17 +36,97 @@ import java.util.List;
 public class TypeSystemToolController
 {
     private static final Logger LOG = Logger.getLogger(FlexibleSearchToolController.class);
+
+
     @Resource(name = "modelService")
     private ModelService modelService;
 
     @Resource(name = "typeService")
     private TypeService typeService;
 
+    @Resource(name = "catalogService")
+    private CatalogService catalogService;
+
+    @Resource(name = "sessionService")
+    private SessionService sessionService;
+
+    @Resource(name = "i18NService")
+    private I18NService i18NService;
+
+    @Resource(name = "userService")
+    private UserService userService;
+
+    @Resource(name = "catalogVersionService")
+    private CatalogVersionService catalogVersionService;
+
     @Resource
     private ConfigurationService configurationService;
 
     @Resource (name = "flexibleSearchService")
     private FlexibleSearchService flexibleSearchService;
+    private CharSequence delimiter;
+
+
+
+    @RequestMapping(value = "/types", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllTypes(
+            @RequestParam (value="extension", required =  false, defaultValue = "") final String extension
+    )
+    {
+        List<String> output;
+        if (extension.equals("")) {
+            output = ListOfAllTypes();
+        } else
+        {
+            output = ListOfAllTypes(extension);
+        }
+        return String.join("\n", output);
+    }
+
+
+
+    private List<String> ListOfAllTypes() {
+        String currentCatalog = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.name");
+        String currentCatalogVersion = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.version");;
+        prepareSession(
+                "en",
+                currentCatalog,
+                currentCatalogVersion
+        );
+        List<String> result = new ArrayList<>();
+        Set<String> extensions = getAllExtensions();
+        for (String extension : extensions) {
+            List<ComposedTypeModel> composedTypes = getAllComposedTypes(extension);
+            for (ComposedTypeModel composedType : composedTypes) {
+                result.add(extension + "\t" + composedType.getCode());
+            }
+        }
+        return result;
+    }
+
+    private List<String> ListOfAllTypes(String extension) {
+        String currentCatalog = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.name");
+        String currentCatalogVersion = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.version");;
+        prepareSession(
+                "en",
+                currentCatalog,
+                currentCatalogVersion
+        );
+        List<String> result = new ArrayList<>();
+            List<ComposedTypeModel> composedTypes = getAllComposedTypes(extension);
+            for (ComposedTypeModel composedType : composedTypes) {
+                result.add(extension + "\t" + composedType.getCode());
+        }
+        Set<RelationDescriptorModel> relations = getAllRelationNames(extension);
+        for (RelationDescriptorModel relation : relations) {
+            result.add(extension + "\t" + relation.getQualifier()+"\t"+relation.getRelationName());
+
+        }
+        return result;
+    }
+
+
 
     @RequestMapping(value = "/type/{typeName}/attributes", method = RequestMethod.GET)
     @ResponseBody
@@ -165,6 +253,117 @@ public class TypeSystemToolController
         if (descriptorRecord.isOptional()) { flags.add("optional"); } else {flags.add("mandatory!"); }
         descriptorRecord.setFlags(String.join(", ", flags));
         return descriptorRecord;
+    }
+
+    public Set<String> getAllExtensions() {
+        FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery("select {pk} from {AttributeDescriptor}");
+        SearchResult<AttributeDescriptorModel> result = flexibleSearchService.search(flexibleSearchQuery);
+        Iterator<AttributeDescriptorModel> admResult = result.getResult().iterator();
+        Set<String> extensions = new HashSet<>();
+        while (admResult.hasNext())
+        {
+            AttributeDescriptorModel adm = admResult.next();
+            extensions.add(adm.getExtensionName());
+        }
+        return extensions;
+    }
+
+
+    public List<RelationDescriptorModel> getRelationData (RelationDescriptorModel relationDescriptorModel)
+    {
+        FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery("select {pk} from {RelationDescriptor} where {RelationName} = ?rel ");
+        flexibleSearchQuery.addQueryParameter("rel", relationDescriptorModel);
+        SearchResult<RelationDescriptorModel> result = flexibleSearchService.search(flexibleSearchQuery);
+        return result.getResult();
+    }
+
+    public Set<RelationDescriptorModel> getAllRelationNames (String extensionName)
+    {
+        FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery("select {pk} from {RelationDescriptor} where {extensionname} = ?ext  and {RelationName} <> \"\" group by {RelationName}");
+        flexibleSearchQuery.addQueryParameter("ext", extensionName);
+        SearchResult<RelationDescriptorModel> result = flexibleSearchService.search(flexibleSearchQuery);
+        Set<RelationDescriptorModel> set = new HashSet<>();
+        set.addAll(result.getResult());
+        return set;
+    }
+
+    public List<ComposedTypeModel> getAllComposedTypes (String extensionName) {
+
+        FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery("select {pk} from {ComposedType} where {extensionname} = ?ext");
+        flexibleSearchQuery.addQueryParameter("ext", extensionName);
+        SearchResult<ComposedTypeModel> result = flexibleSearchService.search(flexibleSearchQuery);
+        return result.getResult();
+    }
+    public List<ComposedTypeModel> getAllComposedTypes (String extensionName, Set<String> filter) {
+
+        FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery("select {pk} from {ComposedType} where {extensionname} = ?ext and {code} in (?types) ");
+        flexibleSearchQuery.addQueryParameter("ext", extensionName);
+        flexibleSearchQuery.addQueryParameter("types", filter);
+        SearchResult<ComposedTypeModel> result = flexibleSearchService.search(flexibleSearchQuery);
+        return result.getResult();
+    }
+
+    public Set<ComposedTypeModel> getAllComposedTypes (Set<String> extensions)
+    {
+        Iterator<String> iter = extensions.iterator();
+        Set<ComposedTypeModel> list = new HashSet<ComposedTypeModel>();
+        while (iter.hasNext())
+        {
+            String extensionName = iter.next();
+
+            List <ComposedTypeModel> types;
+            types = getAllComposedTypes(extensionName);
+            list.addAll(types);
+        }
+        return list;
+    }
+
+    public Set<ComposedTypeModel> getFilteredComposedTypes (Set<String> extensions, Set<String> particularTypesList)
+    {
+
+        Set<ComposedTypeModel> setOfTypes = new HashSet<ComposedTypeModel>();
+        setOfTypes.addAll(extractTypesFromExtensions(extensions, particularTypesList));
+        setOfTypes.addAll(extractTypesFromStringTypeList(particularTypesList));
+        return setOfTypes;
+    }
+
+    private Collection<? extends ComposedTypeModel> extractTypesFromStringTypeList(Set<String> particularTypesList) {
+        FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery("select {pk} from {ComposedType} where {code} in (?types)");
+        flexibleSearchQuery.addQueryParameter("types", particularTypesList);
+        SearchResult<ComposedTypeModel> result = flexibleSearchService.search(flexibleSearchQuery);
+        return result.getResult();
+    }
+
+    private Set<ComposedTypeModel> extractTypesFromExtensions(Set<String> extensions, Set<String> particularTypesList) {
+        Set<ComposedTypeModel> set = new HashSet<>();
+        Iterator<String> iter = extensions.iterator();
+        while (iter.hasNext())
+        {
+            String extensionName = iter.next();
+
+            List <ComposedTypeModel> types;
+            if (!particularTypesList.isEmpty()) {
+                types = getAllComposedTypes(extensionName, particularTypesList);
+            } else {
+                types = getAllComposedTypes(extensionName);
+            }
+            set.addAll(types);
+        }
+        return set;
+    }
+
+    private void prepareSession(String lang, String catalogName, String catalogVersion) {
+        CatalogVersionModel catalogVersionModel = catalogVersionService.getCatalogVersion(catalogName, catalogVersion);
+        CatalogModel catalogModel = catalogService.getCatalogForId(catalogName);
+        LanguageModel languageModel = i18NService.getLanguage(lang);
+        Collection<CatalogVersionModel> catalogVersions = new ArrayList<CatalogVersionModel>();
+        catalogVersions.add(catalogVersionModel);
+
+        sessionService.setAttribute("currentCatalogVersion", catalogVersionModel);
+        sessionService.setAttribute("catalogversions", catalogVersions);
+        sessionService.setAttribute("language", languageModel);
+        sessionService.setAttribute("locale", new Locale(lang));
+
     }
 
 }
