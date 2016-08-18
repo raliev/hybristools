@@ -35,7 +35,7 @@ import java.util.*;
 @RequestMapping(value = "/typesystem")
 public class TypeSystemToolController
 {
-    private static final Logger LOG = Logger.getLogger(FlexibleSearchToolController.class);
+    private static final Logger LOG = Logger.getLogger(TypeSystemToolController.class);
 
 
     @Resource(name = "modelService")

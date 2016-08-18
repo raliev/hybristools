@@ -29,7 +29,7 @@ import java.util.*;
 @RequestMapping(value = "/beans")
 public class SpringBeansToolController
 {
-    private static final Logger LOG = Logger.getLogger(FlexibleSearchToolController.class);
+    private static final Logger LOG = Logger.getLogger(SpringBeansToolController.class);
     /*
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
@@ -56,7 +56,7 @@ public class SpringBeansToolController
         return String.join("\n", output);
     }
 
-    private List<String> BeanOperations(String bean, String propertyName, String propertyValue) {
+    private List<String> BeanOperations(String bean, String propertyName, String propertyValue)  {
         List<String> result = new ArrayList<>();
 
 
@@ -75,7 +75,9 @@ public class SpringBeansToolController
         }
         result.add(createPair("context", context.getId()+", "+context.getDisplayName()+", "+context.getApplicationName()));
         BeanDefinition beanDefinition = (((GenericApplicationContext)
-                (Registry.getApplicationContext().getParent())).getBeanFactory().getBeanDefinition(bean));
+                (context.getParent())).getBeanFactory().getBeanDefinition(bean));
+
+
 
         if (propertyName != null && propertyValue!= null && !propertyName.equals("") && (!propertyValue.equals("")))
         {
@@ -112,6 +114,9 @@ public class SpringBeansToolController
         result.add("");
         result.add("methods:");
         try {
+            System.out.println(beanDefinition.toString());
+            if (beanDefinition == null) { throw new Exception("no bean!"); }
+            System.out.println(beanDefinition.toString());
             Class<?> c = Class.forName(beanDefinition.getBeanClassName());
             Object t = c.newInstance();
             Method[] allMethods = c.getDeclaredMethods();
@@ -140,6 +145,8 @@ public class SpringBeansToolController
                x.printStackTrace();
         } catch (IllegalAccessException x) {
                x.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
