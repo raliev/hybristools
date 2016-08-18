@@ -44,5 +44,6 @@
     </orderEntry>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="platformwebservices" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

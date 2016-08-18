@@ -15,6 +15,7 @@ package com.epam.controllers;
 
 import com.epam.FlexibleSearchDTO;
 import com.epam.controllers.helpers.CSVPrint;
+import com.epam.controllers.helpers.FlexibleSearchFormatter;
 import com.epam.exception.EValidationError;
 
 import de.hybris.platform.catalog.CatalogService;
@@ -99,7 +100,7 @@ public class FlexibleSearchToolController
 	private FlexibleSearchService flexibleSearchService;
 	private CharSequence delimiter;
 
-	@RequestMapping(value = "/execute", method = RequestMethod.GET)
+	@RequestMapping(value = "/execute", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String executeFlexibleSearch(
 				@RequestParam(value="query", required = false) String query,
@@ -112,11 +113,16 @@ public class FlexibleSearchToolController
 				@RequestParam(value="user", required = false) final String userId,
 				@RequestParam(value="debug", required = false, defaultValue = "false") final boolean debug,
 				@RequestParam(value="maxResults", required = false, defaultValue = "") final int maxResults,
-				@RequestParam(value="ref", required = false) final String ref
-				) throws EValidationError {
+				@RequestParam(value="ref", required = false) final String ref,
+				@RequestParam(value="beautify", required = false) final boolean beautify
+	) throws EValidationError {
 
 		LOG.setLevel(Level.INFO);
 		if (debug) { LOG.setLevel(Level.DEBUG); }
+
+		if (beautify) {
+			 return doBeautify(query);
+		}
 
 		if (catalogName.equals("")) { catalogName = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.name");
 			LOG.debug("setting up catalogName="+catalogName+", from the conf file");
@@ -153,6 +159,10 @@ public class FlexibleSearchToolController
 				toOut = CSVPrint.writeCSV(dataToOut);
 		}
 		return toOut;
+	}
+
+	private String doBeautify(String query) {
+		return new FlexibleSearchFormatter().format(query);
 	}
 
 	private Map<String, String> createModelCodePairs(@RequestParam(value = "ref", required = false) String ref) throws EValidationError {
