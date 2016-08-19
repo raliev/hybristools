@@ -17,18 +17,20 @@ import com.epam.FlexibleSearchDTO;
 import com.epam.controllers.helpers.CSVPrint;
 import com.epam.controllers.helpers.FlexibleSearchFormatter;
 import com.epam.exception.EValidationError;
-
+import de.hybris.platform.jalo.JaloSession;
 import de.hybris.platform.catalog.CatalogService;
 import de.hybris.platform.catalog.CatalogVersionService;
 import de.hybris.platform.catalog.model.CatalogModel;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
 import de.hybris.platform.core.HybrisEnumValue;
+import de.hybris.platform.core.PK;
 import de.hybris.platform.core.model.ItemModel;
 import de.hybris.platform.core.model.c2l.LanguageModel;
 import de.hybris.platform.core.model.media.MediaModel;
 import de.hybris.platform.core.model.type.AttributeDescriptorModel;
 import de.hybris.platform.core.model.type.ComposedTypeModel;
 import de.hybris.platform.core.model.user.UserModel;
+import de.hybris.platform.jalo.type.ComposedType;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.internal.model.impl.AbstractModelService;
@@ -112,10 +114,45 @@ public class FlexibleSearchToolController
 				@RequestParam(value="outputFormat", required = false, defaultValue = "TSV") final String outputFormat,
 				@RequestParam(value="user", required = false) final String userId,
 				@RequestParam(value="debug", required = false, defaultValue = "false") final boolean debug,
-				@RequestParam(value="maxResults", required = false, defaultValue = "") final int maxResults,
+				@RequestParam(value="maxResults", required = false, defaultValue = "100000") final int maxResults,
 				@RequestParam(value="ref", required = false) final String ref,
-				@RequestParam(value="beautify", required = false) final boolean beautify
-	) throws EValidationError {
+				@RequestParam(value="beautify", required = false) final boolean beautify,
+				@RequestParam(value="pk", required = false) final String pk
+				) throws EValidationError {
+
+		LOG.debug("setting up the session (" + currentLanguage + ", " + currentCatalog + ", " + currentCatalogVersion);
+
+
+		if (catalogName.equals("")) { catalogName = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.name");
+			LOG.debug("setting up catalogName="+catalogName+", from the conf file");
+		}
+		if (catalogVersion.equals("")) { catalogVersion = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.version");
+			LOG.debug("setting up catalogVersion="+catalogVersion+", from the conf file");
+		}
+		currentCatalog = catalogName;
+		currentCatalogVersion = catalogVersion;
+		currentLanguage = language;
+		currentUserId = userId;
+		queryMaxResults = maxResults;
+		queryOutputFormat = outputFormat;
+		prepareSession(
+				currentLanguage,
+				currentCatalog,
+				currentCatalogVersion
+		);
+
+		if (pk != null && !pk.equals("")) {
+			System.out.println(pk);
+			PK pkObj = PK.fromLong(Long.parseLong(pk));
+			String typeCode = pkObj.getTypeCodeAsString();
+			List<String> typesOfThisTypeCode = getTypesByTypeCode(typeCode);
+			List<String> subQueries = new ArrayList<>();
+			for (String type : typesOfThisTypeCode) {
+				subQueries.add("select {pk} from {"+type+"} where {pk}="+pk);
+			}
+			query = String.join ("UNION ", subQueries);
+
+		}
 
 		LOG.setLevel(Level.INFO);
 		if (debug) { LOG.setLevel(Level.DEBUG); }
@@ -124,12 +161,7 @@ public class FlexibleSearchToolController
 			 return doBeautify(query);
 		}
 
-		if (catalogName.equals("")) { catalogName = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.name");
-			LOG.debug("setting up catalogName="+catalogName+", from the conf file");
-		}
-		if (catalogVersion.equals("")) { catalogVersion = configurationService.getConfiguration().getString("flexiblesearch.default.catalog.version");
-			LOG.debug("setting up catalogVersion="+catalogVersion+", from the conf file");
-		}
+
 
 		if (query!=null && query.equals("") && (itemtype==null || itemtype.equals(""))) { throw new EValidationError("neither query or itemtype is specified"); }
 		if (query == null || query.equals("") && (itemtype != null && !itemtype.equals(""))) { query = "select {pk} from {"+itemtype+"}"; }
@@ -139,12 +171,7 @@ public class FlexibleSearchToolController
 		* */
 		Map<String, String> modelCodePair = createModelCodePairs(ref);
 
-		currentCatalog = catalogName;
-		currentCatalogVersion = catalogVersion;
-		currentLanguage = language;
-		currentUserId = userId;
-		queryMaxResults = maxResults;
-		queryOutputFormat = outputFormat;
+
 
 		List<String> resultStr = flexibleSearchInternal(query, fields, modelCodePair, true);
 
@@ -159,6 +186,10 @@ public class FlexibleSearchToolController
 				toOut = CSVPrint.writeCSV(dataToOut);
 		}
 		return toOut;
+	}
+
+	private List<String> getTypesByTypeCode(String typeCode) {
+		return Arrays.asList(JaloSession.getCurrentSession().getTypeManager().getRootComposedType(Integer.parseInt(typeCode)).getCode().toString());
 	}
 
 	private String doBeautify(String query) {
@@ -206,12 +237,7 @@ public class FlexibleSearchToolController
 		}
 
 
-		LOG.debug("setting up the session (" + currentLanguage + ", " + currentCatalog + ", " + currentCatalogVersion);
-		prepareSession(
-				currentLanguage,
-				currentCatalog,
-				currentCatalogVersion
-		);
+
 
 		if (currentUserId != null && !currentUserId.equals("")) {
 			LOG.debug("looking up for the user " + currentUserId + "...");

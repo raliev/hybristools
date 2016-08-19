@@ -7,10 +7,12 @@ import de.hybris.platform.catalog.CatalogService;
 import de.hybris.platform.catalog.CatalogVersionService;
 import de.hybris.platform.catalog.model.CatalogModel;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
+import de.hybris.platform.core.PK;
 import de.hybris.platform.core.model.c2l.LanguageModel;
 import de.hybris.platform.core.model.type.AttributeDescriptorModel;
 import de.hybris.platform.core.model.type.ComposedTypeModel;
 import de.hybris.platform.core.model.type.RelationDescriptorModel;
+import de.hybris.platform.jalo.JaloSession;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.model.ModelService;
@@ -137,6 +139,34 @@ public class TypeSystemToolController
         return String.join("\n", output);
     }
 
+    @RequestMapping(value = "/pk/{pk}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getTypesByPk(
+            @PathVariable final String pk )
+    {
+        List<String> output =  ListAllTypesByPk(pk);
+        return String.join("\n", output);
+    }
+
+    private List<String> ListAllTypesByPk(String pk) {
+        List<String> result = new ArrayList<>();
+        if (pk != null && !pk.equals("")) {
+            System.out.println(pk);
+            PK pkObj = PK.fromLong(Long.parseLong(pk));
+            String typeCode = pkObj.getTypeCodeAsString();
+            List<String> typesOfThisTypeCode = getTypesByTypeCode(typeCode);
+            List<String> subQueries = new ArrayList<>();
+            for (String type : typesOfThisTypeCode) {
+                result.add(type);
+            }
+        }
+
+        return result;
+    }
+
+    private List<String> getTypesByTypeCode(String typeCode) {
+        return Arrays.asList(JaloSession.getCurrentSession().getTypeManager().getRootComposedType(Integer.parseInt(typeCode)).getCode().toString());
+    }
 
     @RequestMapping(value = "/type/{typeName}/attribute/{attr}", method = RequestMethod.GET)
     @ResponseBody
