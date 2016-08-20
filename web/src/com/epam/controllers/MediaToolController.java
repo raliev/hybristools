@@ -1,9 +1,15 @@
 package com.epam.controllers;
 
+import com.epam.exception.EValidationError;
+import de.hybris.platform.cms2.servicelayer.daos.impl.DefaultCMSMediaFormatDao;
+import de.hybris.platform.core.Registry;
+import de.hybris.platform.core.model.media.MediaFormatModel;
 import de.hybris.platform.core.model.media.MediaModel;
-import de.hybris.platform.impex.model.ImpExMediaModel;
+import de.hybris.platform.servicelayer.exceptions.AmbiguousIdentifierException;
+import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.servicelayer.media.MediaService;
 import de.hybris.platform.servicelayer.model.ModelService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +22,8 @@ import javax.annotation.Resource;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Rauf_Aliev on 8/18/2016.
@@ -31,27 +39,112 @@ public class MediaToolController {
     @Resource
     private ModelService modelService;
 
+    @Resource
+    DefaultCMSMediaFormatDao defaultCMSMediaFormatDao;
+
+    @RequestMapping(value = "/mediaformats", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllMediaFormats() {
+        List<String> results = new ArrayList<>();
+        Collection<MediaFormatModel> mediaFormats = defaultCMSMediaFormatDao.getAllMediaFormats();
+        results.add("qualifier\tname\n");
+        for (MediaFormatModel mediaFormatModel : mediaFormats)
+        {
+            results.add(mediaFormatModel.getQualifier() + "\t" + mediaFormatModel.getName());
+        }
+        return String.join("\n", results);
+    }
+
+    @RequestMapping(value = "/medias", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllMedias() throws EValidationError {
+        List<String> results = new ArrayList<>();
+
+        FlexibleSearchToolController flexibleSearchToolController = Registry.getApplicationContext().getBean(FlexibleSearchToolController.class);
+        return flexibleSearchToolController.executeFlexibleSearch(
+            "select {pk} from {Media}",
+            "", // itemtype
+            "code,mediaContainer,mediaFormat", // fields
+            "en", // lang
+            "", // catalog
+            "", // catalogVersion
+            "CON", // output format
+            "", // userId
+            false, // debug
+            1000000, // max Results
+            null, // ref
+            false, // beatify
+            "" ); // pk
+
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createFile(
+            @RequestParam(value = "code", required = false) final String code,
+            @RequestParam(value = "mediaType", required = false) final String mediaType,
             @RequestParam(value = "name", required = false) final String name,
             @RequestParam(value = "filename",  required = false) final String filename,
             @RequestParam(value = "type", required = false) final String type,
+            @RequestParam(value = "mediaFormatStr", required = false) final String mediaFormatStr,
             @RequestParam("file") MultipartFile file
             )
     {
         ArrayList<String> result = new ArrayList<String>();
-        result.add("name="+name);
-        result.add("filename="+filename);
-        result.add("type="+type);
-        result.add("filesize="+file.getSize());
 
         DataInputStream dis = null;
         try
         {
-            ImpExMediaModel mediaModel = modelService.create(ImpExMediaModel.class);
-            mediaModel.setCode(name);
+            Class classOfMediaModel1 = null;
+            Class classOfMediaModel2 = null;
+            try {
+                classOfMediaModel1 = Class.forName("de.hybris.platform.core.model.media."+mediaType+"Model");
+            }
+            catch (Exception e) { }
+
+            try {
+                classOfMediaModel2 = Class.forName("de.hybris.platform.impex.model." + mediaType + "Model");
+            } catch (Exception e) { }
+
+            if (classOfMediaModel1 == null) { classOfMediaModel1 = classOfMediaModel2; }
+            if (classOfMediaModel1 == null) {
+                String message = mediaType+" is not found. See section 'Subtypes' of ./hybrisTypeSystem -t MediaModel for variants.";
+                message = message + "hybris OOTB subtypes:  \n" +
+                        " * Media (default)                    \n" +
+                        " * BarcodeMedia                    \n" +
+                        " * CatalogUnawareMedia             \n" +
+                        " * CatalogVersionSyncScheduleMedia \n" +
+                        " * ConfigurationMedia              \n" +
+                        " * Document                        \n" +
+                        " * EmailAttachment                 \n" +
+                        " * Formatter                       \n" +
+                        " * ImpExMedia                      \n" +
+                        " * JasperMedia                     \n" +
+                        " * JobMedia                        \n" +
+                        " * LDIFMedia                       \n" +
+                        " * LogFile                         \n" +
+                        " * ScriptMedia   \n";
+                return message;
+            }
+            MediaModel mediaModel = modelService.create(classOfMediaModel1);
+            mediaModel.setCode(code);
             mediaModel.setRealFileName(filename);
+            if (!StringUtils.isEmpty(mediaFormatStr)) {
+                MediaFormatModel mediaFormatModel;
+                try {
+                    mediaFormatModel = defaultCMSMediaFormatDao.getMediaFormatByQualifier(mediaFormatStr);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("ERROR: mediaFormat");
+                    return "ERROR: mediaFormat";
+                } catch (UnknownIdentifierException e) {
+                    System.out.println("Unknown media format. Check -all-media-formats");
+                    return "Unknown media format. Check -all-media-formats";
+                } catch (AmbiguousIdentifierException e) {
+                    System.out.println("Ambuguous Identifier");
+                    return "Ambuguous Identifier";
+                }
+                mediaModel.setMediaFormat(mediaFormatModel);
+            }
             modelService.save(mediaModel);
             dis = new DataInputStream(file.getInputStream());
             mediaService.setStreamForMedia(mediaModel, dis);
@@ -70,5 +163,6 @@ public class MediaToolController {
 
         return String.join("\n", result);
     }
+
 
 }

@@ -9,10 +9,9 @@ import de.hybris.platform.catalog.model.CatalogModel;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
 import de.hybris.platform.core.PK;
 import de.hybris.platform.core.model.c2l.LanguageModel;
-import de.hybris.platform.core.model.type.AttributeDescriptorModel;
-import de.hybris.platform.core.model.type.ComposedTypeModel;
-import de.hybris.platform.core.model.type.RelationDescriptorModel;
+import de.hybris.platform.core.model.type.*;
 import de.hybris.platform.jalo.JaloSession;
+import de.hybris.platform.jalo.type.CollectionType;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.model.ModelService;
@@ -133,11 +132,36 @@ public class TypeSystemToolController
     @RequestMapping(value = "/type/{typeName}/attributes", method = RequestMethod.GET)
     @ResponseBody
     public String getAllAttributes(
-            @PathVariable final String typeName )
-    {
-        List<String> output = ListOfAttributesForTheType(typeName);
+            @PathVariable final String typeName ) {
+        TypeModel type = typeService.getType(typeName);
+        List<String> output = new ArrayList<>();
+        if (type instanceof ComposedTypeModel) {
+            output = ListOfAttributesForTheComposedType(typeName);
+        } else if (type instanceof CollectionTypeModel) {
+            output = DetailsAboutCollectionTypeModel(typeName);
+        } else
+        {
+            output.add("Type "+type.getCode()+" is not supported");
+        }
         return String.join("\n", output);
     }
+
+    private List<String> DetailsAboutCollectionTypeModel (String typeName) {
+        List<String> result = new ArrayList<>();
+        CollectionTypeModel type = (CollectionTypeModel) typeService.getTypeForCode(typeName);
+        String xmlDefinition = type.getXmldefinition();
+        if (xmlDefinition.contains("elementtype=")) {
+            String element = xmlDefinition.substring(xmlDefinition.toLowerCase().indexOf("elementtype=")+"elementtype=".length()+1, xmlDefinition.length());
+            element = element.substring(0, element.indexOf("\""));
+            result.add("The Element of collection (type):\t"+element);
+        }
+        result.add(createPair("Code:", type.getCode()));
+        result.add(createPair("Extension name:", type.getExtensionName()));
+        result.add(createPair("Description:", type.getDescription()));
+        result.add(createPair("XML definition:", type.getXmldefinition()));
+        return result;
+    }
+
 
     @RequestMapping(value = "/pk/{pk}", method = RequestMethod.GET)
     @ResponseBody
@@ -151,7 +175,7 @@ public class TypeSystemToolController
     private List<String> ListAllTypesByPk(String pk) {
         List<String> result = new ArrayList<>();
         if (pk != null && !pk.equals("")) {
-            System.out.println(pk);
+//            System.out.println(pk);
             PK pkObj = PK.fromLong(Long.parseLong(pk));
             String typeCode = pkObj.getTypeCodeAsString();
             List<String> typesOfThisTypeCode = getTypesByTypeCode(typeCode);
@@ -219,7 +243,7 @@ public class TypeSystemToolController
         return String.join("\t", Arrays.asList(name, value));
     }
 
-    private List<String> ListOfAttributesForTheType(@PathVariable String typeName) {
+    private List<String> ListOfAttributesForTheComposedType(String typeName) {
         final ComposedTypeModel type = typeService.getComposedTypeForCode(typeName);
         Collection<AttributeDescriptorModel> inheritedDescriptors = type.getInheritedattributedescriptors();
         Collection<AttributeDescriptorModel> declaredDescriptors = type.getDeclaredattributedescriptors();
@@ -229,7 +253,7 @@ public class TypeSystemToolController
         {
             subtypes.add(ctm.getCode());
         }
-        String subTypes = String.join(", ", subtypes);
+        String subTypesStr = String.join("\n * ", subtypes);
         TypeDescriptorsDTO typeDescriptorsDTO = new TypeDescriptorsDTO();
         TypeDescriptorsDTO typeDescriptorsDTO2= new TypeDescriptorsDTO();
         processDescriptors(inheritedDescriptors, typeDescriptorsDTO, true);
@@ -239,7 +263,8 @@ public class TypeSystemToolController
         List<String> output = new ArrayList();
         output.add("Type: "+typeName);
         output.add("Supertype:"+superType);
-        output.add("Subtypes: "+subTypes);
+        output.add("Subtypes: ");
+        output.add(" * "+subTypesStr);
         for (DescriptorRecord descriptorRecord : typeDescriptorsDTO.getDescriptorRecordList())
         {
             List<String> columns = new ArrayList<>();
@@ -249,6 +274,7 @@ public class TypeSystemToolController
             columns.add(descriptorRecord.getDescription());
             columns.add(descriptorRecord.getFlags());
             String outline = String.join("\t", columns);
+
             output.add(outline);
         }
         return output;
@@ -271,7 +297,7 @@ public class TypeSystemToolController
 
         descriptorRecord.setQualifier(attributeDescriptorModel.getQualifier());
         descriptorRecord.setDatabaseColumn(attributeDescriptorModel.getDatabaseColumn());
-        descriptorRecord.setDescription(attributeDescriptorModel.getDescription());
+        descriptorRecord.setDescription(attributeDescriptorModel.getDescription() == null ? "" : attributeDescriptorModel.getDescription());
         descriptorRecord.setLocalized(attributeDescriptorModel.getLocalized());
         descriptorRecord.setOptional(attributeDescriptorModel.getOptional());
         descriptorRecord.setPartof(attributeDescriptorModel.getPartOf());
@@ -279,8 +305,8 @@ public class TypeSystemToolController
         descriptorRecord.setUnique(attributeDescriptorModel.getUnique());
         descriptorRecord.setAttributeType(attributeDescriptorModel.getAttributeType().getCode());
         List<String> flags = new ArrayList<>();
-        if (descriptorRecord.isUnique()) { flags.add("unique"); }
-        if (descriptorRecord.isOptional()) { flags.add("optional"); } else {flags.add("mandatory!"); }
+        if (descriptorRecord.isUnique()) { flags.add("[UNIQ]"); }
+        if (descriptorRecord.isOptional()) { flags.add("[o]"); } else {flags.add("[!]"); }
         descriptorRecord.setFlags(String.join(", ", flags));
         return descriptorRecord;
     }

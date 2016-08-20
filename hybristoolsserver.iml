@@ -45,5 +45,34 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="platformwebservices" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../ext-content/cms2/bin/cms2server.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="https://download.hybris.com/api/6.0.0" />
+        </JAVADOC>
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../ext-cockpit/cockpit/lib/itext-2.1.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../ext-commerce/commercefacades/lib/xstream-1.4.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

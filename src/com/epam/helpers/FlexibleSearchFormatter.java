@@ -22,7 +22,7 @@
  * Boston, MA  02110-1301  USA
  *
  */
-package com.epam.controllers.helpers;
+package com.epam.helpers;
 
 import java.util.HashSet;
 import java.util.LinkedList;

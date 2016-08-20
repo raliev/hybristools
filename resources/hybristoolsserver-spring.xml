@@ -28,6 +28,13 @@
 		<property name="maxUploadSize" value="100000000"/>
 	</bean>
 
+	<bean id="flexibleSearchToolService" class="com.epam.services.FlexibleSearchToolService"/>
+
+	<bean id="testBean" class="com.epam.test.TestBean">
+		<property name="refLink" ref="flexibleSearchToolService"/>
+		<property name="stringProperty" value="test"/>
+	</bean>
+
 	<!--
 	The hybris platform provides one single Spring application context for beans located at the jalo layer.
 	Each extension can add beans to this context by specifying them at this configuration file.
