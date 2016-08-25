@@ -16,6 +16,7 @@ package com.epam.controllers;
 import com.epam.configuration.FlexibleSearchToolConfiguration;
 import com.epam.exception.EValidationError;
 import com.epam.services.FlexibleSearchToolService;
+import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 
 import org.apache.log4j.Logger;
@@ -27,6 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -70,8 +75,11 @@ public class FlexibleSearchToolController
 				@RequestParam(value="maxResults", required = false, defaultValue = "100000") final int maxResults,
 				@RequestParam(value="ref", required = false) final String ref,
 				@RequestParam(value="beautify", required = false) final boolean beautify,
+				@RequestParam(value="resultTypes", required = false) final String resultTypes,
 				@RequestParam(value="pk", required = false) final String pk
 				) throws EValidationError {
+
+		if (beautify) { return flexibleSearchToolService.doBeautify(query);}
 
 		FlexibleSearchToolConfiguration flexibleSearchToolConfiguration = new FlexibleSearchToolConfiguration();
 		flexibleSearchToolConfiguration.setQuery(query);
@@ -89,13 +97,17 @@ public class FlexibleSearchToolController
 		flexibleSearchToolConfiguration.setPk(pk);
 		flexibleSearchToolConfiguration.mergeWithDefaults(configurationService.getConfiguration());
 		flexibleSearchToolConfiguration.processParams();
+		flexibleSearchToolConfiguration.setConfigurableResultClassListFromStr(resultTypes);
 		flexibleSearchToolConfiguration.validation();
-		return
-		flexibleSearchToolService.execute(flexibleSearchToolConfiguration);
+		String result = "";
+		try {
+			result = flexibleSearchToolService.execute(flexibleSearchToolConfiguration);
+		} catch (Exception e)
+		{
+			return e.getMessage();
+		}
+		return result;
 	}
-
-
-
 
 
 

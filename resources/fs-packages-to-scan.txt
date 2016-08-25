@@ -1,0 +1,2 @@
+de.hybris.platform.core.model
+de.hybris.platform.europe1.model

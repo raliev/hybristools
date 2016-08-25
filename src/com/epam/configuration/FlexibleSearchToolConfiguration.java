@@ -4,6 +4,7 @@ import com.epam.exception.EValidationError;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import de.hybris.platform.core.PK;
+import de.hybris.platform.jalo.Item;
 import de.hybris.platform.jalo.JaloSession;
 import de.hybris.platform.util.Utilities;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,7 @@ public class FlexibleSearchToolConfiguration {
     private String pk;
 
     private Map<String, String> modelCodePair;
+    List<Class> configurableResultClassList = new ArrayList(Arrays.asList(Item.class, String.class));
 
     public Map<String, String> getModelCodePair() {
         return modelCodePair;
@@ -160,6 +162,7 @@ public class FlexibleSearchToolConfiguration {
         }
         if (StringUtils.isEmpty(getCatalogVersion()))
         setCatalogVersion(configuration.getString("flexiblesearch.default.catalog.version"));
+        setLanguage(configuration.getString("flexiblesearch.default.language"));
         }
 
     public void validation() throws EValidationError {
@@ -177,7 +180,18 @@ public class FlexibleSearchToolConfiguration {
             setQuery("select {pk} from {"+itemtype+"}");
         }
         if (getQuery().toLowerCase().indexOf("from") == -1 ) { throw new EValidationError("incorrect flexible search query"); }
-        setQuery("select {pk} "+getQuery().substring(getQuery().toLowerCase().indexOf("from"), getQuery().length()));
+
+        String st = getQuery().substring(0,getQuery().toLowerCase().indexOf("from"));
+        int skCount = Arrays.asList(st.split(",")).size();
+        if (skCount == 1) {
+            setQuery("select {pk}, {pk} " + getQuery().substring(getQuery().toLowerCase().indexOf("from"), getQuery().length()));
+            skCount ++;
+        }
+        while (getConfigurableResultClassList().size()<skCount)
+        {
+            getConfigurableResultClassList().add(String.class);
+        }
+
     }
 
     private Map<String, String> createModelCodePairs(String ref) throws EValidationError {
@@ -262,4 +276,64 @@ public class FlexibleSearchToolConfiguration {
         return "";
     }
 
+    public List<Class> getConfigurableResultClassList() {
+        return configurableResultClassList;
+    }
+
+    public void setConfigurableResultClassList(List<Class> configurableResultClassList) {
+        this.configurableResultClassList = configurableResultClassList;
+    }
+
+    public void setConfigurableResultClassListFromStr(String resultTypes)
+    {
+        if (resultTypes != null && !resultTypes.equals("")) {
+            try {
+                List<String> resultTypesList = Arrays.asList(resultTypes.split(","));
+                List<Class> classes = new ArrayList<>();
+                for (String classItem : resultTypesList) {
+
+                    Class classOfResultType = lookupClassByItsName(classItem);
+                    if (classOfResultType == null ) {
+                        System.out.println("class for " + classOfResultType + " is not found...");
+                        return;
+                    }
+                    classes.add(classOfResultType);
+                }
+                setConfigurableResultClassList(classes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private Class lookupClassByItsName(String classItem) throws IOException {
+        List<String> packages = new ArrayList<>();
+        String filename = Utilities.getPlatformConfig().getExtensionInfo("hybristoolsserver").getExtensionDirectory()+"/resources/fs-packages-to-scan.txt";
+        String packagesStr = Files.lines(Paths.get(filename)).collect(Collectors.joining("\n"));
+        packages.addAll(Arrays.asList(packagesStr.split("\n")));
+        for (String pkg : packages) {
+
+            String fullyQualified = pkg + "." + classItem;
+            try {
+                Class attempt1 = null;
+                try {
+                    attempt1 = Class.forName(fullyQualified);
+                } catch (Exception e ) { }
+                if (attempt1 == null) {
+                    Class attempt2 = null;
+                    try {
+                        attempt2 = Class.forName(fullyQualified + "Model");
+                    } catch (Exception e) { }
+                    if ( attempt2 != null)
+                    {
+                        return attempt2;
+                    }
+                }
+                return Class.forName(fullyQualified);
+            } catch (ClassNotFoundException e) {
+                // Oops. Try again with the next package
+            }
+        }
+        return null;
+    }
 }
+

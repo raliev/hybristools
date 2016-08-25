@@ -133,15 +133,20 @@ public class TypeSystemToolController
     @ResponseBody
     public String getAllAttributes(
             @PathVariable final String typeName ) {
-        TypeModel type = typeService.getType(typeName);
-        List<String> output = new ArrayList<>();
-        if (type instanceof ComposedTypeModel) {
-            output = ListOfAttributesForTheComposedType(typeName);
-        } else if (type instanceof CollectionTypeModel) {
-            output = DetailsAboutCollectionTypeModel(typeName);
-        } else
+        List<String> output = null;
+        try {
+            TypeModel type = typeService.getType(typeName);
+            output = new ArrayList<>();
+            if (type instanceof ComposedTypeModel) {
+                output = ListOfAttributesForTheComposedType(typeName);
+            } else if (type instanceof CollectionTypeModel) {
+                output = DetailsAboutCollectionTypeModel(typeName);
+            } else {
+                output.add("Type " + type.getCode() + " is not supported");
+            }
+        } catch (Exception e)
         {
-            output.add("Type "+type.getCode()+" is not supported");
+            return e.getMessage();
         }
         return String.join("\n", output);
     }

@@ -7,12 +7,17 @@ import de.hybris.platform.catalog.CatalogService;
 import de.hybris.platform.catalog.CatalogVersionService;
 import de.hybris.platform.catalog.model.CatalogModel;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
+import de.hybris.platform.core.AbstractLazyLoadMultiColumnList;
 import de.hybris.platform.core.HybrisEnumValue;
+import de.hybris.platform.core.PK;
 import de.hybris.platform.core.model.ItemModel;
 import de.hybris.platform.core.model.c2l.LanguageModel;
+import de.hybris.platform.core.model.media.MediaModel;
 import de.hybris.platform.core.model.type.AttributeDescriptorModel;
 import de.hybris.platform.core.model.type.ComposedTypeModel;
 import de.hybris.platform.core.model.user.UserModel;
+import de.hybris.platform.europe1.model.PriceRowModel;
+import de.hybris.platform.jalo.Item;
 import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.i18n.I18NService;
 import de.hybris.platform.servicelayer.model.ModelService;
@@ -28,6 +33,7 @@ import com.epam.helpers.FlexibleSearchFormatter;
 import com.epam.helpers.CSVPrint;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -76,8 +82,6 @@ public class FlexibleSearchToolService {
         //LOG.setLevel(Level.INFO);
         //if (debug) { LOG.setLevel(Level.DEBUG); }
 
-        if (flexibleSearchToolConfiguration.getBeautify()) return doBeautify(flexibleSearchToolConfiguration.getQuery());
-
         List<String> resultStr = flexibleSearchInternal(
                 flexibleSearchToolConfiguration,
                 ROOT_HANDLER);
@@ -87,7 +91,7 @@ public class FlexibleSearchToolService {
             List<List<String>> dataToOut = new ArrayList<>();
             for (String line : resultStr)
             {
-                List<String> columns = Arrays.asList(line.split("\t"));
+                List<String> columns = new ArrayList(Arrays.asList(line.split("\t")));
                 dataToOut.add(columns);
             }
             toOut = CSVPrint.writeCSV(dataToOut, false);
@@ -105,16 +109,6 @@ public class FlexibleSearchToolService {
         LOG.debug("typeName was extracted from query, " + typeName);
         List<String> attributes = getAllAttributes(getComposedTypeModel(typeName));
 
-        removeFromAttributes(attributes,
-                Arrays.asList(
-                            "allDocuments",
-                            "assignedCockpitItemTemplates",
-                            "savedValues",
-                            "synchronizationSources",
-                            "synchronizedCopies",
-                            "valueHistory",
-                            "classificationIndexString"));
-
         //List<String> fieldList = verifyFieldsAndReturnTheListOfThem(fields, attributes);
         List<String> fieldList = new ArrayList<>();
 
@@ -126,10 +120,20 @@ public class FlexibleSearchToolService {
         }
 
         FlexibleSearchQuery flexibleSearchQuery = new FlexibleSearchQuery(flexibleSearchToolConfiguration.getQuery());
-        SearchResult<ItemModel> searchResult = flexibleSearchService.search(flexibleSearchQuery);
+  //      if (rootHandler) {
+            flexibleSearchQuery.setResultClassList(
+                    flexibleSearchToolConfiguration.getConfigurableResultClassList()
+            );
+            /*
+        } else
+        {
+            flexibleSearchQuery.setResultClassList(Collections.singletonList(Item.class));
+        }
+*/
+        SearchResult<List<Object>> searchResult = flexibleSearchService .search(flexibleSearchQuery);
 
-        List<ItemModel> resultList = searchResult.getResult();
-        Iterator<ItemModel> iter = resultList.iterator();
+        //List<Object> resultList = searchResult.getResult();
+        //Iterator<Object> iter = resultList.iterator();
         List<String> resultStr = new ArrayList();
         if (rootHandler ) {
             if (!flexibleSearchToolConfiguration.getOutputFormat().equals("BRD"))
@@ -140,17 +144,41 @@ public class FlexibleSearchToolService {
         }
         int counter = 0;
 
-        for (ItemModel data : resultList) {
-            ArrayList<String> values = buildValues(fieldList2, data);
+        for (List<Object> data : searchResult.getResult()) {
+
+                Object obj;
+                int size = 0;
+                 { obj = (ItemModel) ((List<Object>) data).get(0); size = ((List<Object>) data).size(); }
+                //{ obj = (ItemModel) data; }
+
+            ArrayList<String> values = buildValues(fieldList2, (ItemModel) obj);
+                    //ArrayList<String> values = buildValues(fieldList2, (ItemModel) obj);
+
+
+
+            List<String> extra_fields = new ArrayList<>();
             String valuesOfFields = "";
             for (int i = 1; i < fieldList2.size(); i++) {
                 valuesOfFields = valuesOfFields +
-                            flexibleSearchToolConfiguration.getDelimiter(fieldList2.get(i), rootHandler) + values.get(i);
+                        flexibleSearchToolConfiguration.getDelimiter(fieldList2.get(i), rootHandler) + values.get(i);
             }
+            if (rootHandler) {
+                    for (int i = 1; i < size; i++) {
+                        extra_fields.add(((List<Object>) data).get(i).toString());
+                    }
+                }
+
+            String ext_f = String.join(
+                    flexibleSearchToolConfiguration.getDelimiter("extra", rootHandler),
+                    extra_fields);
             resultStr.add(
-                            flexibleSearchToolConfiguration.getStart_delimiter(fieldList2.get(0), rootHandler) + values.get(0) +
-                            valuesOfFields +
-                            flexibleSearchToolConfiguration.getEnd_delimiter(rootHandler));
+                        flexibleSearchToolConfiguration.getStart_delimiter(fieldList2.get(0), rootHandler) + values.get(0) +
+                                valuesOfFields +
+                                (ext_f.equals("") ? "" : flexibleSearchToolConfiguration.getDelimiter("extra", rootHandler)) +
+                                ext_f +
+                                flexibleSearchToolConfiguration.getEnd_delimiter(rootHandler));
+
+
             counter++;
             if (counter >= flexibleSearchToolConfiguration.getMaxResults()) {
                 break;
@@ -158,6 +186,7 @@ public class FlexibleSearchToolService {
         }
         List<String> processedResultStr = processModelCodePair(flexibleSearchToolConfiguration, resultStr);
         return processedResultStr;
+        //return resultStr;
     }
 
     private List<String> buildFieldListArray(FlexibleSearchToolConfiguration flexibleSearchToolConfiguration, String typeName, List<String> attributes) {
@@ -174,7 +203,14 @@ public class FlexibleSearchToolService {
         }
 
         if (fieldList2.size() == 0) {
-            fieldList2.addAll(typeService.getUniqueAttributes(typeName));
+            String pairs = flexibleSearchToolConfiguration.getModelCodePair().get(typeName);
+            if (pairs != null) {
+                List<String> pairList = Arrays.asList(pairs.split(","));
+                fieldList2.addAll(pairList);
+            } else {
+                fieldList2.addAll(typeService.getUniqueAttributes(typeName));
+            }
+
         }
         return fieldList2;
     }
@@ -204,18 +240,10 @@ public class FlexibleSearchToolService {
                     max --;
                 }
                 max++;
-					/*if ((tabindex == -1) && (commaindex == -1) && (skindex  == -1)) {
-						max = -1;
-					}
-					max = (tabindex > commaindex) ? tabindex  : commaindex ;
-					max = (skindex > max) ? skindex  : max ;
-				    max ++;
-					*/
-                String objectNameModel = line.substring(max, posit + "Model (".length() - 2);
+
                 String objectName = line.substring(max, posit);
                 String PK = line.substring(posit + "Model (".length(), line.length()).substring(0, 13);
                 line = ResolvePK(flexibleSearchToolConfiguration, line, objectName, PK);
-                //System.out.println("[" + objectName + "]PK:[" + PK + "]");
             }
             processedLines.add(line);
         }
@@ -232,15 +260,16 @@ public class FlexibleSearchToolService {
 
 
         FlexibleSearchToolConfiguration newFSC = flexibleSearchToolConfiguration.createAClone();
-        newFSC.setQuery("select {pk} from {"+objectName+"} where {pk} = \""+pk+"\"");
+        newFSC.setQuery("select {pk},1 from {"+objectName+"} where {pk} = \""+pk+"\"");
         newFSC.setItemtype("");
         newFSC.setPk("");
         newFSC.setModelCodePair(flexibleSearchToolConfiguration.getModelCodePair());
         newFSC.setFields(flexibleSearchToolConfiguration.getModelCodePair().get(objectName));
         newFSC.mergeWithDefaults(configurationService.getConfiguration());
+        newFSC.setConfigurableResultClassList(Arrays.asList(Item.class,String.class));
         newFSC.processParams();
         newFSC.validation();
-        newFSC.setQuery("select {pk} from {"+objectName+"} where {pk} = \""+pk+"\"");
+        newFSC.setQuery("select {pk},1 from {"+objectName+"} where {pk} = \""+pk+"\"");
 
         List<String> res = flexibleSearchInternal(newFSC, !ROOT_HANDLER);
         if (res.size()<1) { throw new EValidationError("can't find PK "+pk+" for "+objectName); }
@@ -318,6 +347,15 @@ public class FlexibleSearchToolService {
         {
             result.add(adm.getQualifier());
         }
+        removeFromAttributes(result,
+                Arrays.asList(
+                        "allDocuments",
+                        "assignedCockpitItemTemplates",
+                        "savedValues",
+                        "synchronizationSources",
+                        "synchronizedCopies",
+                        "valueHistory",
+                        "classificationIndexString"));
         return result;
     }
 
@@ -339,18 +377,12 @@ public class FlexibleSearchToolService {
         return s;
     }
 
-
-
-
-
-
-    private String doBeautify(String query) {
+    public String doBeautify(String query) {
         return new FlexibleSearchFormatter().format(query);
 
     }
 
-
-    private void prepareSession(FlexibleSearchToolConfiguration configuration) {
+    public void prepareSession(FlexibleSearchToolConfiguration configuration) {
         CatalogVersionModel catalogVersionModel = catalogVersionService.getCatalogVersion(configuration.getCatalogName(), configuration.getCatalogVersion());
         CatalogModel catalogModel = catalogService.getCatalogForId(configuration.getCatalogName());
         LanguageModel languageModel = i18NService.getLanguage(configuration.getLanguage());

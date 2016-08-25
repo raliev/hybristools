@@ -9,16 +9,19 @@ import java.util.List;
  */
 public class CSVPrint {
 
-    public static void printAsCSV(String result, boolean fix) {
+    public static void printAsCSV(String result, boolean fix, String delimiter) {
         List<String> lines = Arrays.asList(result.split("\n"));
         List<List<String>> csv = new ArrayList<>();
         for (String line : lines)
         {
             List<String> columns = new ArrayList<>();
-            columns.addAll(Arrays.asList(line.split("\t")));
+            columns.addAll(Arrays.asList(line.split(delimiter)));
             csv.add(columns);
         }
         CSVPrint.writeCSV(csv, fix);
+    }
+    public static void printAsCSV(String result, boolean fix) {
+        printAsCSV(result, fix, "\t");
     }
 
     public static String writeCSV(List<List<String>> rows, boolean fix) {
