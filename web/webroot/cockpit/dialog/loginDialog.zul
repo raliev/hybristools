@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?taglib 			uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with SAP.
+  -->
+
+<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:h="http://www.w3.org/1999/xhtml" 
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		id="win" 
+		border="none" 
+		width="310px" 
+		height="450px"
+		position="center" 
+		mode="overlapped" 
+		closable="false" 
+		sizable="false"
+		shadow="false"
+		use="de.hybris.platform.cockpit.components.login.LoginDialog"
+		sclass="loginContainerWindow">
+	
+	<h:form id="loginForm" action="j_spring_security_check" method="POST">
+	<attribute name="onCreate">login.setFocus(true);</attribute>
+		<vbox sclass="login_grid z-grid" spacing="2px">
+			<hbox widths="7em, 8em">
+				<label value="${c:l('login')}:"/>
+			  	<textbox 	id="login"  name="j_username" value="${LoginForm.login}"/>
+			</hbox>
+			<hbox widths="7em, 8em">
+			  	<label value="${c:l('password')}:"/> 
+			  	<textbox  type="password"	id="pw" name="j_password" value="${LoginForm.password}"/>
+			  </hbox>
+			   <hbox widths="7em, 8em">
+			  	<label 		value="${c:l('language')}:"/>
+			  	<combobox id="box" autodrop="true"/>
+			  </hbox>
+			  <hbox width="100%">
+			  	<label id="status" visible="false" style="color:red" value="${c:l('wrong_credentials')}"/>
+			  </hbox>
+			  <hbox width="100%">
+			  	<div style="position:relative">
+				  	<button id="lgBtn" label="${c:l('dologin')}" use="de.hybris.platform.cockpit.components.login.LoginButton" 
+				  				tooltiptext="${c:l('dologin')}"/>
+					<checkbox sclass="login-checkbox"
+			  				name="_spring_security_remember_me"
+			  				label="${c:l('rememberme')}" />
+			  	</div>
+			  </hbox>
+		</vbox>
+		
+	</h:form>
+</window>

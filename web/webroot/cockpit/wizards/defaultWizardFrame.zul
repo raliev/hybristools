@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?xel-method prefix="c" name="label" class="de.hybris.platform.cockpit.wizards.WizardUtils" 
+			signature="java.lang.String getObjectTextLabel(de.hybris.platform.cockpit.model.meta.TypedObject object)"?>  
+
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with SAP.
+  -->
+
+<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:h="http://www.w3.org/1999/xhtml" 
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		border="normal"
+		closable="true"
+		position="center"
+		sclass="wizardWindowSclass"
+		onOK="wizardBean.doNext()"
+		onClose="wizardBean.doCancel()"
+		onCancel="self.detach();wizardBean.doCancel()">
+		
+	<variables local="true" wizardBean="${arg.wizardBean}"/>
+	<zscript>
+			void setAttr(String key, Object value)
+			{
+				wizardBean.getWizardContext().setAttribute(key,value);
+			}
+			
+			Object getAttr(String key)
+			{
+				wizardBean.getWizardContext().getAttribute(key);
+			}
+	</zscript>
+			
+	<vbox id="containerBox" heights="100%,26px" spacing="0" align="center">
+
+		<div id="contentFrame" sclass="wizardContentFrame"/>
+	
+		<div sclass="wizardButtonFrame">
+			<hbox width="100%">
+				<div>
+					<space width="1px" />
+					<button id="cancel" label="${c:l('general.cancel')}" onClick="wizardBean.doCancel()" disabled="false" left="0px" 
+								visible="@{wizardBean.showCancel,load-when='contentFrame.onWizardUpdate'}" sclass="wizardCancelButton"/>
+					<button id="back" label="${c:l('general.back')}" onClick="wizardBean.doBack()" 
+								visible="@{wizardBean.showBack,load-when='contentFrame.onWizardUpdate'}"/>
+				</div>
+				<div align="right">
+					<button id="next" label="${c:l('general.next')}" onClick="wizardBean.doNext()" focus="true"
+								visible="@{wizardBean.showNext,load-when='contentFrame.onWizardUpdate'}"/>
+					<button id="done" label="${c:l('general.done')}" onClick="wizardBean.doDone()" 
+								visible="@{wizardBean.showDone,load-when='contentFrame.onWizardUpdate'}"/>
+				</div>
+			</hbox>
+		</div>
+	</vbox>	
+</window>

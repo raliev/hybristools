@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:h="http://www.w3.org/1999/xhtml" 
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">	
+
+		<div style="text-align: left; height:263px">
+			<div height="15px"></div>
+			<div style="margin: 30px; margin-top: 10px;" >
+				<div>
+					<div style="clear:both; vertical-align:middle">
+					<label style="float:left; margin-right:40px; margin-top:3px; font-size:15px; color: #AAAAAA">External URL:</label>
+					<div id="externalUrl" use="de.hybris.platform.cockpit.components.editor.CockpitEditorContainer"
+							propertyQualifier="CMSNavigationNode.name"
+							editorValue="${wizardBean.cmsNavigationNodeUrl}"
+							onValueChange='setAttr("navigationNodeUrl",self.getEditorValue())' style="width:200px; float:left">
+					</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+</zk>
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?page title="Rename dialog" language="xul/html"?>
+
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with SAP.
+  -->
+
+<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+		title="${arg.title}" 
+		border="normal" 
+		width="300px" 
+		closable="true" 
+		maximizable="false">
+	<hbox>
+		<div style="float: left; margin: 10px;">
+			<label value="${arg.message}"/>
+		</div>
+	</hbox>
+	<hbox>
+		<div style="float: left; width: 60px;margin-left: 10px;">
+			<label value="${arg.messageFrom}"/>
+		</div>
+		<datebox use="${arg.dateFrom}" />
+	</hbox>
+	<hbox>
+		<div style="float: left; width: 60px;margin-left: 10px;">
+			<label value="${arg.messageTo}"/>
+		</div>
+		<datebox use="${arg.dateTo}" />
+	</hbox>
+	<separator bar="true"/>
+	<hbox style="margin-left:auto; margin-right:auto" >
+		<button id="btn1" sclass="messagebox-btn" use="${arg.buttonOK}" />
+		<button id="btn2" sclass="messagebox-btn" use="${arg.buttonCancel}" />
+	</hbox>
+</window>

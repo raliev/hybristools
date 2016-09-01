@@ -1,0 +1,469 @@
+/* Overwriting existing cockpit.css classes that are causing display issues on this panel*/
+a.lang_button_open {
+	position: absolute;
+	right: 1px;
+	top: 3px;
+}
+/*
+
+	List Table Styling
+*****************/
+.leftContent table .evenRow {
+	background: #f0f0f0;
+}
+.leftContent table .oddRow,
+.leftContent table .z-listbox-odd {
+	background: #ffffff
+}
+.leftContent table .evenRow,
+.leftContent table .oddRow {
+	float: left;
+	padding: 3px 3px;
+	width: 100%;
+}
+.navStateEditor table {
+	width: 100%;
+}
+/*
+
+	Interactivity
+*****************/
+.actionContainer {
+	cursor: pointer;
+}
+
+/*
+
+	Navigation State Composer Styling
+*****************/
+.navStateEditor {
+	width: 100%;
+}
+.navStateEditor fieldset {
+	width: 98%;
+	margin: 0;
+	padding: 0;
+}
+.navStateEditor td:first-child {
+	margin-top: 10px;
+}
+.navStateEditor .z-groupbox-header table tr:nth-child(even),
+.navStateEditor .z-groupbox-header table tr:nth-child(odd) {
+	background: none transparent;
+}
+/*
+
+	Arbitrary Link Editor Styling
+*****************/
+.arbitraryLinkEditor fieldset {
+	margin-bottom: 12px;
+}
+.arbitraryLinkEditor input {
+	width:123px;
+	margin-bottom: 12px;
+}
+.arbitraryLinkEditor .z-label {
+	color: #000000;
+	margin-right: 12px;
+	margin-top: 4px;
+	float: left;
+	clear: left;
+	width: 35px;
+}
+/*
+
+	Multi Language Pop Up Wizard
+*****************/
+.multiLangComp {
+	padding: 10px;
+}
+/*
+
+	List Container (Left nav for select drop down content)
+*****************/
+.listContainer {
+	background: #f0f0f0;
+	border: 1px solid #cccccc;
+	padding: 5px;
+	/**/
+	overflow-y: scroll;
+	height: 555px;
+}
+.listContainer .z-label {
+	color: #000000;
+}
+.listContainer .z-textbox {
+	margin-bottom: 12px;
+}
+.listContainer table.z-button {
+	background-image: none;
+	margin-left: 5px;
+}
+.listContainer .z-groupbox-body {
+	margin-bottom: 12px;
+}
+.listContainer .z-fieldset legend:hover,
+.advancedConfiguration legend:hover {
+	text-decoration: none;
+}
+.listContainer .z-fieldset legend,
+.advancedConfiguration legend {
+	text-decoration: underline;
+}
+.listContainer .z-fieldset legend,
+.listContainer .z-fieldset .z-label,
+.advancedConfiguration legend {
+	cursor: pointer;
+	overflow: auto;
+}
+.globeImage {
+	cursor: pointer;
+}
+/*
+
+	Advanced Configuration Styling
+*****************/
+.advancedConfiguration {
+	margin-top: 12px;
+}
+/*.advancedConfiguration .z-label {
+	margin-right: 12px;
+	float: left;
+	width: 65px;
+}
+.advancedConfiguration input {
+	width:85px;
+	margin-bottom: 12px;
+}*/
+
+.linkTitleEditor {
+	margin-bottom: 5px;
+}
+.leftContent{
+	float:left;
+	padding: 5px;
+	width:22%;
+	height: 100%;
+}
+.leftContent h1 {
+	color: #ffffff;
+	line-height: normal;
+	font-size: 1.2em;
+	margin-bottom: 0;
+}
+.rightContent h2 .z-label {
+	color: #ffffff;
+	line-height: normal;
+	font-size: 1.4em;
+	background: #38405a;
+	padding: 0 5px;
+}
+.rightContent {
+	float:left;
+	width:72%;
+	border:1px solid #cccccc;
+	background: #f0f0f0;
+	padding: 20px 15px;
+	margin-top: 13px;
+	margin-left: 7px;
+}
+.rightContent input.linkURL {
+	width: 637px;
+}
+.rightContent input  {
+	width:165px;
+	margin-bottom: 12px;
+	padding: 6px 8px;
+}
+
+.restrictionEditor {
+		/*width:165px;*/
+	}
+.rightContent .z-label {
+	color: #000000;
+	margin-right: 12px;
+	margin-top: 4px;
+	float: left;
+	clear: left;
+	width: 65px;
+}
+.rightContent legend .z-label {
+	width: auto;
+	float: none;
+}
+.rightContent .trashed .z-label {
+	color: #ffffff;
+	margin-bottom: 3px;
+	float: left;
+}
+
+.mainContent{
+	height: 100%;
+}
+
+.bottomSlot{
+}
+
+.btnPublish {
+	float:left;
+}
+
+.btnSave{
+	float:right;
+}
+/*
+
+	Category Columns
+*****************/
+.columnEdit{
+	height: 230px;
+	width: 599px;
+	float: left;
+}
+
+.columnEdit fieldset{
+	float:left;
+	border:1px solid #cccccc;
+	padding: 5px;
+	margin: 2px;
+	width:47%;
+}
+.singleColumn {
+	float:left;
+	width:120px;
+}
+/*
+
+	Category Column Titles
+*****************/
+.categoryColumns .columnLink {
+	float: left;
+	height: 45px; /* fixed height to keep columns in alignment works for up to 3 lines of text */
+	width: 100%; /* aligns items of single line height*/
+	background-color: grey;
+	border: 1px solid;
+	padding: 5px;
+	width: 108px;
+}
+.categoryColumns .z-listbox{
+	/*height:195px;*/ /* constant height columns */
+	min-height: 23px; /* variable height columns based on content */
+	/*overflow-y: scroll; */ /* only required if setting a constant column height */
+	padding-bottom: 45px; /* To allow additional items to be dragged into the cell easier when its full */
+	clear: both;  /*to clear column titles */
+}
+.categoryColumns.trash .z-listbox {
+	width:110px;
+	/*height:223px;*/ /* inherit stasndard height and grow accordingly */
+}
+.categoryColumns .columns{
+	float:left;
+	width:75%;
+}
+.categoryColumnsContainer {
+	overflow-x: auto;
+	width: 599px;
+	height:254px;
+	float: left;
+	background: #cccccc;
+	margin-top: 5px;
+}
+.categoryColumns {
+	width: 2660px;
+	height: 100%;
+	float: left;
+}
+.categoryColumns .z-label {
+	color: #ffffff;
+}
+.categoryColumns.trash {
+	background: #c9282d;
+	padding: 0 3px;
+	width: 127px;
+	height: 255px;
+	float: right;
+	margin-top: 5px;
+	overflow-y: scroll; /* now we are auto heighting the content the container needs to scroll */	
+}
+.categoryColumns .singleColumn {
+
+}
+.categoryColumns div.z-listbox {
+	/*background-color: #ffffff;*/ 
+	background-color: #ffffff;/* better colour for details whats in a column and adds new 'blank-look' col */
+}
+.categoryColumns div.z-listbox .z-list-item .z-list-cell {
+	border-bottom: 1px solid #ffffff;
+}
+.categoryColumns div.z-listbox-body {
+	background-color: #23294c;
+	color: #ffffff;
+}
+.categoryColumns div.z-list-cell-cnt {
+	/*padding-left: 10px;*/ /*BA Causing parent menu to push out */
+}
+.categoryColumns .z-listbox div.z-list-cell-cnt {
+	padding-left: 0;
+}
+.categoryColumns .add_column {
+	 width: 77px;
+     float: left;
+     cursor: pointer;
+     font-weight: bold;
+     background: none;
+     border: none;
+     float: none;
+     color: #3a52d4;
+}
+.uploadedMedia {
+	max-width:90px;
+	max-heigth:90px;
+}
+.actionContainer{
+	visibility:hidden;
+}
+.trashed{
+	/*float:right !important;*/ /* only required of setting a constant height for containers and allowing content to scroll*/
+}
+.removeIcon{
+	width:16px;
+	float:left;
+}
+.z-dottree {
+	height: 567px;
+	overflow-x: scroll;
+}
+.z-tree-cell-cnt {
+	cursor: pointer;
+	color: #cccccc;
+}
+tr.z-tree-row-over,
+tr.z-tree-row-seld {
+	background: #3850cf;
+}
+.z-label, .z-radio-cnt, .z-checkbox-cnt, .z-slider-pp, input.button, input.file, .z-loading, .z-errbox {
+	color: #cccccc;
+}
+.bannerSection {
+	color: #000000;
+	display:none;
+}
+.z-border-layout {
+	background: #38405a;
+}
+.actionContainer{
+	visibility:hidden;
+}
+.autoResizeDropContainer{
+    float:left;
+}
+.facet_label {
+	font-size: 12px;
+	height: 25px;
+	background: url('images/listitemheaderbg.png') repeat-x;
+	display: block;
+	padding-left: 10px;
+	line-height: 26px;
+}
+.z-north, 
+.z-south, 
+.z-west, 
+.z-center, 
+.z-east {
+	border-color: #cccccc;
+}
+.z-window-highlighted-header {
+	padding-bottom: 10px;
+   	padding-top: 10px;
+   	padding-left: 10px;
+}
+/* kept incase an icon is added at a later date */
+.z-window-highlighted-header img {
+	height: 32px;
+    left: 10px;
+    position: absolute;
+    top: 3px;
+    width: 32px;
+}
+.col_left {
+	float: left;
+}
+.z-fieldset legend h2 {
+	margin: 0 0 10px 0;
+}
+.z-fieldset-cnt {
+	clear: both;
+}
+.z-south {
+	padding: 5px 8px;
+	overflow: hidden;
+	background: #E2E3E7;
+	border: 1px solid #999999;
+}
+span.z-dottree-ico, 
+span.z-dottree-line {
+	float: left;
+}
+.rightTopCaption {
+	background: red;
+}
+.MultiLanguageWizard_Window dl {
+ width:100%;
+ overflow:hidden;
+}
+.MultiLanguageWizard_Window dt {
+ float:left;
+ width:20%;
+}
+.MultiLanguageWizard_Window dd {
+ padding:0;
+ margin:0;
+ float:left;
+ width:80%;
+}
+.menuTitleEditor dl {
+ width:100%;
+ overflow:hidden;
+}
+.menuTitleEditor dt {
+ float:right;
+}
+.menuTitleEditor dd {
+ padding:0;
+ margin:0;
+ float:left;
+}
+/*
+
+.rightDL {
+ width:400px;
+ overflow:hidden;
+}
+
+.rightDD  {
+ padding:0;
+ margin:0;
+ float:left;
+ width:25%;
+}
+
+
+.rightDT  {
+ float:left;
+ width:69%;
+}
+
+.rightDT .linkURL {
+	width:280px;
+}*/
+.appliedFacets {
+	border: 1px solid #cccccc;
+	padding: 5px;
+	margin-bottom: 12px;
+}
+.appliedFacets .z-label {
+	float: left;
+}
+.appliedFacets table td {
+	vertical-align: middle;
+}

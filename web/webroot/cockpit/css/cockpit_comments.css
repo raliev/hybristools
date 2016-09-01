@@ -1,0 +1,545 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+.commentSection {
+	position:relative;
+}
+
+.commentSection div.comment-list-left {
+	background: transparent url(images/collection_corners.gif) no-repeat scroll 0 0;
+}
+
+.commentSection div.comment-list-right {
+	background:transparent url(images/collection_corners.gif) no-repeat scroll right 0;
+}
+
+.commentSection div.comment-list-center {
+	background-color: #e1eff8;
+	background-image: url(images/collection_bg.gif);
+	background-repeat: repeat-x;
+	width: 100%;
+}
+.commentSection div.z-listbox { border:none; }
+
+.commentSection div.comment-label {
+	/*filter:alpha(opacity=100) !important;*/
+	-moz-opacity:1.0 !important;
+	-khtml-opacity: 1.0 !important;
+	opacity: 1.0 !important;
+	overflow: hidden;
+	width: 95%;
+	top: 4px;
+	left: 6px;
+	white-space: nowrap;
+}
+
+
+.commentSectionCaption { text-align:right; }
+
+.commentPopup {
+	width:300px;
+	font-size: 10px;
+}
+
+.commentPopup .z-popup-cm
+{
+	border-width: 1px;
+	background: #FEFEFE url("images/white_gradient_big.png") repeat-x scroll left bottom !important;
+}
+
+.commentPopup .z-label
+{
+	font-size: 9px;
+}
+
+.commentPopup .leftCol {
+	width:60px;
+}
+
+.commentPopup .rightCol {
+	width:200px;
+}
+
+.commentPopup .subject .z-label {
+	font-weight:bold;
+	font-size: 11px;
+}
+
+.commentPopup .subject {
+	border-bottom:1px solid gray;
+}
+
+.commentPopup .commentText {
+	margin-top: 5px;
+}
+
+.commentPopup .creationTime {
+	padding-bottom:10px;
+}
+
+.commentSectionCaption .addCommentBtn { position: relative; left: 14px; top: 0; }
+
+.commentsActionCnt {
+	text-align: right;
+}
+
+.commentsTreeRow .z-tree-cell
+{
+	border-bottom: 1px solid #eee;
+}
+
+
+.commentsTreeRow .z-tree-cell-cnt .z-label {
+	font-size: 9px;
+	line-height: 20px;
+	font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
+}
+
+.commentsTreeRow {
+	background: url("images/gradient_light_gray.gif") repeat-x scroll right 0 #E7E7E7;
+}
+
+.commentsTreeRow.comment_root {
+	background: url("images/gradient_darker_gray.gif") repeat-x scroll right 0 #D5D5D5;
+}
+
+.commentsTreeRow.comment_root .z-tree-cell {
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #888;
+}
+
+.commentsTreeRow.comment_root .z-tree-cell:FIRST-CHILD .z-tree-cell-cnt .z-label {
+	color: black;
+/*	font-size: 11px;*/
+}
+
+.commentsTreeRow .commentNotRead .z-label {
+	font-weight: bold;
+}
+
+.commentsTreeRow .z-tree-cell-cnt {
+	white-space: nowrap;
+	padding: 1px 3px;
+	text-overflow: ellipsis;
+}
+
+.z-tree.z-commenttree {
+	border: none;
+}
+
+.z-commenttree span.z-tree-root-open,
+.z-commenttree span.z-tree-tee-open,
+.z-commenttree span.z-tree-last-open
+{
+	background-position: 0 -15px;
+}
+
+.z-commenttree span.z-tree-root-close,
+.z-commenttree span.z-tree-tee-close,
+.z-commenttree span.z-tree-last-close {
+	background-position: 0 3px;
+}
+
+.z-commenttree span.z-tree-root-open,
+.z-commenttree span.z-tree-tee-open,
+.z-commenttree span.z-tree-last-open,
+.z-commenttree span.z-tree-root-close,
+.z-commenttree span.z-tree-tee-close,
+.z-commenttree span.z-tree-last-close {
+	background-image:url("images/toggle.gif");
+}
+
+.z-commenttree span.z-tree-ico,
+.z-commenttree span.z-tree-line,
+.z-commenttree span.checkmark-spacer {
+	min-height: 14px;
+	width: 10px;
+	display: inline-block;
+}
+
+.commentsActionCnt .action_spacer {
+	margin-left:3px;
+	margin-right:3px;
+	width:1px;
+	background: #ccc;
+}
+
+.commentDiv {
+	height:100%;
+	overflow:auto;
+}
+
+.replyDiv {
+	position: relative;
+}
+
+.commentBox {
+	overflow: visible;
+}
+
+.commentBox.notRead .commentDisplayLabel
+{
+	font-weight: bold;
+}
+
+.commentUserAndDate {
+	font-size: 11px;
+}
+
+.commentDisplayLabel { color: black; display: block; }
+
+.replyDiv .detailsAttachmentDiv { margin:3px 3px 3px 30px; }
+
+.replyDiv .detailsAttachmentDiv.noAttachments { display: none; }
+
+.replyDiv .detailsAttachmentDiv .z-label { font-size: 11px; }
+
+.commentBox .z-groupbox-hl,
+.commentBox .z-groupbox-hr,
+.commentBox .z-groupbox-hm {
+	background:url("images/gradient_darker_gray.gif") repeat-x scroll right 0 #D5D5D5;
+}
+
+.replyDiv .commentBox .z-groupbox-hl,
+.replyDiv .commentBox .z-groupbox-hr,
+.replyDiv .commentBox .z-groupbox-hm {
+	background: transparent;
+	border-bottom: none;
+}
+
+.commentTextCnt {
+	padding: 5px 5px 20px 20px;
+}
+
+.replyDiv .commentTextCnt {
+	padding: 5px 5px 20px 30px;
+}
+
+.commentTextCnt > span {
+	font-size: 12px;
+	color: black;
+}
+
+.commentSpacer {
+	width: 2000px;
+	height: 1px;
+	border-bottom: 1px solid #ddd;
+	position: absolute;
+	right: 0;
+}
+
+.commentBox .caption {
+	position: relative;
+}
+
+.commentBox .caption img.header {
+	padding:0 3px;
+}
+
+.commentBox .closed .commentActions{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.commentBox .open .commentActions {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.commentBox .userimage {
+	padding-right:5px;
+}
+
+.commentItemsBoxContent .showItems {
+	padding-right:5px;
+}
+
+.commentItemsBoxContent {
+	padding:15px 0px;
+}
+
+.commentDetailsBox {
+	margin-bottom:5px;
+	margin-right: 10px;
+	border:1px solid #DDDDDD;
+	margin-top: 4px;
+}
+
+.commentBoxContent .replybox {
+	width: 500px;
+	margin: 10px 10px 4px 0;
+}
+
+.commentActions .action_spacer, .commentDetailsBoxContent .action_spacer, .replyBoxContent .action_spacer {
+	margin-left:3px;
+	margin-right:4px;
+	width:1px;
+	background: #ccc;
+}
+
+
+.commentBox .commentBox {
+	padding-left: 10px;
+}
+
+.commentBox .commentBox .commentBox {
+	padding-left: 20px;
+}
+
+.commentBox .caption_table > tbody > tr > td {
+	vertical-align: top;
+}
+
+.commentBoxContent {
+	background: white;
+	overflow: hidden;
+	text-align: left;
+	padding-left: 10px;
+	border-bottom:1px solid #DDD;
+}
+
+.commentDetailsBox table.caption_table {
+	height: 20px;
+}
+
+.commentDetailsBox span.advancedGroupbox_label {
+	line-height: 20px;
+	font-size: 11px;
+}
+
+.commentDetailsBox .z-groupbox-hl, .commentDetailsBox .z-groupbox-hr, .commentDetailsBox .z-groupbox-hm {
+	background: #eee;
+	border: none;
+}
+
+.commentDetailsBox .z-groupbox-hl .z-groupbox-header {
+	padding: 0;
+}
+
+.commentDetailsBoxContent {
+	padding: 6px;
+}
+
+.commentItemsBoxContent .label { cursor:pointer; }
+.commentItemsBoxContent .label:AFTER { content: "\00BB\0020"; }
+
+/* -- COMMENT LAYER -- */
+
+.maincanvascontainer{
+	/*filter: alpha(opacity=30);
+	-moz-opacity: 0.3;
+	-khtml-opacity: 0.3;
+	opacity: 0.3;
+	*/
+	border: 1px solid #CDCDCD;
+	border-right: 2px solid #B8B8B8;
+	border-bottom: 2px solid #B8B8B8;
+	position:absolute;
+	float: left;
+	z-index: 100;
+	clear: both;
+	top : 0px;
+	left : 0px;
+	/*kpx;
+	left:0px;
+	*/
+	background: url(images/transparent.png) repeat;
+
+}
+
+.commentlayerpopup {
+	width : 515px;
+	position: absolute;
+	border: 1px solid black;
+	text-align:left;
+	z-index: 200 !important;
+}
+
+.commentlayerpopup_index {
+	z-index: 34 !important;
+}
+
+.commentlayerpopupcontent {
+	background: #fff none;
+	border:1px solid #a1b5c9;
+	padding: 7px;
+}
+
+.imagepreviewmaincontainer .maincanvascontainer .commenticonselected{
+	border: 0px;
+	opacity: 1 !important;
+	filter: alpha(opacity=100) !important;
+	-moz-opacity: 1 !important;
+	-khtml-opacity: 1 !important;
+	position: absolute;
+}
+
+.imagepreviewmaincontainer .maincanvascontainer .commenticonnotselected{
+	border: 0px;
+	opacity: 1 !important;
+	filter: alpha(opacity=100) !important;
+	-moz-opacity: 1 !important;
+	-khtml-opacity: 1 !important;
+	position: absolute;
+}
+
+
+
+.commentlayerpopupcontent .z-window-overlapped-close {
+	background-image: url(images/close_btn.png) !important;
+}
+
+.commentlayerpopupcontent .referenceCollectioEditorItems {
+	background: #e7e7e7 url(images/gradient_light_gray.gif) repeat-x scroll right 0 !important;
+}
+
+.commentlayerreplypopup {
+	width : 515px;
+	position: absolute;
+	border: 1px solid black;
+	text-align:left;
+}
+
+.contextAreaPageCommentHeaderClosed div
+{
+	width: 30 px;
+}
+.contextAreaPageCommentHeaderOpened div
+{
+	width: 30 px;
+}
+
+.commentDiv .activeComment .z-groupbox-hm
+{
+	background: url("images/gradient_darker_gray.gif") repeat-x scroll right 0 #c5c5c5;
+}
+
+.commentDiv .activeComment .z-groupbox-hl
+{
+	background: url("images/gradient_darker_gray.gif") repeat-x scroll right 0 #c5c5c5;
+}
+
+.commentDiv .activeComment .z-groupbox-hr
+{
+	background: url("images/gradient_darker_gray.gif") repeat-x scroll right 0 #c5c5c5;
+}
+
+.commentDiv .activeComment .replyDiv .z-groupbox-hm
+{
+	background: white !important;
+}
+
+.commentDiv .activeComment .replyDiv .z-groupbox-hl
+{
+	background: white !important;
+}
+
+.commentDiv .activeComment .replyDiv .z-groupbox-hr
+{
+	background: white !important;
+}
+
+.commentDiv span
+{
+	text-align: center;
+	padding: 5px;
+}
+
+.commentDiv span.commentSubjectLabelContextArea
+{
+	font-weight : bold;
+}
+
+.commentDiv span.commantTextLabel
+{
+	font-style: oblique;
+}
+
+.commentDiv .action_spacer
+{
+	background: inherit;
+}
+.positive {
+	/*background-image:url(images/BUTTON_GREEN_back.gif) !important;
+	background-color: #60A85F !important;
+	border: 1px solid green !important;*/
+}
+
+.negative {
+	background-image: url("images/BUTTON_GRAY_back.gif") !important;
+	/*background-color: #e75024 !important;
+	border: 1px solid red !important;*/
+}
+
+.positiveContainer
+{
+	width : auto;
+	display: inline !important;
+	float: right !important;
+}
+
+.negativeContainer {
+	width : auto;
+	float: left !important;
+	display: inline !important;
+}
+
+.commentcanvas {
+	background: white;
+	opacity: 0.7;
+
+	border: 1px solid blue;
+	float: left;
+	/*background: url(images/transparent.png) repeat;*/
+}
+
+
+.commentlayerglass {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	background-color: black;
+	filter: alpha(opacity=65);
+	-moz-opacity: 0.65;
+	-khtml-opacity: 0.65;
+	opacity: 0.65;
+	z-index: 100;
+}
+
+.quickCommentBoxContent textarea.error, .commentBoxContent textarea.error {
+	border: red solid 1px;
+}
+
+.commentDiv div.commentstatusnocheck {
+}
+
+.commentDiv div.commentstatuscheck {
+}
+
+.commentDiv div.commentvisibilitynotvisible {
+}
+
+.commentDiv div.commentvisibilityvisible {
+}
+
+.dummypagecontainer .maincanvascontainer {
+	background: #eee repeat-x scroll 0 0;
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.07, rgb(222,225,229)), color-stop(0.77, rgb(248,249,250)));
+	background-image: -moz-linear-gradient(center bottom, rgb(222,225,229) 7%, rgb(248,249,250) 77% );
+	background-image: url(images/graphic_nopreview_128.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}

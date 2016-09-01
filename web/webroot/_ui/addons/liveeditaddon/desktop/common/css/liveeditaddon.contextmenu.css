@@ -1,0 +1,5 @@
+.b-m-ibody img {vertical-align: text-bottom}
+.b-m-ibody span {cursor: pointer}
+.b-m-item img, .b-m-ifocus img, .b-m-idisable img {
+    display: inline;
+}

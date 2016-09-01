@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver" ?>
+<?taglib 			uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window xmlns="http://www.zkoss.org/2005/zul" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xmlns:h="http://www.w3.org/1999/xhtml" 
+			xmlns:zk="http://www.zkoss.org/2005/zk"
+			xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+			style="background: #EEE;"
+			height="100%">
+			
+	<space height="100px"/>
+	<label value="${c:l('cmscockpit.personalizepage.notavailable.1')} "/>
+	<image src="/cmscockpit/images/icon_func_new_personalized_page.png" />
+	<label value=" ${c:l('cmscockpit.personalizepage.notavailable.2')}"/>
+</window>

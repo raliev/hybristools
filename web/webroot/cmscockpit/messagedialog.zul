@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?page title="ZK Test" language="xul/html"?>
+
+<window xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
+		title="${arg.title}" 
+		border="normal" 
+		width="200pt" 
+		closable="true" 
+		maximizable="false">
+	<!--<hbox>
+		<image src="/cmscockpit/images/e_question.gif"/>
+		<label value="${arg.message}"/>
+	</hbox>
+	<separator bar="true"/>-->
+	<hbox style="margin-left:auto; margin-right:auto" >
+		<button id="btn1" sclass="messagebox-btn" use="${arg.moveNodeButton}"/>
+		<button id="btn2" sclass="messagebox-btn" use="${arg.copyNodeButton}"/>
+		<!--<button id="btn3" sclass="messagebox-btn" use="${arg.cancelButton}"/>-->
+	</hbox>
+</window>

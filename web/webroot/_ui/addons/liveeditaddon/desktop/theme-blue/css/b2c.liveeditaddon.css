@@ -1,0 +1,27 @@
+.span-24 .scroller ul li {
+    width: 150px;
+    margin:0 10px 0 0;
+}
+
+.span-24 .scroller{
+    padding:40px 0;
+}
+
+.span-24 .scroller .title{
+    font-size:1.167em;
+    font-weight:bold;
+    color:#666666;
+    border-bottom:1px solid #979797;
+    padding:0 0 5px 0;
+    text-transform:uppercase;
+    margin:0 0 40px 0;
+}
+
+#nav_main li.La > .yCmsComponent > a {
+    padding: 0 8px;
+}
+
+.productGrid .span-6 {
+    margin-right: 5px;
+    box-sizing: border-box;
+}

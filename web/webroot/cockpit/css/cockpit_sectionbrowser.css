@@ -1,0 +1,188 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+/* SECTION BROWSER STUFF */
+
+
+div.browserSectionContent {
+	margin: 0 0 10px 0;
+	position: relative;
+	/*overflow-y: auto;*/
+}
+
+.editorListViewSection {
+	overflow-x:auto;
+	overflow-y:hidden;
+}
+
+*+html .editorListViewSection .listViewMainDiv > div {
+	padding-bottom:15px;
+}
+
+.editorListViewSection .listViewMainDiv > div {
+	padding-bottom:15px\9;
+}
+
+.editorListViewSectionGroupbox {
+	border:medium none;
+	padding:0;
+}
+
+.editorListViewSectionGroupbox legend {
+	display: none;
+}
+
+.editorListViewSectionGroupbox div.advancedGroupboxOpen {
+	background: none;
+}
+
+.editorListViewSectionGroupbox table.caption_table {
+	display: none;
+}
+
+.selectorSection .advancedGroupboxPreLabel span.z-label {
+	font-weight: normal;
+	color: #444;
+	font-size: 11px;
+	padding-left: 2px;
+}
+
+.selectorSection .z-list-item-over-seld .advancedGroupboxPreLabel span.z-label{
+	color: #416AA3;
+}
+
+.selectorSection .z-list-item-over-seld .selectorSection .z-list-item-seld .activeCatalogVersionNavigationEntry div.advancedGroupboxPreLabel span.z-label {
+    color: #416AA3;
+    font-weight: bold;
+}
+
+.selectorSection .z-groupbox-header .z-toolbar-button {
+	display: block;
+}
+
+.selectorSection .z-groupbox-header .advancedGroupboxClosed {
+	display: none;
+}
+
+.selectorSection .z-groupbox-header .advancedGroupboxOpen {
+	display: none;
+}
+
+.selectorSection .z-groupbox-hr, .selectorSection .z-panel-hr {
+	background: transparent url(images/groupbox-selectorSection.png) no-repeat scroll 0 0;
+	border-bottom: 0;
+}
+
+.selectorSection .z-groupbox-hl, .selectorSection .z-panel-hl {
+	background: transparent url(images/groupbox-selectorSection.png) repeat-x scroll 0 0;
+	border-bottom: 0;
+}
+
+.selectorSection .z-groupbox-hm {
+	background: transparent url(images/groupbox-selectorSection.png) repeat-x scroll 0 0;
+	border-bottom: 0;
+}
+
+.selectorSection .z-list-item-seld .advancedGroupboxPreLabel span.z-label {
+	font-weight: bold;
+}
+
+.selectorSection .activeCatalogVersionNavigationEntry .advancedGroupboxPreLabel span.z-label {
+	color: #444;
+	font-weight: normal;
+	font-size: 10px;
+}
+
+.selectorSection .z-list-item-seld .selectorSection .z-list-item-seld .activeCatalogVersionNavigationEntry .advancedGroupboxPreLabel span.z-label {
+	color: #444;
+	font-weight: bold;
+}
+
+.selectorSection .z-list-item-seld .selectorSection .z-list-item-seld td.activeCatalogVersionNavigationEntry {
+	padding: 0;
+}
+
+.selectorSection .z-list-item-seld .selectorSection td.activeCatalogVersionNavigationEntry .advancedGroupboxPreLabel {
+	padding: 0 0 0 10px;
+}
+
+.selectorSection .z-list-item-seld .selectorSection div.z-listbox-body .z-list-cell, div.z-listbox-footer .z-list-footer {
+	padding:0;
+}
+
+.selectorSection .activeCatalogVersionNavigationEntry .drillableSelector {
+	padding: 0;
+}
+
+.z-panel-body .z-panel-cl .z-panel-cr .z-panel-cm .section_component_container .typeSelectorTree .searchBar input.z-textbox {
+	width: 165px;
+	height: 18px;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .advancedGroupbox .z-groupbox-hl {
+	background-image: url(images/groupbox-selectorSectionHL.png) !important;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .advancedGroupbox .z-groupbox-hr {
+	background-image: url(images/groupbox-selectorSectionHL.png) !important;
+	background-repeat: repeat-x;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .advancedGroupbox .z-groupbox-header {
+	background-image: url(images/groupbox-selectorSectionHL.png) !important;
+	background-repeat: repeat-x;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .selectorSectionItem .advancedGroupbox .z-groupbox-hl {
+	background-image:url(images/groupbox-selectorSection.png) !important;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .selectorSectionItem .advancedGroupbox .z-groupbox-hr {
+	background-image:url(images/groupbox-selectorSection.png) !important;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .selectorSectionItem .advancedGroupbox .z-groupbox-header {
+	background-image:url(images/groupbox-selectorSection.png) !important;
+}
+
+.z-list-item-seld .activeSiteNavigationEntry .selectorSectionItem {
+	border-bottom: 1px solid #d4d4d4;
+	padding-bottom: 0;
+}
+
+.z-modal-mask {
+	opacity: 0.65;
+	filter:alpha(opacity=65);
+	background-color: #333;
+}
+
+.lockableGroupbox .z-groupbox-hl, .lockableGroupbox .z-groupbox-hr, .lockableGroupbox .z-groupbox-hm {
+	background: #f3a1a1 url(images/groupbox-tb-red.png) repeat-x !important;
+}
+
+.sectionLock {
+	width: 17px;
+	height: 12px;
+}
+
+.readOnlyLayer {
+	background-color: gray;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.3;
+	filter:alpha(opacity=30);
+	-moz-opacity:0.3;
+	-khtml-opacity: 0.3;
+}

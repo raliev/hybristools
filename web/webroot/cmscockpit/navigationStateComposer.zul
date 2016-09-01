@@ -1,0 +1,15 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
+<window class="navStateEditor" apply="de.hybris.liveeditaddon.cockpit.navigationeditor.composers.NavigationStateComposer">
+	<style src="/cmscockpit/css/navigationeditor.css" />
+		<div id="appliedFacetsDiv">
+			<groupbox id="appliedFacetsBox" mold="3d">
+				<caption>${c:l('cmscockpit.navigationwizard.appliedfactes')}</caption>
+				<div id="appliedFacetsWrapper">
+				</div>
+			</groupbox>
+		</div>
+		<div id="facetsTabsDiv">
+
+		</div>
+</window>
+</zk>

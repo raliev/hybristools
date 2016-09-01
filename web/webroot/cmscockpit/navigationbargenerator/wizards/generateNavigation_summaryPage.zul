@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:zk="http://www.zkoss.org/2005/zk"
+    xmlns:n="http://www.zkoss.org/2005/zk/native"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd http://www.zkoss.org/2005/zk/native ">
+
+		<div class="generate_navigation_summary_page">
+			<div>
+			<attribute name="onCreate">
+				self.appendChild(pageBean.getErrorContainer());
+			</attribute>
+			</div>
+
+            <div style="margin: auto">
+                <listbox id="listbox" width="80%" class="listViewContainer">
+                    <auxhead>
+                        <auxheader colspan="4">ImpEx file for navigation</auxheader>
+                    </auxhead>
+                    <listhead>
+                        <listheader label="Language" width="100px" />
+                        <listheader label="Downloads" width="100px"/>
+                        <listheader label="Show ImpEx" width="100px"/>
+                        <listheader label="Run" width="100px" />
+                    </listhead>
+                    <zk forEach="${wizardBean.convertedImpex}">
+                        <listitem>
+                            <listcell label="${each.label}">
+                            </listcell>
+                            <listcell value="${each}">
+                                <button label="${c:l('nav.generator.summary.page.download')}">
+                                    <attribute name="onClick">
+                                        <![CDATA[
+ de.hybris.liveeditaddon.cockpit.navigationbargenerator.impl.ImpexContainer current = self.getParent().getValue();
+ String filename = "navigation_"+ current.getLang() + ".impex";
+ Filedownload.save(current.impex, "text/plain", filename);
+ ]]>
+                                    </attribute>
+                                </button>
+                            </listcell>
+                            <listcell value="${each}">
+                                <button label="${c:l('nav.generator.summary.page.show')}" >
+                                    <attribute name="onClick">
+                                        <![CDATA[
+ de.hybris.liveeditaddon.cockpit.navigationbargenerator.impl.ImpexContainer current = self.getParent().getValue();
+ wizardBean.setGenaretedImpex(current.getLang());
+ wizardBean.updateView();
+ ]]>
+                                    </attribute>
+                                </button>
+                            </listcell>
+                            <listcell value="${each}">
+                                <button label="${c:l('nav.generator.summary.page.run')}" >
+                                    <attribute name="onClick">
+                                        <![CDATA[
+de.hybris.liveeditaddon.cockpit.navigationbargenerator.impl.ImpexContainer current = self.getParent().getValue();
+java.lang.String importResult = wizardBean.runImpexForKey(current);
+if (null != importResult) {
+ alert(importResult);
+}else {
+ alert("File succesfully imported " + "["+current.getLabel()+"]" );
+}
+ ]]>
+                                    </attribute>
+                                </button>
+                            </listcell>
+                        </listitem>
+                    </zk>
+                </listbox>
+            </div>
+
+			<div height="15px"></div>
+			<div style="margin: 30px; margin-top: 10px;" >
+				<div>
+                    <textbox rows="15" readonly="true" cols="75" onCreate='self.setValue(wizardBean.generatedImpex)'>
+                    </textbox>
+				</div>
+			</div>
+
+		</div>
+    <style>
+        .generate_navigation_summary_page {
+            text-align: left;
+        }
+
+        .generate_navigation_summary_page .listViewContainer {
+            margin: auto;
+            text-align: center;
+        }
+
+    </style>
+
+</zk>

@@ -1,0 +1,45 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
+<window  height="100%" apply="de.hybris.liveeditaddon.cockpit.navigationeditor.composers.NavigationItemEditorComposer">
+	<div class="mainContent">
+		<div id="leftContent" class="leftContent">
+			<h:h1> <label value="${c:l('cmscockpit.navigationwizard.selectortext')}" /></h:h1><h:br />
+			<listbox id="menuItemTypeSelector" mold="select" />
+			<h:hr />
+			<div id="leftContentContainer">
+			</div>
+		</div>
+		<groupbox id="rightContent" class="rightContent">
+			
+				<label value="${c:l('cmscockpit.navigationwizard.menutitle')}" />
+				<div id="menuTitle"	class="menuTitleEditor" use="de.hybris.liveeditaddon.cockpit.multitexteditor.MultiLanguageTextBox" droppable="link"/>
+				<label value="${c:l('cmscockpit.navigationwizard.linkurl')}" />
+				<textbox id="linkURL" class="linkURL" disabled="true"/>
+			
+
+			
+			<div id="columnDesigner">
+			</div>
+
+			<div id="bannerSection" class="bannerSection">
+				<h:h3><label value="${c:l('cmscockpit.navigationwizard.addabanner')}" /></h:h3><h:br />
+				<label value="${c:l('cmscockpit.navigationwizard.bannersize')}" /><listbox id="bannerSizeSelector" mold="select" />
+				<button class="btnUpload" id="btnUpload" label="${c:l('cockpit.wizard.createwidget.decision.upload')}"  tooltiptext="${c:l('cockpit.wizard.createwidget.decision.upload')}" />
+			</div>
+			<groupbox class="advancedConfiguration" open="false" >
+						<caption>
+							<label value="${c:l('cmscockpit.navigationwizard.advancedconfiguration')}" />
+						</caption>
+						
+							<label value="${c:l('cmscockpit.navigationwizard.wrapafter')}" />
+							<decimalbox  id="wrapAfter" /><h:br/>
+							<label value="${c:l('cmscockpit.navigationwizard.styleclass')}" />
+							<textbox id="styleClass" /><h:br/>
+							<label value="${c:l('cmscockpit.navigationwizard.restrictions')}" />
+							<div class="restrictionEditor" id="navBarRestrictions" use="de.hybris.liveeditaddon.cockpit.restrictioneditor.RestrictionEditor" />
+						
+					</groupbox>
+
+		</groupbox>
+	</div>
+</window>
+</zk>	

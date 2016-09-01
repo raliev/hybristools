@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:h="http://www.w3.org/1999/xhtml" 
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+		
+		<div style="text-align: left; height:263px">
+			<div>
+				<attribute name="onCreate">
+					self.appendChild(pageBean.getErrorContainer());		
+				</attribute>
+			</div>	
+		
+			<div sclass="wizardPageDescription">
+				<label value="${c:l('cmscockpit.wizard.navigation.nodes.assignment.page.header')}"/>
+			</div>	
+			<div style="margin: 30px; margin-top: 0px; margin-bottom: 10px" >
+				<div height="20px"></div>
+				<listbox sclass="assignmentTypeList" oddRowSclass="no" forEach="${wizardBean.supportedObjectTemplates}">
+					<listitem value="${each.code}" onClick="wizardBean.setSelectedMode(self.getValue());controllerBean.doSelectType(wizardBean);" selected="${wizardBean.selectedMode==self.value}">
+						<listcell image="cmscockpit/images/navigation_resource_${each.code}.gif" label="${each.name}"/>
+					</listitem>
+				</listbox>
+			</div>
+		</div>
+</zk>

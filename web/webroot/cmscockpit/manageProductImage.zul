@@ -1,0 +1,52 @@
+<zk>
+	<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		id="manageProductPictureWindow" 
+		sclass="manageProductPicture_Window"
+		width="800px"
+		height="720px"
+		closable="true" 
+		mode="popup"
+		
+		apply="de.hybris.liveeditaddon.cockpit.wizards.productimagemanagement.ManageProductImageWindowComposer">
+		<style src="/cmscockpit/css/manageproductimagewizard.css" />
+	    <borderlayout>
+	    	<center style="overflow:auto;">
+	    	<div id="mainArea">
+	    		<div id="top" class="topImageSlot">
+		    		<div class="col_left">
+			    		<div sclass="main_facet_group col_a">
+			    			<div class="facet_label">
+			    				<label value="Primary Image" />		    				
+			    			</div>	
+			    			<div id="primaryImage" class="primaryImage"></div>
+			    		</div>
+			    		<div class="primary_image">
+				    		<div class="autoResizeDropContainer" id="autoResizeDropContainer"></div>
+			       		</div><!--/primary_image-->  
+			    	</div><!--/col_left-->
+
+		    		<div sclass="main_facet_group col_b">	
+		    			<div class="facet_label">
+		    				<label value="Gallery Images" />
+		    			</div>
+		    			<div id="galleryImages" class="galleryImages"></div>
+		    		</div><!--/main_facet_group col_b-->
+
+                    <div id="mediaFormatContainer" class="dropContainer"></div>
+	    		</div>
+                <div id="mediaContainerContainer" class="mediaContainerContainer" style="width:650px"></div>
+	    	</div>
+			</center>
+			<south height="5%" >
+					<div>
+			           	<button class="buttonDone" visible="false" id="btnDone" label="${c:l('general.publish')}"  tooltiptext="${c:l('general.publish')}" />
+			           	<button class="buttonDone" id="btnSave" label="${c:l('general.save')}"  tooltiptext="${c:l('general.save')}" />
+			        </div>
+			</south>
+		</borderlayout>
+</window>
+</zk>

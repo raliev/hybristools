@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?init 				class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" ?>-->
+<!--<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver" ?>-->
+<?taglib 			uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<div width="100%" height="100%" use="de.hybris.platform.cockpit.components.contentbrowser.BrowserContainer" action="onmouseup: comm.sendClick(#{self},null)">
+	<borderlayout width="100%" height="100%" style="background-color: transparent" sclass="infoEnabledBrowserArea">
+		<center border="0">
+			<borderlayout sclass="centerAreaContainer" width="100%" height="100%" use=" de.hybris.platform.cockpit.components.contentbrowser.CenterAreaContainer"/>
+		</center>
+		<east collapsible="true" open="false" border="none" splittable="true" title=" " visible="true" sclass="infoAreaEast roundedCorners" width="280px" minsize="250">
+         <div id="inspectorContainer" sclass="infoArea navigationarea"></div>
+      </east>
+	</borderlayout>
+</div>

@@ -1,0 +1,557 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+ 
+/* Reference selector CSS section start  */
+
+
+div.dialogWindow div.z-window-highlighted-body{
+	background-color:white;
+}
+
+div.referenceSelectorSelectedItems{
+	border: 1px solid #CDCDCD;
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+
+div.referenceSelectorSelectedItems .z-listbox-body {
+	overflow-x: visible;
+	overflow-y: auto;
+}
+
+table.selectedRowItem {
+	font-size: 11px;
+	white-space: nowrap;
+}
+
+.selectedRowItem .z-label {
+	font-size: 11px;
+	white-space: nowrap;
+}
+
+div.referenceSelectorSelectedItems table td.selectedCellItem{
+  	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+td.selectedCellItem span.z-label{
+  	font-size:11px;
+  	font-family:Arial;
+}
+
+div.referenceSelectorSelectedItems div.z-listbox-body{
+  	width:100% !important;
+}
+
+table.selectedRowItem td.selectedRowItemFirstColumn{
+	width:14px;
+}
+
+table.selectedRowItem td.selectedRowItemSecColumn{
+	text-align: right;
+}
+
+div.collectionReferenceEditor table.selectedRowItem td.selectedRowItemSecColumn{
+	position:relative;
+	left:0px;
+	text-align: left;
+}
+
+div.collectionMediaReferenceEditor table.selectedRowItem td.selectedRowItemSecColumn{
+	text-align: left;
+}
+
+
+table.selectedRowItem td.selectedRowItemThrdColumn{
+	position:absolute;
+	right:10px;
+	height:16px;
+	width:16px;
+}
+
+tr.z-list-item-seld table.selectedRowItem td.selectedRowItemFourthColumn{
+	background-color: #ddd;
+}
+
+table.selectedRowItem td.selectedRowItemFourthColumn{
+	position:absolute;
+	right:0px;
+	width:16px;
+	height: 16px;
+	background-color: white;
+}
+
+
+
+div.referenceSelectorNameFader{
+	background-image: url("images/fader-white.png");
+    background-position: left center;
+    height: 11px;
+    position: absolute;
+    right: 0;
+    width: 20px;
+}
+
+tr.z-list-item-seld div.referenceSelectorNameFader{
+	background-image: url("images/fader-grey.png");
+    background-position: left center;
+    height: 11px;
+    position: absolute;
+    right: 0;
+    width: 20px;
+}
+
+
+div.mediaCollectionLabelFader{
+	background-image: url("images/fader-white.png");
+    position: absolute;
+    right: 93px;
+    top:0px;
+    height: 100%;
+    width:30px;
+}
+
+tr.z-list-item-seld div.mediaCollectionLabelFader{
+	background-image: url("images/fader-darkgrey.png");
+}
+
+div.mediaCollectionMnemonicCnt{
+	height: 30px;
+    position: absolute;
+    right: 52px;
+    top: 3px;
+    width: 50px;
+    background-color: white;
+}
+
+div.mediaCollectionMnemonicCnt span.z-label{
+	white-space: nowrap;
+}
+
+tr.z-list-item-seld div.mediaCollectionMnemonicCnt{
+	background-color: #ddd;
+}
+
+
+
+span.autoCompleteCmp input.z-bandbox-inp{
+	width:99% !important;
+	border:1px solid #ddd;
+	padding: 2px 0;
+	background-image: none;
+}
+
+.section-row-value-container .z-longbox { width: 98%; }
+.section-row-value-container .z-intbox { width: 98%; }
+.section-row-value-container .z-doublebox { width: 98%; }
+
+.z-combo-item-readonly, .z-combo-item-text-disd, .z-spinner-readonly, .z-spinner-text-disd, .z-timebox-readonly, .z-timebox-text-disd, .z-datebox-readonly, .z-datebox-text-disd, .z-bandbox-readonly, .z-bandbox-text-disd, .z-combobox-readonly, .z-combobox-text-disd {
+    background: none repeat scroll 0 0 #fff;
+}
+
+.autoCompleteCmp_cnt { position: relative; }
+
+.advancedSearchGroup-cnt	.simpleReferenceEditorContainer { max-width: 350px; }
+
+.referenceSelector_hbox { width: 100%; table-layout: fixed; }
+
+.referenceSelector_hbox a.btnEdit img {
+	margin-top: 2px;
+}
+
+div.componentPopup {
+	padding:2px;
+	margin-left: -1px;
+	position: absolute;
+	top: -1px;
+	right: 0px;
+	background-image: url(images/pp-bg.gif);
+	background-position: bottom;
+	background-repeat: repeat-x;
+	background-color: #fff;
+	border: 1px solid #c6cbd2;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-o-box-border-radius: 5px;
+	-icab-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	height:fixed;
+}
+
+div.autoCompletePopup {
+	padding: 0;
+	position: absolute;
+	left: 0px;
+	min-height:10px;
+	background-image: url(images/pp-bg.gif);
+	background-position: bottom;
+	background-repeat: repeat-x;
+	background-color: #fff;
+	border: 1px solid #aaa;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-o-box-border-radius: 2px;
+	-icab-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	width:100%;
+	box-shadow: 0 2px 5px #666;
+}
+
+div.listViewInSelectorContext div.listViewMainDiv{
+	max-height:inherit;
+}
+
+div.referenceModalDialogSclass{
+	width:	596px;
+	height:250px;
+	border-bottom:1px solid rgb(192,192,192);
+}
+
+.z-bandbox-pp {
+	border: 0;
+}
+
+div.componentPopup div.z-listbox { background-color: transparent; border: 0; }
+div.componentPopup div.z-listbox-body { background-color: transparent; border: 0; }
+div.autoCompletePopup div.z-listbox { background-color: transparent; border: 0; }
+div.autoCompletePopup div.z-listbox-body { background-color: transparent; border: 0; }
+
+table.normalDialogPopup td span.normalPopupHeader{
+	font-weight:bold;
+}
+
+span img.modeToggle{
+	position:relative;
+	top:2px;
+	padding-left:2px;
+	padding-right:1px;
+	cursor:pointer
+}
+
+span img.popupToggle{
+	position:relative;
+	top:2px;
+	padding-left:1px;
+	cursor:pointer
+}
+
+table.referenceSelectorLabel {
+	width:100% !important;
+	white-space: nowrap;
+	border:1px solid #CDCDCD;
+	height:20px;
+	/*background-color: #ECEDEF;
+	padding-top:2px;
+	padding-bottom:2px;*/
+}
+
+div.mediaSimpleReferenceSelectorLabel{
+	border:1px solid #CDCDCD;
+	overflow:hidden;
+}
+
+.mediaSimpleReferenceSelectorItemEntry td {
+	text-align:right;
+}
+
+table.mediaSimpleReferenceSelectorItemEntry
+	div.mediaSimpleReferenceSelectorImageCell{
+	text-align:left;
+}
+
+div.referenceSelector {
+	width:100% !important;
+	position: relative;
+}
+
+.referenceSelectorCmp input {
+	border:1px solid #CDCDCD;
+	background-color: #FFFFFF;
+	background-image:url(images/textinput_back.gif);
+	background-position:center bottom;
+	background-repeat:repeat-x;
+	padding-top:3px;
+	/*padding-bottom:3px;*/
+	padding-left:1px;
+
+}
+
+table.referenceSelectorLabel td.firstCell{
+	overflow:hidden;
+	max-width:0px;
+	width:95%;
+	min-height: 1em;
+}
+
+table.referenceSelectorLabel td.secondCell {
+	width:5%
+}
+
+span.itemsInfoLabel {
+	font-family:Arial;
+	font-color:gray;
+	font-size:9px;
+	padding-top:5px;
+}
+
+table.normalDialogPopup{
+	width:100%;
+}
+
+div.autoCompleteList {
+	border:1px solid #ccc;
+	max-width:inherit !important;
+}
+
+div.autoCompleteList .z-listbox-body {
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
+div.autoCompleteList tr.z-list-item-disd{
+	border:0 none;
+	color:#000 !important;
+}
+
+/* .autoCompleteList .z-list-item-disd .autoCompleteCell span.z-label { */
+/* 	color:#9E651B !important; */
+/* } */
+
+div.autoCompleteList tr.z-list-item-seld  {
+	background: #ddd none repeat scroll 0 0;
+}
+
+div.autoCompleteList tr.z-list-item-over  {
+	background: #dae7f6 none repeat scroll 0 0;
+}
+
+div.autoCompleteList tr.z-list-item-seld  span.z-label {
+	background-color: #ddd !important;
+}
+
+div.autoCompleteList span.z-label {
+	top: 0 !important;
+	color: #000000;
+}
+
+div.autoCompleteList tr.z-list-item-over-seld {
+	background: #ddd none repeat scroll 0 0;
+	border: 0;
+}
+
+div.autoCompleteList td.z-list-item-focus, div.autoCompleteList td.z-list-item-focus .z-label {
+	background-image: none;
+	color:#000000;
+}
+
+div.autoCompleteList tr.z-list-item .autocompleteImageContainer {
+	border: 0px solid #92a4ba !important;
+}
+
+div.autoCompleteList tr.z-list-item td.z-list-item-focus .autocompleteImageContainer {
+	border: 1px solid #999;
+}
+
+div.autoCompleteList div.z-listbox-body{
+	position:relative;
+	width:inherit !important;
+	border-bottom: 1px solid #ccc;
+}
+
+td.autoCompleteCell{
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+td.autoCompleteCell div span.z-label{
+	font-size:11px ;
+	font-family:Arial;
+}
+
+
+
+
+a.referenceEditorButton {
+	font-size: 10px;
+	text-decoration: none;
+	color: black;
+	margin: 5px;
+}
+
+a.referenceEditorButton:HOVER {
+	text-decoration: underline;
+	color: navy;
+}
+
+.dialogWindow > div > div > div > div > table {
+	table-layout: fixed;
+}
+
+.ie span.autoCompleteCmp input.z-bandbox-inp {
+  width: 98% !important;
+  margin-right: 2px;
+  background-image: none;
+}
+
+.ie .componentPopup > .z-vbox > tbody > tr > td > .z-hbox {
+ table-layout: fixed;
+ width: 100%;
+}
+
+.ie .componentPopup > .z-vbox > tbody > tr > td > .z-hbox > tbody > tr > td {
+ width: 20px;
+}
+
+.ie .componentPopup > .z-vbox > tbody > tr > td > .z-hbox > tbody > tr > .z-hbox-sep {
+ width: 2px;
+}
+
+.ie .componentPopup > .z-vbox > tbody > tr > td > .z-hbox > tbody > tr > td:FIRST-CHILD {
+ width: auto;
+}
+
+.ie div.collectionReferenceEditor {
+	overflow: hidden;
+}
+
+/* Reference selector CSS section end    */
+
+
+
+
+
+
+
+/* Reference collection editor CSS section start */
+
+
+
+
+div.referenceCollectioEditorItems, div.collectionEditorItems{
+	border:none;
+	background-color: white;
+}
+
+div.referenceCollectioEditorItems table td.autoCompleteCell, div.collectionEditorItems table td.autoCompleteCell{
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+div.referenceCollectioEditorItems table td.selectedCellItem, div.collectionEditorItems table td.selectedCellItem{
+  	padding-top: 1px;
+}
+
+div.referenceCollectionEditor table.referenceCollectionEditorContainer, div.collectionEditor table.collectionEditorContainer {
+	width: 100%;
+	margin-top: -8px;
+	table-layout: fixed;
+}
+
+table.collectionEditorContainer{
+	table-layout: fixed;
+}
+
+div.referenceCollectionEditor img.cancelEditorButton, div.collectionEditor img.cancelEditorButton,
+div.referenceMediaSelectorContainer img.cancelEditorButton, div.referenceCollectionEditorContainer img.cancelEditorButton,
+div.collectionEditorContainer img.cancelEditorButton, div.simpleReferenceEditorContainer img.cancelEditorButton,
+div.simpleMediaReferenceSelectorContainer img.cancelEditorButton, div.enumEditor img.cancelEditorButton, div.selectEditor img.cancelEditorButton{
+	top: 0;
+  right: 30px;
+}
+
+div.simpleReferenceEditorContainer img.cancelEditorButton {
+  right: 52px;
+}
+
+.z-window-highlighted div.simpleReferenceEditorContainer img.cancelEditorButton {
+  right: 32px;
+}
+
+div.collectionReferenceEditor img.cancelEditorButton, div.collectionMediaReferenceEditor img.cancelEditorButton {
+	top: auto;
+	bottom: 7px;
+  right: 32px;
+}
+
+img.cancelEditorButton {
+	position: absolute;
+	right: 6px;
+	top: 0;
+	z-index: 888;
+}
+
+div.collectionMediaReferenceEditor div.referenceCollectioEditorItems div.z-listbox-body{
+	height:100% !important;
+}
+
+div.collectionMediaReferenceEditor div.collectioEditorItems div.z-listbox-body{
+	height:100% !important;
+}
+
+div.collectionMediaReferenceEditor  table.selectedRowItem td.selectedRowItemThrdColumn span.z-label{
+	position: relative;
+	top:7px;
+}
+
+tr.z-list-item-seld div.collectionMediaReferenceEditor  table.selectedRowItem td.selectedRowItemThrdColumn span.z-label{
+	background-color: #ddd;
+}
+
+div.collectionMediaReferenceEditor  table.selectedRowItem td.selectedRowItemFourthColumn{
+	background-color: white;
+    position: absolute;
+    right: 5px;
+    width: 23px;
+}
+
+div.collectionMediaReferenceEditor tr.z-list-item-seld table.selectedRowItem td.selectedRowItemFourthColumn{
+	background-color: #ddd;
+}
+
+img.mediaDetailsImage{
+	position: relative;
+	top:7px;
+}
+
+div.collectionMediaReferenceEditor table.selectedRowItem td.selectedRowItemThrdColumn{
+   padding-right: 5px;
+   padding-top: 15px;
+   right: -20px;
+}
+
+div.collectionMediaReferenceEditor div.mediaSimpleReferenceSelectorLabel{
+	height:18px;
+}
+
+div.collectionMediaReferenceEditor table.selectedRowItem{
+	height:34px;
+}
+
+div.collectionMediaReferenceEditor div.referenceCollectioEditorItems table td.selectedCellItem {
+    padding-top: 0px;
+}
+
+div.collectionMediaReferenceEditor div.collectioEditorItems table td.selectedCellItem {
+    padding-top: 0px;
+}
+
+div.collectionEditorItems div.z-listbox-body{
+	overflow-x:hidden;
+	overflow-y:auto;
+	position:relative;
+}
+
+div.section-row-value-container img.openCelumEditorImg {
+	position:relative;
+	top:5px;
+}
+
+/* Reference collection editor CSS section end    */

@@ -1,0 +1,47 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+div.defaultListViewCell .z-label {
+	padding-left: 0px;
+}
+
+div.activatedListViewRow .z-label {
+	padding-left: 0px;
+}
+
+.dualbox_search_component .z-bandbox-inp{
+		width:230px;
+}
+
+.dualbox_search_component_div{
+	width:230px;
+	text-align:left;
+}
+
+.dualbox_search_img{
+	horizontal-align:left;
+	text-align:left;
+}
+
+.assignedList_short{
+	overflow:none !important;
+	width:20%;
+}
+
+.assignedList_long{
+	overflow-y:auto !important;
+	width:20%;
+}
+
+/*-- IE fix is needed because this file gets merged with the default cockpit.css as well and therefor gets applied also in all browsers --*/
+*+html .loginContainerWindow input.z-textbox { height: 20px !important; }
+*+html .loginContainerWindow input.z-combobox-inp { height: 20px !important; }

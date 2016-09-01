@@ -1,0 +1,119 @@
+/*-------------------------
+	Dropbox Element
+--------------------------*/
+.filedrop {
+	border-radius:3px;
+	border: 1px dashed silver !important;
+    box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    -webkit-sizing: border-box !important;
+    -ms-sizing: border-box !important;
+	position: relative;
+	margin:5px 5px 5px 5px;
+	min-height: 50px;
+	min-width: 50px;
+	width: auto;
+	overflow: hidden;
+	padding-bottom: 10px;
+	background-color: white;
+	
+}
+
+.fileDropHoverOver {
+	background-color: silver;
+}
+
+.filedrop .message{
+	font-size: 11px;
+    text-align: center;
+    padding-top:20px;
+    display: block;
+    font-style: italic;
+}
+
+.filedrop .message i{
+	color:#ccc;
+	font-size:10px;
+}
+
+.filedrop:before{
+	border-radius:3px 3px 0 0;
+}
+
+
+
+/*-------------------------
+	Image Previews
+--------------------------*/
+.filedrop .preview{
+	min-width:50px;
+	width: auto;
+	height: 50px;
+	float:left;
+	margin: 55px 0 0 60px;
+	position: relative;
+	text-align: center;
+}
+
+.filedrop .preview img{
+	max-width: 50px;
+	max-height:50px;
+	border:3px solid #fff;
+	display: block;
+	
+	box-shadow:0 0 2px #000;
+}
+
+.filedrop .imageHolder{
+	display: inline-block;
+	position:relative;
+}
+
+.filedrop .uploaded{
+	position: absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background: url('../img/done.png') no-repeat center center rgba(255,255,255,0.5);
+	display: none;
+}
+
+.filedrop .preview.done .uploaded{
+	display: block;
+}
+
+
+
+/*-------------------------
+	Progress Bars
+--------------------------*/
+.filedrop .progressHolder{
+	position: absolute;
+	background-color:#252f38;
+	height:12px;
+	width:100%;
+	left:0;
+	bottom: 0;
+	
+	box-shadow:0 0 2px #000;
+}
+
+.filedrop .progress{
+	background-color:#2586d0;
+	position: absolute;
+	height:100%;
+	left:0;
+	width:0;
+	
+	box-shadow: 0 0 1px rgba(255, 255, 255, 0.4) inset;
+	
+	-moz-transition:0.25s;
+	-webkit-transition:0.25s;
+	-o-transition:0.25s;
+	transition:0.25s;
+}
+
+.filedrop .preview.done .progress{
+	width:100% !important;
+}

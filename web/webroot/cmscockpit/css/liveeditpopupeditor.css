@@ -1,0 +1,9 @@
+.editorAreaLiveEditActionsDiv img {
+ margin-right: 4px !important;
+}
+div.editorAreaLiveEditActionsDiv > div {
+	position: absolute;
+	float: right;
+	right: 0px;
+	top: 10px;
+}

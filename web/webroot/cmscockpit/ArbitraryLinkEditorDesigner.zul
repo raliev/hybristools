@@ -1,0 +1,10 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
+<window  class="arbitraryLinkEditor"  apply="de.hybris.liveeditaddon.cockpit.navigationeditor.composers.ArbitraryLinkEditorComposer">
+		<div  id="linkEditor" >
+				<groupbox id="arbitraryLinksBox"/>
+				<label value="${c:l('cmscockpit.navigationwizard.url')}"/> <textbox id="linkURL" /> <h:br />
+				<label value="${c:l('cmscockpit.navigationwizard.name')}"/><div id="linkTitle"  class="menuTitleEditor" use="de.hybris.liveeditaddon.cockpit.multitexteditor.MultiLanguageTextBox"	/> <h:br />
+				<button id="addButton" label="${c:l('cmscockpit.navigationwizard.addlink')}"/>
+		</div>
+</window>
+</zk>

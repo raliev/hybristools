@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ [y] hybris Platform
+ 
+ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ All rights reserved.
+ 
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+<language-addon>
+
+	<addon-name>hybris base cockpit components language addon</addon-name>
+
+	<language-name>xul/html</language-name>
+
+
+	<!-- notifier -->
+	<component>
+		<mold>
+        	<mold-name>default</mold-name>
+			<mold-uri>class:de.hybris.platform.cockpit.components.DivMacroDefault</mold-uri>
+		</mold>
+		<component-name>notifier</component-name>
+		<component-class>de.hybris.platform.cockpit.components.notifier.NotifierZKComponent</component-class>
+		<macro-uri>/cockpit/customcomponents/notifier.zul</macro-uri>
+		<property>
+    		<property-name>duration</property-name>
+    		<property-value>4500</property-value>
+		</property>
+		<property>
+    		<property-name>delay</property-name>
+    		<property-value>1500</property-value>
+		</property>
+		<annotation>
+			<annotation-name>default-bind</annotation-name>
+			<property-name>notification</property-name>
+			<attribute>
+				<attribute-name>access</attribute-name>
+				<attribute-value>load</attribute-value>
+			</attribute>
+			<attribute>
+				<attribute-name>load-when</attribute-name>
+				<attribute-value>self.onChanged,self.onCreate</attribute-value>
+			</attribute>
+		</annotation>
+	</component>
+
+	<!-- Section Panel -->
+	<component>
+		<mold>
+        	<mold-name>default</mold-name>
+			<mold-uri>class:de.hybris.platform.cockpit.components.DivMacroDefault</mold-uri>
+		</mold>
+		<component-name>sectionpanel</component-name>
+		<component-class>de.hybris.platform.cockpit.components.sectionpanel.SectionPanel</component-class>
+		<macro-uri>/cockpit/customcomponents/sectionpanel.zul</macro-uri>
+		<property>
+			<property-name>width</property-name>
+			<property-value>100%</property-value>
+		</property>
+		<property>
+			<property-name>height</property-name>
+			<property-value>100%</property-value>
+		</property><annotation>
+			<annotation-name>default-bind</annotation-name>
+			<property-name>model</property-name>
+			<attribute>
+				<attribute-name>access</attribute-name>
+				<attribute-value>load</attribute-value>
+			</attribute>
+			<attribute>
+				<attribute-name>load-when</attribute-name>
+				<attribute-value>self.onCreate</attribute-value>
+			</attribute>
+		</annotation>
+		<annotation>
+			<annotation-name>default-bind</annotation-name>
+			<property-name>selectedRow</property-name>
+			<attribute>
+				<attribute-name>access</attribute-name>
+				<attribute-value>both</attribute-value>
+			</attribute>
+			<attribute>
+				<attribute-name>load-when</attribute-name>
+				<attribute-value>self.onCreate</attribute-value>
+			</attribute>
+			<attribute>
+				<attribute-name>save-when</attribute-name>
+				<attribute-value>self.onRowSelected</attribute-value>
+			</attribute>
+		</annotation>
+	</component>
+
+
+</language-addon>

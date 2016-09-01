@@ -1,0 +1,235 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+/***********************************************************************/
+/*Comparebrowser related stuff*/
+.compareRowComponent > TBODY > tr > td
+{
+	border-bottom:1px dotted #999;
+	/*padding-bottom:3px;*/
+	vertical-align: top;
+	height: 100%;
+}
+
+.compareRowComponent > TBODY > tr
+{
+	height: 100%;
+}
+
+.compareAreaMainContainer {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	border-top:1px solid #999999;
+}
+
+.cmp_diff_cell { background: #fae5e2;}
+
+.cmp_ref_cell { background: #dae7f6; }
+
+.compareHeaderHbox { /*border-bottom: 1px solid #666; */}
+
+.compareItemHeader {
+	background:transparent;
+	padding:4px;
+	width:100%;
+	cursor: pointer;
+}
+
+.compareReference.compareItemHeader {
+	background: #334669;
+}
+
+.compareReference.compareItemHeader td {
+	padding-top: 5px;
+}
+
+.compareItemHeader div.section-label-image {
+    left: 0px;
+    top: 0;
+}
+
+.cmpHeaderLabelCnt .compareRemove {
+    right: 5px;
+    top: 9px;
+}
+
+.compareReference > tbody > tr {
+	background: #ddd;
+}
+
+.compareView { border-right: 1px solid #ccc; position: absolute !important; }
+
+.compareGroupbox .z-groupbox-hl, .compareGroupbox .z-groupbox-hr {
+	padding-left: 0;
+	padding-right: 0;
+	border-bottom: none;
+}
+
+.compareSectionHeader {
+	height: 25px;
+	cursor: pointer;
+}
+
+.compareHeaderHbox, .compareRowComponent, .compareSectionHeader {
+	table-layout: fixed;
+}
+
+.compareHeaderHbox {
+	background-color: #ededee;
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.07, rgb(211,213,215)), color-stop(0.77, rgb(235,235,235)));
+	background-image: -moz-linear-gradient(center bottom, rgb(211,213,215) 7%, rgb(235,235,235) 77% );
+	border-bottom: 1px solid #444;
+}
+
+.compareHeaderHbox > tbody > tr > td,
+.compareRowComponent > tbody > tr > td,
+.compareSectionHeader > tbody > tr > td,
+.compareSectionHeader > tbody > tr > td > div.csh_label_rep, .compareViewCell, .cmpHeaderLabelCnt
+{
+	width: 300px;
+}
+
+.compareSectionHeader > tbody > tr > td > div.csh_label_rep, .compareViewCell, .cmpHeaderLabelCnt
+{
+	vertical-align: top;
+}
+
+.cmp_label > div , .csh_label, .cmp_label { width: 200px !important; }
+
+.cmp_act > div { width: 0; }
+
+.cmp_sep > div { width: 0; }
+
+.cmp_act, .cmp_sep {
+	border-right: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	height: 100%;
+	width: 0 !important;
+}
+
+.csh_label_rep { text-align: left; }
+.csh_label_rep .z-label { margin-left: 3px; font-size: 11px; }
+.csh_label .z-label { margin-left: 3px; font-weight: bold;}
+.csh_label { text-align: left; }
+.sectionDiff .csh_label .z-label, .csh_label_diff .z-label { color: #ac1703; }
+
+.csh_arrow {
+	bottom:-3px;
+	text-align: right;
+	right:0;
+}
+
+.actionCellOverlay {position: relative;}
+.actionCellOverlay div { background: white; height: 27px; position: absolute; top: -1px; left: 0;}
+
+.compareGroupbox .compareSectionHeader > tbody > tr > td {
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #999;
+	background:transparent url(images/groupbox-tb-dark.png) repeat-x scroll 0 0;
+}
+
+.compareGroupbox .compareSectionHeader .cmp_act,
+.compareGroupbox .compareSectionHeader .cmp_sep
+{
+	border-top: none;
+	background: white;
+	border-bottom: none;
+}
+
+.compareGroupbox,
+.compareGroupbox .z-groupbox-hm,
+.compareGroupbox .z-groupbox-header
+{
+	overflow: visible;
+}
+
+.compareRowComponent { table-layout: fixed; }
+
+.compareViewCell { min-height: 1em; }
+
+.compareViewCell_box { width: 100%; table-layout: fixed; }
+
+.csh_label_box { width: 100%; table-layout: fixed; }
+
+.compareViewCell_box > tbody > tr > td,
+.csh_label_box > tbody > tr > td {
+	vertical-align: middle;
+}
+
+.compareRowDifferent .cmp_label { background: transparent; }
+
+.compareRowDifferent .cmp_label .z-label { color: #ac1703; }
+
+.compareToolbarBox { margin-left: 5px; margin-top: 1px; padding-left: 3px; }
+.compareToolbarBox .z-toolbar-button { margin-left: 4px; }
+.compareValueLabel { font-size: 8pt; overflow: hidden;}
+.compareValueLabel, .compareRowLabel { display: block; margin: 4px; }
+
+.compareValueLabel { color: #444; }
+.cmp_ref_cell .compareValueLabel { color: #444; }
+.cmp_diff_cell .compareValueLabel { color: #444; }
+
+.compareAreaScrollContainer {
+	overflow-y: auto; position: relative; height: 100%; width:100%; text-align: left;
+}
+
+.cmp_editor_cnt { margin-left: 4px; margin-right: 4px; }
+.cmp_attr_unavailable { background: #fff; }
+.cmp_attr_unavailable .compareViewCell .z-label { color: #999; }
+.cmp_attr_unavailable .compareViewCell .z-label { display: block; margin: 4px;}
+.cmp_readonly_cell .compareValueLabel { color: #999;  }
+
+.compareSetRef {
+    bottom: 2px;
+    position: absolute;
+    right: 9px;
+}
+
+.compareRemove { position: absolute; top: 2px; right: 2px; }
+.compareLocBtn { position: absolute; top: 2px; left: 180px; cursor: pointer; }
+.cmpLocOpen .cmpIsoLabel { display: inline; margin-right: 26px; }
+
+.twoCompareItems .compareRemove { display: none; }
+
+.cmpLabelHidden .compareRowLabel { visibility: hidden; }
+.cmpIsoLabel {	display: none; }
+
+.compareLabelCnt {
+	height: 60px;
+	position: relative;
+}
+
+.cmpActionSlot {
+	position: absolute;
+	left: 0;
+	top: 3px;
+	border-bottom:1px solid #cccccc;
+	width:95%;
+	min-height: 16px;
+}
+
+.compareLabelCnt .cmpActionImg {
+	margin-right: 3px;
+	padding-bottom: 2px;
+}
+
+.compareLabel{
+	position:relative;
+	top:30px;
+	color:#444;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+/* END Comparebrowser related stuff*/
+/***********************************************************************/

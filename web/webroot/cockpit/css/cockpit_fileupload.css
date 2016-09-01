@@ -1,0 +1,126 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+body > form {
+background: white;
+height: 100%;
+}
+
+
+body > form > div > table > tbody >tr > td:nth-child(2) > input{
+/*background-image: url("images/drop.png");
+width: 302px;
+height: 100px;*/
+}
+
+body > form > table > tbody >tr > td {
+border :  none !important;
+}
+
+
+body > form > table{
+	width: auto!important;
+}
+
+body > form > table > tbody >tr > td > input:nth-child(1) {
+background-image: url("images/upload-icon.png");
+border: none;
+text-indent: -9000px;
+text-transform: capitalize;
+float: right;
+height: 22px;
+width:26px;
+/*margin-right: 150px;*/
+}
+
+body > form > table > tbody >tr > td > input:nth-child(2) {
+background-image: url("images/uploadCancelButton.png");
+width: 60px;
+height: 27px;
+border: none;
+text-indent: -9000px;
+text-transform: capitalize;
+display: none;
+}
+
+body > form > div {
+	text-align: center;
+	width: auto!important;
+	float: left;
+}
+
+div.fileUpload > iframe
+{
+	height: 100%;
+}
+
+div.fileUploadContainer{
+	height: 42px
+}
+
+*+html div.fileUploadContainer{
+	height: 75px
+}
+
+div.uploadTips{
+	margin: 7px 3px 7px 8px;
+    padding: 2px 6px 3px;
+	background-color:#828282;
+	color:#FFFFFF;
+	font-size:10.998px;
+	font-weight:bold;
+	line-height:14px;
+	vertical-align:baseline;
+	white-space:nowrap;
+}
+
+div.uploadTips span{
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;
+	line-height:14px;
+	vertical-align:baseline;
+	padding: 0;
+	margin: 0;
+}
+
+.z-window-modal-cnt > iframe
+{
+	border: 0px !important;
+}
+
+.z-window-modal-cm > div[id^='FileuploadDlg'] > span{
+    color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;
+	line-height:14px;
+	vertical-align:baseline;
+	background-color: #828282;
+	font-size:10.998px;
+	padding: 10px !important;
+}
+
+.z-window-modal-cl > .z-window-modal-cr > .z-window-modal-cm  > .z-window-modal-cnt > span.z-label{
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;
+	line-height:14px;
+	vertical-align:baseline;
+	background-color: #828282;
+	font-size:10.998px;
+	padding: 10px !important;
+}
+
+.mediaUploadCatalogVersionCombo
+{
+	width:95% !important;
+}

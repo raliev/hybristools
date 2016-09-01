@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:h="http://www.w3.org/1999/xhtml" 
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">	
+
+		<div style="text-align: left; height:263px">
+			<div>
+				<attribute name="onCreate">
+					self.appendChild(pageBean.getErrorContainer());		
+				</attribute>
+			</div>	
+			<div sclass="wizardPageDescription">
+				<label value="${c:l('cmscockpit.wizard.navigation.nodes.decision.page.header')}"/>
+			</div>	
+			<div style="margin: 30px; margin-top: 0px;" >
+				<div height="30px"></div>
+				<listbox sclass="decisionList" oddRowSclass="no" forEach="${wizardBean.userDecisions}">
+					<listitem value="${each}" onClick="wizardBean.setDecision(self.getValue());wizardBean.doNext();" selected="${wizardBean.selectedDecision==self.value}">
+						<zscript>
+							String labelKey = "decision."+ self.getValue()+ ".name";
+						</zscript>
+						<listcell image="/cockpit/images/defaultWizardNode.gif" label="${c:l(labelKey)}"/>
+					</listitem>	
+				</listbox>
+			</div>
+		</div>
+</zk>

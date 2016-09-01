@@ -1,0 +1,317 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+.create-adhoc-workflow-label {
+	font-size: 11px !important;
+	line-height: 18px;
+	margin-left: 15px;
+}
+.adhoc_wf_entry .wf_icon {
+	margin: 2px;
+	padding-left: 13px;
+}
+
+.workflows-tree table{
+	border-collapse: separate;
+	border-spacing: 1px;
+}
+
+.workflow.categoryTreeItem.z-tree-row{
+	background: none;
+}
+
+
+.workflow-template img {
+	vertical-align: middle;
+}
+
+.workflow-template span.z-dottree-root-close {
+	background-position:0 -18px;
+}
+
+.workflow-date-and-status {
+	position: absolute;
+	top: 2px;
+	right: 5px;
+	padding-left: 7px;
+}
+
+.workflow-date-and-status span {
+	vertical-align:top;
+	font-size: x-small;
+}
+
+.workflows-tree tr.z-tree-row .z-tree-cell .z-tree-cell-cnt .z-label.workflow_name {
+  padding: 0 55px 0 4px;
+}
+
+.workflow .z-tree-cell-cnt > div > img,
+.adhoc-workflow .z-tree-cell-cnt > div > img {
+	position: relative;
+	top: 2px;
+}
+
+.workflow-template div.z-tree-cell-cnt,
+.workflow-template-step div.z-tree-cell-cnt,
+.create-adhoc-workflow-center,
+.workflow div.z-tree-cell-cnt,
+.adhoc-workflow div.z-tree-cell-cnt {
+	margin-bottom: 2px;
+	margin-top: 2px;
+	padding-top:2px;
+	padding-bottom: 2px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-box-border-radius: 3px;
+	-icab-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	line-height:16px;
+	background-repeat: repeat-x;
+}
+
+.create-adhoc-workflow-center {
+	white-space:nowrap;
+	background:#e3e4e9;
+	border:1px solid #cfd3d6;
+	padding: 0;
+}
+
+.workflow-template > td.z-tree-cell {
+	margin-top:0;
+	padding-top:0;
+	width:100%;
+}
+
+.workflow-template.first_item > td {
+	border-top:none;
+	margin-top:0;
+	padding-top:0;
+	width:100%;
+}
+
+
+.workflow-template div.z-tree-cell-cnt,
+.workflow div.z-tree-cell-cnt,
+.adhoc-workflow div.z-tree-cell-cnt  {
+	background-color: #e3e4e9;
+	border: 1px solid #cfd3d6;
+	font-family: Arial, non-serif;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.workflow div.z-tree-cell-cnt,
+.adhoc-workflow  div.z-tree-cell-cnt {
+	margin-bottom: 1px;
+	margin-top: 0;
+
+}
+
+.workflows-tree tr.z-tree-row .z-tree-cell .z-tree-cell-cnt,
+.workflows-tree tr.z-tree-row .z-tree-cell .z-tree-cell-cnt .z-label{
+	padding-left: 2px;
+	font-weight: normal;
+	font-size: 11px;
+	position: relative;
+	font-family: Arial, non-serif;
+}
+
+.workflows-tree tr.z-tree-row-seld,
+.workflows-tree tr.z-tree-row-over,
+.workflowstemplates-tree tr.z-tree-row-seld,
+.workflowstemplates-tree tr.z-tree-row-over{
+	background: transparent;
+}
+
+
+
+.workflow-template-step div.z-tree-cell-cnt {
+	background: #f4f6ff;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid #fff;
+}
+
+tr.workflow-template-step.z-tree-row-seld div.z-tree-cell-cnt {
+ 	background: #bfc4c9;
+}
+
+tr.workflow-template-step.z-tree-row-over div.z-tree-cell-cnt {
+	background: #dae7f6
+}
+
+
+
+tr.workflow-template-step.z-tree-row td.z-tree-cell{
+	padding: 0;
+}
+
+.create-adhoc-workflow-center .z-hbox {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.workflow-template.z-tree-row-seld div.z-tree-cell-cnt,
+.workflow.z-tree-row-seld div.z-tree-cell-cnt,
+.adhoc-workflow.z-tree-row-seld div.z-tree-cell-cnt  {
+	background: #DBDDE3;
+	color: #444;
+	font-size: 11px;
+	font-family: Arial, non-serif;
+	font-weight: normal;
+}
+
+.workflow-template.z-tree-row-over div.z-tree-cell-cnt,
+.workflow.z-tree-row-over div.z-tree-cell-cnt,
+.adhoc-workflow.z-tree-row-over div.z-tree-cell-cnt  {
+	background: #dae7f6;
+}
+
+.workflow-template.z-tree-row-over-seld div.z-tree-cell-cnt,
+.workflow.z-tree-row-over-seld div.z-tree-cell-cnt,
+.adhoc-workflow.z-tree-row-over-seld div.z-tree-cell-cnt
+  {
+	background: #dae7f6;
+/*	color: #444;
+	font-size: 11px;
+	font-weight: normal;
+	font-family: Arial,non-serif;*/
+}
+
+
+.create-adhoc-workflow-center .labelCnt {
+	overflow: hidden;
+}
+
+.workflow-add-button {
+    cursor: pointer;
+    margin-top: 2px;
+    margin-right: 4px;
+    position: absolute;
+    right: 4px;
+}
+
+.z-workflowstemplates-tree span.z-tree-ico,
+.z-workflowstemplates-tree span.z-tree-line,
+.z-workflowstemplates-tree span.checkmark-spacer {
+	min-height: 14px;
+	width: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.taskListView .z-groupbox-hl {
+ background: transparent url(images/groupbox-tb.png) repeat-x scroll 0 0;
+ border-bottom: 1px solid #ddd;
+ cursor: pointer;
+}
+
+.taskListView .z-groupbox-hr {
+ background: transparent url(images/groupbox-tb.png) repeat-x scroll 0 0;
+}
+
+.taskListView .listColumnContent .z-vbox td {
+	border-bottom: 0;
+}
+
+div.section_component_container div.actionRow { background-color: #e7e8e9; padding: 5px 12px; }
+div.section_component_container div.commentAdd { padding: 5px 5px; padding-left: 25px; }
+div.section_component_container div.comment { padding:5px 5px; }
+.section_component_container .automated .z-label { font-style: italic; color: #999; }
+.section_component_container .actionRow img { margin-left: 10px; cursor: pointer; }
+div.actionRow > span.z-button { vertical-align: middle; margin: 0; position: relative; to: 0; line-height: 12px; }
+
+.taskListView .defaultListViewCell,
+.taskListView .selectedListViewRow,
+.taskListView .selectedListViewCell,
+.taskListView .activatedListViewRow {
+	height: 100% !important;
+	padding: 0 !important;
+}
+
+.workflowTerminatePopup {
+	width:400px;
+}
+.workflowTerminatePopup div.workflowTerminatePopupDiv {
+	padding:5px;
+}
+.workflowTerminatePopup div.workflowTerminatePopupDiv.error span {
+	color:#ff0000;
+}
+.workflowTerminatePopup div.workflowTerminatePopupText {
+	padding:5px 0;
+}
+.workflowTerminatePopup div.workflowTerminatePopupText textarea {
+	width:350px;
+}
+.workflowFilterBar .label {
+	font-weight:bold;
+}
+.workflowFilterBar>span>input {
+	margin: 0 3px 0 10px;
+}
+.taskGroupbox .advancedGroupbox_label {
+	font-weight:bold;
+}
+
+.workflow_image_img {
+	background-color: #FFFFFF;
+		max-height: 1000px;
+	max-width: 650px;
+	vertical-align: middle;
+}
+
+.workflow_popup {
+	background-color: #FFFFFF;
+	/* max-height: 80%;
+	max-width: 80%; */
+	vertical-align: middle;
+	left: 280px !important;
+	top: 50px !important;
+}
+
+.workflow_image_div {
+	background-color: #FFFFFF;
+/* 	max-height: 100%;
+	max-width: 100%; */
+	vertical-align: middle;
+	/*z-index: 10000 !important;
+	visibility: hidden;*/
+}
+
+.workflow_uml {
+	/*size: auto;*/
+	max-height: 80%;
+	/* max-width: 80%;
+	min-width: 10%; */
+	vertical-align: middle;
+	border: 2px solid;
+
+}
+
+.tree_element .z-tree-cell {
+	white-space: nowrap;
+}
+
+.workflow-template-step span.z-dottree-spacer, .workflow-template-step span.z-dottree-firstspacer {
+ width: 0px;
+}

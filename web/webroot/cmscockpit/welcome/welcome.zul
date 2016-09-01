@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver" ?>
+<?taglib 			uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<window xmlns="http://www.zkoss.org/2005/zul" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xmlns:h="http://www.w3.org/1999/xhtml" 
+			xmlns:zk="http://www.zkoss.org/2005/zk"
+			xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+			use="de.hybris.platform.cmscockpit.components.welcomepage.WelcomeComponent">
+			
+	<zscript>
+		Object [] taskCntTab = new Object[]{spaceOwner.getTaskCount()};
+		Object [] siteCntTab = new Object[]{spaceOwner.getSiteCount()};
+	</zscript>
+	<div style="text-align: left; padding: 20px 8px 20px 8px;" sclass="z-groupbox-hm welcome_group">
+		<div>
+			<label value="${c:l('cmscockpit.welcome.page.working.as')}"/>
+			<label value="${UICockpitSession.uiConfigurationService.sessionRole.name}." style="font-weight: bold;"/>
+			<toolbarbutton label="${c:l('cmscockpit.welcome.page.change.role')}" onClick="spaceOwner.openUserRoleMenu()"  sclass="welcome_link"/>
+		</div>
+		<div>
+			<label value="${c:l('cmscockpit.welcome.page.data.language')}"/>
+			<label value="${spaceOwner.dataLanguage}." style="font-weight: bold;"/>
+			<toolbarbutton label="${c:l('cmscockpit.welcome.page.change.language')}" onClick="spaceOwner.openDataLanguageMenu()" sclass="welcome_link"/>
+		</div>	
+		<div class="welcome_page_taskbox">
+			<div>
+				<image src="/cockpit/images/message.gif" style="vertical-align: middle;"/>
+				<label value="${c:l2('cmscockpit.welcome.page.you.have.currently', taskCntTab)}"/>
+				<toolbarbutton label="${c:l('cmscockpit.welcome.page.show.tasks')}" onClick="spaceOwner.openTaskBrowser()" sclass="welcome_link"/> 
+			</div>
+		</div>
+	</div>
+	<div style="text-align: left; padding: 20px 8px 20px 8px;" sclass="z-groupbox-hm welcome_group">
+		<div>
+			<label value="${c:l('cmscockpit.welcome.page.your.websites')}" style="font-weight: bold;"/>
+		</div>
+		<div>
+			<label value="${c:l2('cmscockpit.welcome.page.websites.count', siteCntTab)}"/>
+		</div>
+		<div style="width: 100%" onCreate="spaceOwner.injectSites(self)"/>
+	</div>
+	<div style="text-align: left; padding: 20px 8px 20px 8px;" sclass="z-groupbox-hm welcome_group">
+		<div>
+			<label value="${c:l('cmscockpit.welcome.page.last.edited')}" style="font-weight: bold;"/>
+		</div>
+		<div style="width: 100%;" onCreate="spaceOwner.injectLastPages(self)" />
+	</div>
+	<div style="text-align: left; padding: 20px 8px 20px 8px;" sclass="z-groupbox-hm welcome_group">
+		<div>
+			<h:a href="http://wiki.hybris.com/" style="font-size: 11px; color: #444;" target="_blank">${c:l('cmscockpit.welcome.page.doc.link')}</h:a>
+		</div>
+		
+	</div>
+</window>

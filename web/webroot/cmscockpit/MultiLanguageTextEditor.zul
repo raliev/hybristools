@@ -1,0 +1,25 @@
+<zk>
+	<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		id="multiLanguageWizard" 
+		sclass="MultiLanguageWizard_Window"
+		title="Multi Language Wizard" 
+		width="180px"
+		height="220px"
+		closable="true" 
+		mode="modal"
+		
+		apply="de.hybris.liveeditaddon.cockpit.multitexteditor.MultiLanguageComposer">
+		<style src="/cmscockpit/css/navigationeditor.css" />
+	    <borderlayout>
+	    	<center>
+	    	<div id="mainArea" sclass="multiLangComp">
+	    	</div>
+			    
+			</center>
+		</borderlayout>
+</window>
+</zk>

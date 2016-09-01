@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:zk="http://www.zkoss.org/2005/zk"
+    xmlns:n="http://www.zkoss.org/2005/zk/native"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd http://www.zkoss.org/2005/zk/native ">
+
+    <div style="text-align: left; height:400px">
+        <div>
+            <attribute name="onCreate">
+                self.appendChild(pageBean.getErrorContainer());
+            </attribute>
+        </div>
+        <div height="15px"></div>
+        <div style="margin: 30px; margin-top: 10px;">
+            <div class="generate_navigation_basic_page">
+                <n:table class="basic_page_content">
+                    <n:tr>
+                        <n:td><label class="rowCaption"
+                                     value="${c:l('nav.generator.basic.data.page.catalog.id')}:"/></n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <label value="${wizardBean.cmsCatalogName}" class="rowValue"></label>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                    <n:tr>
+                        <n:td><label class="rowCaption"
+                                     value="${c:l('nav.generator.basic.data.page.catalog.version')}:"/></n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <label class="rowValue" value="${wizardBean.cmsCatalogVersionName}"></label>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                    <n:tr>
+                        <n:td><label class="rowCaption"
+                                     value="${c:l('nav.generator.basic.data.page.product.catalog.name')}:"/></n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <label class="rowValue" value="${wizardBean.cmsProductCatalogName}"></label>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                    <n:tr>
+                        <n:td><label class="rowCaption" value="${c:l('nav.generator.basic.data.page.languages')}:"/>
+                        </n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <label class="rowValue" value="${wizardBean.languages}"></label>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                    <n:tr>
+                        <n:td><label class="rowCaption"
+                                     value="${c:l('nav.generator.basic.data.page.category.level')}:"/></n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <spinner value="${wizardBean.cmsCategoryLevel}"
+                                         onChange='wizardBean.setCmsCategoryLevel(event.value)'/>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                    <n:tr>
+                        <n:td><label class="rowCaption" value="${c:l('nav.generator.basic.data.page.root.category')}:"/>
+                        </n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <div id="rootCategory"
+                                     use="de.hybris.platform.cockpit.components.editor.CockpitEditorContainer"
+                                     valueTypeCode="Category"
+                                     editorCode="multi"
+                                     editorValue="${wizardBean.cmsRootCategory}"
+                                     onValueChange='setAttr("rootCategory",self.getEditorValue())'
+                                     style="width:200px; float:left">
+                                    <custom-attributes optional="false" allowCreate="false" allowActivate="false" predefinedPropertyValues="${wizardBean.predefiniedSearchValues}"/>
+                                </div>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                    <n:tr>
+                        <n:td><label class="rowCaption"
+                                     value="${c:l('nav.generator.basic.data.page.should.has.products')}:"/></n:td>
+                        <n:td>
+                            <div class="row_content">
+                                <div id="shouldHasProduct"
+                                     use="de.hybris.platform.cockpit.components.editor.CockpitEditorContainer"
+                                     valueTypeCode="boolean"
+                                     editorCode="checkbox"
+                                     editorValue="${wizardBean.shouldGenerateCategoriesOnlyWithProducts}"
+                                     onValueChange='setAttr("shouldGenerateCategoriesOnlyWithProducts",self.getEditorValue())'
+                                     style="width:200px; float:left">
+                                    <custom-attributes optional="false"/>
+                                </div>
+                            </div>
+                        </n:td>
+                    </n:tr>
+                </n:table>
+            </div>
+        </div>
+    </div>
+
+    <style>
+
+        .generate_navigation_basic_page .row_content {
+            vertical-align: top;
+        }
+
+        .generate_navigation_basic_page table.basic_page_content>tr>td {
+            padding: 40px;
+        }
+
+        .generate_navigation_basic_page  .rowCaption {
+            float: left;
+            margin-right: 10px;
+            font-size: 15px;
+            color: #AAAAAA;
+            width: 120px;
+            vertical-align: top;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .generate_navigation_basic_page .z-label {
+            font-size: 15px;
+            color: #3a3a3a;
+            font-size: 15px;
+            width: 70%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+    </style>
+</zk>

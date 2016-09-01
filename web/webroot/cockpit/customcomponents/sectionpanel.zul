@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with SAP.
+  -->
+
+<!-- <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver" ?> -->
+<?taglib 			uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+
+<div 	xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		width="100%" height="100%" use="de.hybris.platform.cockpit.components.sectionpanel.SectionPanelComponent">
+
+	<html visible="false">
+		<![CDATA[  
+			<script type="text/javascript">
+				var ed_lastselected="";
+			</script>
+		]]>
+	</html>
+</div>

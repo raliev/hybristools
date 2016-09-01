@@ -1,0 +1,38 @@
+<zk>
+	<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		id="navigationEditorWindow" 
+		sclass="navigationEditor_Window"
+		title="Navigation editor" 
+		width="1024px"
+		height="768px"
+		closable="true" 
+		mode="popup"
+		
+		apply="de.hybris.liveeditaddon.cockpit.navigationeditor.composers.NavigationEditorComposer">
+		<style src="/cmscockpit/css/navigationeditor.css" />
+	    <borderlayout>
+	    	<center>
+	    	<div id="mainArea">
+	    	 <tabbox id="tabbox" >
+			        <tabs>
+			        </tabs>
+			        <tabpanels>
+			        </tabpanels>
+	    	</tabbox>
+	    	</div>
+			    
+			</center>
+			<south height="5%" >
+				<div class="bottomSlot">
+					<button class="btnPublish" id="btnPublish" label="${c:l('cmscockpit.navigationwizard.publish')}" visible="false" tooltiptext="${c:l('cmscockpit.navigationwizard.publish')}" />
+					<button class="btnSave" id="btnSave" label="${c:l('general.save')}"  tooltiptext="${c:l('general.save')}" />
+				</div>
+			</south>
+			
+		</borderlayout>
+</window>
+</zk>

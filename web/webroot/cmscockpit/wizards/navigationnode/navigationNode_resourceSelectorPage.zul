@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:h="http://www.w3.org/1999/xhtml" 
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">	
+
+		<div >
+			<attribute name="onCreate">
+				import  de.hybris.platform.cockpit.wizards.generic.DefaultAdvancedSearchPageController;
+				import  de.hybris.platform.cockpit.wizards.impl.DefaultPageController;
+				import  de.hybris.platform.cockpit.model.meta.TypedObject;
+				import  de.hybris.platform.cockpit.wizards.Wizard;
+				import  de.hybris.platform.cockpit.wizards.WizardPage;
+				import  de.hybris.platform.cockpit.model.meta.PropertyDescriptor;
+				
+			
+				Map parameters = new HashMap();
+				parameters.putAll(wizardBean.getWizardContext().getAttributes());
+				pageBean.setParameters(parameters);
+				
+				
+				pageBean.setController(new DefaultAdvancedSearchPageController(){
+				
+					public void done(Wizard wizard, WizardPage page){
+						super.done(wizard, page);
+						wizardBean.getWizardContext().setAttribute("resources",page.getSelectedValue());
+						wizard.getDefaultController().done(wizard, page);	
+					}
+				});
+				
+				pageBean.setWizard(wizardBean);
+				pageBean.setRootSearchStringType(wizardBean.getSelectedMode());
+				
+				contentFrame.appendChild(pageBean.createRepresentationItself());
+			</attribute>
+		</div>		
+</zk>

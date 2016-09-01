@@ -1,0 +1,1346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with SAP.
+  -->
+
+<div visible="false" use="de.hybris.platform.cockpit.components.CustomCsaIncludeHelper">
+	<html>
+		<![CDATA[ 
+			<script type="text/javascript">
+				var deferredSender;
+			
+				/////////////////////////////////////
+				// ZK Datebox fix
+				
+				zk.parseDate = function (txt, fmt, strict) {
+					if (!fmt) fmt = "yyyy/MM/dd";
+					var val = new Date(),
+						y = val.getFullYear(),
+						m = val.getMonth(),
+						d = val.getDate(),
+						hr = val.getHours(),
+						min = val.getMinutes(),
+						sec = val.getSeconds(),
+						aa = fmt.indexOf('a'),
+						hh = fmt.indexOf('h'),
+						KK = fmt.indexOf('K'),
+						hasAM = aa > -1,
+						hasHour1 = hasAM ? hh > -1 || KK > -1 : false,
+						isAM;
+				
+					var	ts = [], mindex = fmt.indexOf("MMM"), aindex = fmt.indexOf("a"), ary = [],
+						mmindex = mindex + 3;
+					for (var i = 0, j = txt.length; i < j; i++) {
+						var c = txt.charAt(i);
+						
+						var beforeC = txt.charAt(i-1);
+            			var afterC = txt.charAt(i+1);
+            			var dot = true;
+            			if(c.charCodeAt() == 46){
+            				if((beforeC.match(/\w/) && afterC.match(/\d/)) || (beforeC.match(/\d/) && afterC.match(/\w/))){
+            					dot = false;
+            				}
+            			}
+						if (c.match(/\d/)) {
+							ary.push(c);
+						} else if ((mindex > -1 && mindex <= i && mmindex >= i && dot) || (aindex > -1 && aindex <= i)) {
+							if (c.match(/\w/)) {
+								ary.push(c);
+							} else {
+								if (c.charCodeAt() < 128 && c.charCodeAt() != 46) {
+									if (ary.length) {
+										ts.push(ary.join(""));
+										ary = [];
+									}
+								} else
+									ary.push(c);
+							}
+						} else if (ary.length) {
+							ts.push(ary.join(""));
+							ary = [];
+						}
+					}
+					if (ary.length) ts.push(ary.join(""));
+					for (var i = 0, j = 0, fl = fmt.length; j < fl; ++j) {
+						var cc = fmt.charAt(j);
+						if ((cc >= 'a' && cc <= 'z') || (cc >= 'A' && cc <= 'Z')) {
+							var len = 1;
+							for (var k = j; ++k < fl; ++len)
+								if (fmt.charAt(k) != cc)
+									break;
+				
+							var nosep; //no separator
+							if (k < fl) {
+								var c2 = fmt.charAt(k);
+								nosep = c2 == 'y' || c2 == 'M' || c2 == 'd' || c2 == 'E';
+							}
+							var token = ts[i++] ;
+							switch (cc) {
+							case 'y':
+								if (nosep) {
+									if (len <= 3) len = 2;
+									if (token && token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								y = $int(token);
+								if (isNaN(y)) return null; //failed
+								if (y < 100) y += y > 29 ? 1900 : 2000;
+								break;
+							case 'M':
+								var mon = txt.substring(j).toLowerCase().trim(),
+									mToken = token ? token.toLowerCase() : '';
+								for (var index = zk.SMON.length; --index >= 0;) {
+									var smon = zk.SMON[index].toLowerCase();
+									if (mon.startsWith(smon) || (mToken && mToken.startsWith(smon))) {
+										token = zk.SMON[index];
+										m = index;
+										break;
+									}
+								}
+								if (len == 3 && token) {
+									break; // nothing to do.
+								}else if (len <= 2) {
+									if (nosep && token && token.length > 2) {//Bug 2560497 : if no seperator, token must be assigned.
+										ts[--i] = token.substring(2);
+										token = token.substring(0, 2);
+									}
+									m = $int(token) - 1;
+									if (isNaN(m)) return null; //failed
+								} else {
+									for (var l = 0;; ++l) {
+										if (l == 12) return null; //failed
+										if (len == 3) {
+											if (zk.SMON[l] == token) {
+												m = l;
+												break;
+											}
+										} else {
+											if (token && zk.FMON[l].startsWith(token)) {
+												m = l;
+												break;
+											}
+										}
+									}
+								}
+								break;
+							case 'd':
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token && token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								d = $int(token);
+								if (isNaN(d)) return null; //failed
+								break;
+							case 'H':
+								if (hasHour1)
+									break;
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								hr = $int(token);
+								if (isNaN(hr)) return null; //failed
+								break;				
+							case 'h':
+								if (!hasHour1)
+									break;
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								hr = $int(token);
+								if (hr == 12)
+									hr = 0;
+								if (isNaN(hr)) return null; //failed
+								break;
+							case 'K':
+								if (!hasHour1)
+									break;
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								hr = $int(token);
+								if (isNaN(hr)) return null; //failed
+								hr %= 12;
+								break;				
+							case 'k':
+								if (hasHour1)
+									break;
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								hr = $int(token);
+								if (hr == 24)
+									hr = 0;
+								if (isNaN(hr)) return null; //failed
+								break;	
+							case 'm':
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token.length > len) {
+										ts[--i] = token.substring(len);
+										token = token.substring(0, len);
+									}
+								}
+								min = $int(token);
+								if (isNaN(min)) return null; //failed
+								break;
+							case 's':
+								if (nosep) {
+									if (len < 2) len = 2;
+									if (token && token.length > len) {
+										ts[i] = token.substring(len);
+										token = token.substring(0, len);
+									}					
+								}
+								sec = $int(token);
+								if (isNaN(sec)) return null; //failed
+								break;
+							case 'a':
+								if (!hasHour1)
+									break;
+								if (token)
+									isAM = token.startsWith(zk.APM[0]);
+								break;
+							//default: ignored
+							}
+							j = k - 1;
+						}
+					}
+					
+					if (hasHour1 && isAM === false) {
+						hr += 12;
+					}
+					var dt = new Date(y, m, d, hr, min, sec);
+					if (strict) {
+						if (dt.getFullYear() != y || dt.getMonth() != m || dt.getDate() != d ||
+							dt.getHours() != hr || dt.getMinutes() != min)
+							return null; //failed
+				
+						txt = txt.trim();
+						txt = zk._ckDate(zk.FDOW, txt);
+						txt = zk._ckDate(zk.SDOW, txt);
+						txt = zk._ckDate(zk.S2DOW, txt);
+						txt = zk._ckDate(zk.FMON, txt);
+						txt = zk._ckDate(zk.SMON, txt);
+						txt = zk._ckDate(zk.S2MON, txt);
+						txt = zk._ckDate(zk.APM, txt);
+						for (var j = txt.length; --j >= 0;) {
+							var cc = txt.charAt(j);
+							if ((cc > '9' || cc < '0') && fmt.indexOf(cc) < 0)
+								return null; //failed
+						}
+					}
+					return dt;
+				};
+				
+				// END ZK Datebox fix
+				/////////////////////////////////////////////
+			
+			
+				/////////////////////////////////////////////
+				// IE9 drag and drop fix
+				
+				if(zk.ie) {
+						if(typeof console === 'object') console.log("Applying IE9 D&D fix");
+						zDraggable.prototype.initDrag = function (a) {
+			            if (typeof zDraggable._dragging[this.element] != "undefined" && zDraggable._dragging[this.element]) {
+			                return
+			            }
+			            if (Event.isLeftClick(a)) {
+			                var c = Event.element(a);
+			                if ((tag_name = c.tagName.toUpperCase()) && (tag_name == "INPUT" || tag_name == "SELECT" || tag_name == "OPTION" || tag_name == "BUTTON" || tag_name == "TEXTAREA")) {
+			                    return
+			                }
+			                for (var e = c; e && e != this.element; e = e.parentNode) {
+			                    if (Element.getStyle(e, "position") == "absolute") {
+			                        return
+			                    }
+			                }
+			                var b = [Event.pointerX(a), Event.pointerY(a)];
+			                
+			                // ADDED BY HYBRIS
+			                this.element.pointer = b;
+			                // END
+			                
+			                if (this.options.ignoredrag && this.options.ignoredrag(this.element, b, a)) {
+			                    return
+			                }
+			                var d = zPos.cumulativeOffset(this.element);
+			                this.offset = [0, 1].map(function (f) {
+			                    return (b[f] - d[f])
+			                });
+			                zDraggables.activate(this);
+			                if (zkau.currentFocus && Event.element(a) != zkau.currentFocus && typeof zkau.currentFocus.blur == "function") {
+			                    zkau.currentFocus.blur()
+			                }
+			                Event.stop(a);
+			                zkau.closeFloatsOnFocus(c);
+			                zkau.autoZIndex(c, false, true)
+			            }
+			        	}
+		        
+						zDraggable.prototype.updateDrag = function (event, pointer) {
+			        		// ADDED BY HYBRIS
+			        		var b = [Event.pointerX(event), Event.pointerY(event)];
+			        		if(this.element.pointer && this.element.pointer[0] == b[0] && this.element.pointer[1] == b[1]) {
+			        			return;
+			        		}
+			        		else {
+			        			this.element.pointer = null;
+			        		}
+			        		// END
+			        			
+			            if (!this.dragging) {
+			                this.startDrag(event)
+			            }
+			            zPos.prepare();
+			            zDraggables.notify("onDrag", this, event);
+			            this.draw(pointer, event);
+			            if (this.options.change) {
+			                this.options.change(this, pointer, event)
+			            }
+			            if (this.options.scroll) {
+			                this.stopScrolling();
+			                var p;
+			                if (this.options.scroll == window) {
+			                    with(this._getWindowScroll(this.options.scroll)) {
+			                        p = [left, top, left + width, top + height]
+			                    }
+			                } else {
+			                    p = zPos.page(this.options.scroll);
+			                    p[0] += this.options.scroll.scrollLeft + zPos.deltaX;
+			                    p[1] += this.options.scroll.scrollTop + zPos.deltaY;
+			                    p.push(p[0] + this.options.scroll.offsetWidth);
+			                    p.push(p[1] + this.options.scroll.offsetHeight)
+			                }
+			                var speed = [0, 0];
+			                if (pointer[0] < (p[0] + this.options.scrollSensitivity)) {
+			                    speed[0] = pointer[0] - (p[0] + this.options.scrollSensitivity)
+			                }
+			                if (pointer[1] < (p[1] + this.options.scrollSensitivity)) {
+			                    speed[1] = pointer[1] - (p[1] + this.options.scrollSensitivity)
+			                }
+			                if (pointer[0] > (p[2] - this.options.scrollSensitivity)) {
+			                    speed[0] = pointer[0] - (p[2] - this.options.scrollSensitivity)
+			                }
+			                if (pointer[1] > (p[3] - this.options.scrollSensitivity)) {
+			                    speed[1] = pointer[1] - (p[3] - this.options.scrollSensitivity)
+			                }
+			                this.startScrolling(speed)
+			            }
+			            if (navigator.appVersion.indexOf("AppleWebKit") > 0) {
+			                window.scrollBy(0, 0)
+			            }
+			            Event.stop(event)
+			        }
+				}
+		
+				// END IE9 drag and drop bugfix
+				/////////////////////////////////////////////
+				
+			
+			
+			
+				///////////////////////////////////
+				// WYSIWYG Cleanup
+				
+				function cleanupFCKEditorIframeGhosts()
+				{
+					//remove iframes
+					var ghostCandidates = document.body.childNodes;
+					for(var i = ghostCandidates.length - 1; i >= 0; i--)
+					{
+						if(ghostCandidates[i].nodeName.toLowerCase() == "iframe" && ghostCandidates[i].offsetHeight==0)
+						{
+							document.body.removeChild(ghostCandidates[i]);
+						}
+					}
+					
+					//remove script tags
+					var htmlNode = document.getElementsByTagName("html")[0];
+					var scriptGhostCandidates = htmlNode.childNodes;
+					var scriptStartString = "window.FCKeditorAPI";
+					for(var i = scriptGhostCandidates.length - 1; i >= 0; i--)
+					{
+						if(scriptGhostCandidates[i].nodeName.toLowerCase() == "script" )
+						{
+							//alert(scriptGhostCandidates[i].firstChild.nodeValue);
+							if(scriptGhostCandidates[i].firstChild.nodeValue.substr(0, scriptStartString.length) == scriptStartString )
+							{
+								htmlNode.removeChild(scriptGhostCandidates[i]);
+							}
+						}
+					}
+				}
+				
+				
+				function focusFck (fck) { 
+				   var editor = FCKeditorAPI.GetInstance(fck.id + "!ed");
+				   editor.Focus(); 
+				   editor.Events.AttachEvent("OnBlur", function (e) { 
+				    	comm.sendUser(document.getElementById(fck.id), "blur"); 
+				   }) ; 
+				}
+			
+			
+				//////////////////////////////
+				// hover perspective change stuff
+					
+				
+				function dragHoverClick(element, event, stop, dragged, time)
+				{
+					if(stop)
+					{
+						if(dragHoverClick.timeout)
+							clearTimeout(dragHoverClick.timeout);
+					}
+					else if(element && document.getElementById("zk_ddghost") 
+									&& document.getElementById("zk_ddghost").getAttribute("z.drag") == dragged)
+					{
+						dragHoverClick.persp_to_Change=element;
+						if(dragHoverClick.timeout)
+							clearTimeout(dragHoverClick.timeout);
+						dragHoverClick.timeout=setTimeout("comm.sendUser(dragHoverClick.persp_to_Change, 'dragHoverClick');", time);
+					}
+				}
+				
+				// END hover perspective change stuff
+				////////////////////////////////
+				// category tree browser stuff
+				 var lastMoveIndex = 0;
+			    var INTERVAL = 1; // higher - slower animal
+			    var STEP = 6; // // higher - faster animal
+			    var timerId = null;
+			    
+			    
+			    function slideMove(thisDivId, elementId, notify, idRemove)
+			    {
+			       var purposeX = document.getElementById(elementId).offsetLeft;
+			       purposeX = purposeX + document.getElementById(elementId).offsetWidth;
+			       purposeX = purposeX - document.getElementById(thisDivId).offsetWidth;
+			       var currentX = document.getElementById(thisDivId).scrollLeft;
+			       
+			       var increase = true;
+			       if (currentX > purposeX)
+			       {
+			          increase = false;      
+			       }
+			       lastMoveIndex = lastMoveIndex + 1;
+			       slideMoveCore(thisDivId, purposeX, increase, lastMoveIndex,notify, idRemove);
+			     
+			    }
+			    
+	
+			    function slideMoveCore(thisDivId, purposeX, increase, indexMove, notify, idRemove)
+			    {
+			       if (lastMoveIndex == indexMove)
+			       {
+			         thisDiv = document.getElementById(thisDivId);
+			         currentX = thisDiv.scrollLeft;
+			         finish = true;
+			         if (increase)
+			         {
+			            currentX = currentX + STEP;
+			            if (currentX < purposeX)
+			            {
+			              finish = false;
+			            }
+			         }
+			         else 
+			         {
+			            currentX = currentX - STEP;
+			            if (currentX > purposeX)
+			            {
+			              finish = false;
+			              
+			            }          
+			            if(thisDiv.scrollLeft==0){
+			            	finish=true;
+			            }
+			            
+			         }
+			         if (finish)
+			         {
+			           thisDiv.scrollLeft = purposeX;
+			           if(notify && idRemove != null){
+			        	   comm.sendUser(idRemove,'removeAfterScroll');
+			        	}
+			           clearTimeout(timerId);
+			         }
+			         else 
+			         {
+			           thisDiv.scrollLeft = currentX;
+			           timerId = setTimeout("slideMoveCore('" + thisDivId + "'," + purposeX + "," + increase + "," +  indexMove + ","+notify+",'"+idRemove+"')", INTERVAL);                  
+			         }
+			       } 
+			    }
+	
+				// END category tree browser stuff
+				////////////////////////////////
+					
+					
+				////////////////////////////////
+				// List- and Gridview stuff
+					
+				function listEditorSendKeypress(item, e) 
+				{
+					//var code = e.keyCode;
+					var event; 
+					var key; 
+					
+					if(e) {
+						event = e;
+						key = event.which;
+					}
+					else {
+						event = window.event;
+						key = window.event.keyCode;
+					}
+					
+					if(!key)
+						key = event.keyCode;
+					
+					/*if(code==0)
+						code = e.which;*/
+					
+					if(key==13) {comm.sendUser(item,'enter',0);}
+					else if(key == 65 && event.ctrlKey) { // Ctrl + a
+						clearSelection();
+						comm.sendUser(item,'markall',0);
+					}
+					else if(key==46) {comm.sendUser(item,'del',0);}
+					else if(key==37 && event.shiftKey) {comm.sendUser(item,'shift_left',0);}
+					else if(key==38 && event.shiftKey) {doShiftKey(item,'shift_up');}
+					else if(key==39 && event.shiftKey) {comm.sendUser(item,'shift_right',0);}
+					else if(key==40 && event.shiftKey) {doShiftKey(item,'shift_down');}
+					else if(key==38) {doKeyUp(item);}
+					else if(key==40) {doKeyDown(item);}
+					else if(key==37) {comm.sendUser(item,'left',0);}
+					else if(key==39) {comm.sendUser(item,'right',0);}
+					else {
+						return true;	
+					}
+					return false;
+				};
+				
+				function listViewSendKeydown(item, e)
+				{
+					var event; 
+					var key; 
+					
+					if(e) {
+						event = e;
+						key = event.which;
+					}
+					else {
+						event = window.event;
+						key = window.event.keyCode;
+					}
+					
+					if(!key)
+						key = event.keyCode;
+						
+					if(key == 65 && event.ctrlKey) { // Ctrl + a
+						comm.sendUser(item,'markall',0);
+					}
+					else if(key==67 && event.ctrlKey) {comm.sendUser(item,'copy',0);}
+					else if(key==86 && event.ctrlKey) {comm.sendUser(item,'paste',0);}
+					else if(key==38 && event.shiftKey) {comm.sendUser(item,'shift_up',0);}
+					else if(key==40 && event.shiftKey) {comm.sendUser(item,'shift_down',0);}
+					else if(key==37 && event.ctrlKey) {comm.sendUser(item,'ctrl_left',0);}
+					else if(key==39 && event.ctrlKey) {comm.sendUser(item,'ctrl_right',0);}
+					else if(key==37 && !event.shiftKey) {comm.sendUser(item,'left',0);}
+					else if(key==39 && !event.shiftKey) {comm.sendUser(item,'right',0);}
+					else if(key==33) {comm.sendUser(item,'page_up',0);}
+					else if(key==34) {comm.sendUser(item,'page_down',0);}
+					else if(key==38) {comm.sendUser(item,'up',0);}
+					else if(key==40) {comm.sendUser(item,'down',0);}
+					else if(key==13) {comm.sendUser(item,'enter',0);}
+					else if(key==113) {comm.sendUser(item, 'edit', 0);}
+					else if(key==27) {comm.sendUser(item,'esc',0);}
+					else if(key==46) {comm.sendUser(item,'del',0);}
+					else {
+						return true;	
+					}
+					return false;
+				}
+				
+				function listViewSendKeypress(item, e) 
+				{
+					var event; 
+					var key; 
+					
+					if(e) {
+						event = e;
+						key = event.which;
+					}
+					else {
+						event = window.e;
+						key = window.e.keyCode;
+					}
+					
+					if(!key)
+						key = event.keyCode;
+	
+					if(key >= 32 && key <= 126 && !event.ctrlKey && !event.altKey) {
+						comm.sendUser(item, 'edit', key, event.shiftKey, 0);
+					} 
+					return true;
+				};
+				
+				function listViewScrollIntoViewIfNeeded(element, scrollContainerId)
+				{				
+					 listViewScrollIfVerticallyHidden(element, scrollContainerId);
+				}
+				
+				function listViewScrollIfVerticallyHidden(element, scrollContainerId)
+				{
+					scrollIfVerticallyHidden(element.parentNode, document.getElementById(scrollContainerId));
+				}
+				
+				function scrollIfVerticallyHidden(item, scrollContainer)
+				{
+					if(!scrollContainer || !item) return;
+				
+					var scrolltop = scrollContainer.scrollTop;
+					var positionTop = item.offsetTop;
+					var positionBottom = positionTop+item.offsetHeight;
+					
+					if(scrolltop > (positionTop))
+					{
+						item.scrollIntoView(true);
+					}
+					else if( positionBottom - scrolltop - (scrollContainer.offsetHeight) > 0 )
+					{
+						item.scrollIntoView(false);
+					}
+				}
+				
+				function taskCommentSendKeypress(item, event) 
+				{
+					if(event.keyCode==27) {comm.sendUser(item,'esc',0);}
+				};						
+				
+				function scrollIntoViewIfNeeded(item)
+				{
+					scrollIfElementIsVerticallyHidden(item);
+				}
+				
+				function doShiftKey(item, direction)
+				{
+					var itemContainer=item.parentNode.previousSibling.firstChild;
+					comm.sendUser(item,direction,getChildrenPerRow(itemContainer));
+				}
+				
+				function doKeyUp(item)
+				{
+					var itemContainer=item.parentNode.previousSibling.firstChild;
+					comm.sendUser(item,'up',getChildrenPerRow(itemContainer));
+				}
+				
+				function doKeyDown(item)
+				{
+					var itemContainer=item.parentNode.previousSibling.firstChild;
+					comm.sendUser(item,'down',getChildrenPerRow(itemContainer));
+				}
+				
+				function getChildrenPerRow(item)
+				{
+					var children=item.childNodes;
+					if(children.length==0)
+						return 0;
+					else
+					{
+						var firstTop=children[0].offsetTop;
+						for(i=1; i < children.length; i++)
+						{
+							if(children[i].offsetTop > firstTop)
+							{
+								return i;
+							}
+						}
+					}
+				}
+				
+				function scrollIfElementIsVerticallyHidden(element)
+				{
+					var item=element.parentNode;
+					var referenceElement = item.parentNode.parentNode.parentNode; 
+					var scrolltop=referenceElement.scrollTop;
+					var elementheight=item.offsetHeight;
+					var positionTop = item.offsetTop;
+					
+					if(positionTop < 0) //IE7 hack
+					{
+						var container = item.parentNode.parentNode;
+						var firstItemTop = -container.children[0].offsetTop;
+						positionTop = firstItemTop + item.offsetTop;
+					}
+					
+					var positionBottom = positionTop+elementheight;
+	
+					
+					if(scrolltop > positionTop)
+					{
+						item.scrollIntoView(true);
+					}
+					else if( positionBottom - scrolltop - referenceElement.offsetHeight > 0 )
+					{
+						item.scrollIntoView(false);
+					}
+				}
+				// END List- and Gridview stuff
+				////////////////////////////////
+					
+				
+				
+				///////////////////
+				/// List view splitter
+				var startX=0; 
+				var columnRight=0;
+				var columnElement = null; 
+				var splitterGhostElement = null;
+				document.onmouseup=m_up; 
+				document.onmousemove=m_mov;
+			
+				
+				
+				function m_up (e) {
+					if(columnElement!=null)
+					{ 		
+						var event;
+					
+						if(e) 
+							event = e;
+						else 
+							event = window.event;
+										
+						var newWidth = columnElement.offsetWidth+event.screenX-startX;
+						if(newWidth < 0)
+							newWidth=0;
+						setAndSendWidth(columnElement,(newWidth)+"px");
+						startX=-1;
+						
+						splitterGhostElement.style.display="none";
+						setAndSendWidth(columnElement.parentNode,childWidths(columnElement.parentNode)+"px");
+						columnElement=null;
+						splitterGhostElement=null;
+					}
+				}
+				
+	
+				
+				function m_mov (e) {
+					if(columnElement!=null) 
+					{ 
+						var event;
+						if(e) 
+							event = e;
+						else 
+							event = window.event;
+						
+						var newX=event.screenX-startX;					
+						splitterGhostElement.style.left=(newX+columnRight)+"px";					
+						return false;
+					}
+				}
+				
+				function setAndSendWidth(element, width)
+				{
+					try {
+						element.style.width=width;
+						comm.sendUser(element, "resize", width);
+					}
+					catch(e) {//just ignore
+					}
+					
+				}
+				
+				function spreadLast(elementID)
+				{
+					var element = document.getElementById(elementID);
+					if(!element) return;
+					
+					var p_w = 0;
+					var lastIndex = -1;
+					
+					for(var i = 0; i < element.childNodes.length; i++)
+					{
+						var w = element.childNodes[i].offsetWidth;
+						if(w > 0)
+						{
+							element.childNodes[i].style.width=w+"px";
+							p_w += w;
+							lastIndex = i;
+						}
+					}
+					element.style.width=p_w+"px";
+					var gap = element.parentNode.offsetWidth - p_w - 20;
+					if(lastIndex >= 0 && gap > 0)
+					{
+						var lastNode = element.childNodes[lastIndex]; 
+						setAndSendWidth(lastNode, (lastNode.offsetWidth + gap)+"px");
+						setAndSendWidth(element, (p_w + gap)+"px");
+					}
+					
+					for(var i = 0; i < lastIndex; i++)
+					{
+						var w = element.childNodes[i].offsetWidth;
+						if(w > 0)
+						{
+							setAndSendWidth(element.childNodes[i],w+"px"); 
+						}
+					}
+				}
+	
+				function adjustWidths(elementID)
+				{
+					var element = document.getElementById(elementID);
+					if(!element || element.childNodes.length == 0) return;
+					
+					
+					if(element.childNodes.length == 1)
+					{
+						var w = element.childNodes[0].offsetWidth;
+						if(w)
+						{	
+							setAndSendWidth(element.childNodes[0],"100%"); 
+							setAndSendWidth(element,"100%");
+						}
+						return;
+					}
+					
+					//hack for firefox floating bug
+					//element.style.width="10000px";
+					
+					var p_w = 0;
+					for(var i = 0; i < element.childNodes.length; i++)
+					{
+						var w = element.childNodes[i].offsetWidth;
+						if(w > 0)
+						{
+							setAndSendWidth(element.childNodes[i],w+"px");
+							p_w += w;
+						}
+					}
+					if(p_w > 0)
+						setAndSendWidth(element,(p_w+1)+"px");
+					
+				}
+				
+				function childWidths(element) {
+					var ret = 0;
+					for(var i = 0; i < element.childNodes.length; i++)
+					{
+						var w = element.childNodes[i].offsetWidth;
+						if(w > 0)
+							ret += w;
+					}
+					if (ret > 0)
+						ret++; 
+					return ret;
+				}
+				
+				function splitterActionMouseDown(element, event)
+				{
+					startX=event.screenX; 				
+					columnElement = element.parentNode;
+					columnRight=columnElement.offsetLeft+columnElement.offsetWidth-6;
+					splitterGhostElement = columnElement.parentNode.nextSibling; 
+					splitterGhostElement.style.left=(columnElement.offsetLeft+columnElement.offsetWidth-6)+"px";
+					splitterGhostElement.style.display="block";
+					
+				}
+				
+	
+				/// END List view splitter
+				//////////////////////////////////7
+				
+				//Additional logic for vertical component resizing 
+				
+				var offY = 0;
+				var selectedObj
+				var initHeight = 0;
+				var computedHeight = 0;
+				var initTop = 0;
+				var cloned;
+				var splitterTmpUpGlobal;
+				
+				function shiftTo(obj, y) {
+				  targetObj  = selectedObj.nextSibling;
+				  computedHeight = (initHeight  + offY -y) - 60;
+				  selectedObj.style.top = (y-offY) +"px";
+				  selectedObj.style.display="block";
+				}
+				
+				function setSelectedObj(cmp) {
+				    selectedObj = cmp;
+				    return
+				}
+				
+				function dragIt(e) {
+					var event;
+						if(e) 
+							event = e;
+						else 
+							event = window.event;
+					
+					if (selectedObj) {
+						shiftTo(selectedObj, event.clientY)
+				        return false
+				    }
+				}
+				
+				function initResizing(cmp, event) {
+					setSelectedObj(cmp);
+					if (selectedObj) {
+						offY = event.clientY - selectedObj.offsetTop - document.body.scrollTop; 
+						initHeight = selectedObj.nextSibling.offsetHeight;
+						initTop = selectedObj.offsetTop;
+				        document.onmousemove = dragIt;
+				        splitterTmpUpGlobal = document.onmouseup;
+				        document.onmouseup = splitterMouseUpGlobal;
+				    }
+				}
+				
+				splitterMouseUpGlobal = function() {
+					if(selectedObj){
+			       		finishResizing();
+			       	}
+			       	document.onmouseup = splitterTmpUpGlobal;
+			       	if(splitterTmpUpGlobal){
+			       		try{
+			       			splitterTmpUpGlobal();
+		        		}catch(e){/* ignore */}
+			       	}
+				}
+				
+				function finishResizing() {
+					
+					try {
+						comm.sendUser(selectedObj.nextSibling, "resize", computedHeight);
+					}
+					catch(e) {//just ignore
+					}
+					selectedObj.style.top = 0 +'px';
+					document.onmousemove = null
+			        selectedObj = null
+				}
+				
+				////////////////////////////////
+				// Global key shortcuts
+				
+				function isTextInputNode(element)
+				{
+					return (element.nodeName=="INPUT" && (element.type=="text" || element.type=="password") ) || element.nodeName=="TEXTAREA";
+				}
+				
+				function globalKeyHit(e) 
+				{
+					//disable if we can't determine the focused element (firefox < 3.0)
+					if(!document.activeElement)
+					{
+						return true;
+					}
+					
+					if(isTextInputNode(document.activeElement))
+					{
+						return true;
+					}
+					
+					var pressedKey = e ? e.which: window.event.keyCode;
+					var ctrlPressed = e ? e.ctrlKey: window.event.ctrlKey;
+					var altPressed = e ? e.altKey: window.event.altKey;
+					var metaPressed = e ? e.metaKey: window.event.metaKey;
+					
+					
+					var comp = document.getElementsByName("globalKeyHandlerComponent")[0];
+	
+					if((pressedKey == 122 || pressedKey == 26) && ctrlPressed) // ctrl + alt + x
+					{
+						comm.sendUser(comp, "undo");
+						return false;
+					}
+					else if((pressedKey == 121 || pressedKey == 25) && ctrlPressed) // ctrl + alt + y
+					{
+						comm.sendUser(comp, "redo");
+						return false;
+					}
+					else if(pressedKey == 8) //catch backspace
+					{
+						return false;
+					}
+					else if(pressedKey == 119 && !metaPressed && !ctrlPressed && !altPressed) // w expands/collapses nav and editor area
+					{
+						comm.sendUser(comp, "toggleWideScreen");
+						return false;
+					}
+									
+					return true;
+				}
+				
+				document.onkeypress = globalKeyHit;
+				if (document.layers)
+				{
+					document.captureEvents(Event.KEYPRESS);
+				}
+	
+				// END Global key shortcuts
+				////////////////////////////////	
+				
+				
+				function clearSelection()
+				{
+					if(document.selection)
+					{
+						document.selection.empty();
+					}
+					else if(window.getSelection)
+					{
+						window.getSelection().removeAllRanges();
+					}
+				}
+				
+				
+				///////////////////////////////////
+				// Hover scroll mechanism
+				var hoverScrollInterval = null;
+				
+				function handleHoverMove(e, cmpID, scrollCmpID)
+				{
+					
+				}
+				
+				function stopScrolling()
+				{
+					if(hoverScrollInterval != null)
+						clearInterval(hoverScrollInterval);
+				}
+				
+				function startScrolling(e, cmpID, direction, step)
+				{
+					var event;
+					if(e)
+					{
+						event=e;
+					}
+					else
+					{
+						event = window.event;
+					}
+					var cmp = document.getElementById(cmpID);
+					if(event.button && cmp /*&& document.getElementById("zk_ddghost") */)
+						hoverScrollInterval = setInterval("cmp." + direction + " += "+step+";", 100);
+				}
+				
+				// END Hover scroll mechanism
+				/////////////////////////////////////
+				
+				function crossBrowserStopPropagation(e)
+				{
+					e.cancelBubble = true;
+					if (e.stopPropagation)
+					{
+						e.stopPropagation();	
+					}
+				}
+				
+				function dblClikCommentIcon(icon, event)
+				{
+					crossBrowserStopPropagation(event);
+					comm.sendUser(icon, 'editOrReply');
+					return true;
+				}
+				
+				function onClikCommentLayer(layer, event)
+				{
+					crossBrowserStopPropagation(event);
+					var coordinates = getMouseEventCoordinates(event);
+					comm.sendUser(layer, 'append', coordinates[0], coordinates[1]);
+					return true;
+				}
+				
+				function onDblClikCommentLayer(layer, event)
+				{
+					var coordinates = getMouseEventCoordinates(event);
+					comm.sendUser(layer, 'append', coordinates[0], coordinates[1]);
+					return true;
+				}
+				
+				function onContextMenuCommentLayer(layer, event)
+				{
+					var coordinates = getMouseEventCoordinates(event);
+					comm.sendUser(layer, 'context', coordinates[0], coordinates[1]);
+					return true;
+				}
+				
+				function handleDropEvent(cmp, iconId, scrollabelContainerId,  droppedX, droppedY)
+				{
+					var offsetTop = getElementTop(cmp);
+					var offsetLeft = getElementLeft(cmp);
+					var newX = droppedX - offsetLeft + getElementScrollLeft(scrollabelContainerId);
+					var newY = droppedY - offsetTop + getElementScrollTop(scrollabelContainerId);
+					comm.sendUser(cmp, 'dropIcon', iconId,  newX, newY);
+				}
+				
+				function getElementTop ( Elem ) 
+				{
+				    var elem;
+				
+				    if ( document.getElementById ) 
+				    {   
+				        elem = document.getElementById ( Elem );
+				    } 
+				    else if ( document.all ) 
+				    {
+				        elem = document.all[Elem];
+				    }                   
+				
+				    yPos = elem.offsetTop;
+				    tempEl = elem.offsetParent;
+				
+				    while ( tempEl != null ) 
+				    {
+				        yPos += tempEl.offsetTop;
+				        tempEl = tempEl.offsetParent;
+				    }  
+				
+				    return yPos;
+				}
+				
+				function getElementLeft ( Elem ) 
+				{
+				    var elem;
+				
+				    if ( document.getElementById ) 
+				    {
+				        var elem = document.getElementById ( Elem );
+				    } 
+				    else if ( document.all )
+				    {
+				        var elem = document.all[Elem];
+				    }                   
+				
+				    xPos = elem.offsetLeft;
+				    tempEl = elem.offsetParent;                 
+				
+				    while ( tempEl != null ) 
+				    {
+				        xPos += tempEl.offsetLeft;
+				        tempEl = tempEl.offsetParent;
+				    }                   
+				    return xPos;
+				}
+				
+				function getElementScrollLeft ( Elem ) 
+				{
+				    var elem;
+				
+				    if ( document.getElementById ) 
+				    {   
+				        elem = document.getElementById ( Elem );
+				    } 
+				    else if ( document.all ) 
+				    {
+				        elem = document.all[Elem];
+				    }                   
+				
+				    return elem.scrollLeft;
+				}
+				
+				function getElementScrollTop ( Elem ) 
+				{
+				    var elem;
+				
+				    if ( document.getElementById ) 
+				    {   
+				        elem = document.getElementById ( Elem );
+				    } 
+				    else if ( document.all ) 
+				    {
+				        elem = document.all[Elem];
+				    }                   
+				
+				    return elem.scrollTop;
+				}
+				
+				function getMouseEventCoordinates(event)
+				{
+					var result = new Array();
+					if(event.layerX)
+					{
+						result[0] = event.layerX
+						result[1] = event.layerY
+					}
+					else if(event.offsetX)
+					{
+						result[0] = event.offsetX;
+						result[1] = event.offsetY;
+					}
+					return result;
+				}
+				
+				function resizeGrowingTextBox(Elem, minH)
+				{	
+					Elem.style.height = 'auto'; // required when delete, cut or paste is performed
+					var height = Math.max(Elem.scrollHeight, minH);
+					height +=  Elem.style.lineHeight ? Elem.style.lineHeight.substr(0,Elem.style.lineHeight.indexOf('px')) : 20;
+					var maxH = Elem.style.maxHeight ? Elem.style.maxHeight.substr(0,Elem.style.maxHeight.indexOf('px')) : 200;
+					if(height < maxH)
+					{
+						Elem.style.overflowY = "hidden";
+						Elem.style.height = height+'px';
+					}
+					else
+					{
+						Elem.style.overflowY = "scroll";
+						Elem.style.height = maxH+"px";
+					}
+				}
+
+				function doCmd(event, element)
+                {
+                        var metaPressed = event ? event.metaKey : window.event.metaKey;
+                        if (metaPressed) { comm.sendClick(this, 'cmdPressed'); }
+                }
+				
+				/// ZK D&D improvements 
+				
+				var zDraggables = {
+					  drags: {},
+					  drags_size: 0,
+					  observers: [],
+					  
+					  
+					  register: function(draggable) {
+					    if(this.drags_size <= 0) {
+					      this.eventMouseUp   = this.endDrag.bindAsEventListener(this);
+					      this.eventMouseMove = this.updateDrag.bindAsEventListener(this);
+					      this.eventKeypress  = this.keyPress.bindAsEventListener(this);
+					      
+					      Event.observe(document, "mouseup", this.eventMouseUp);
+					      Event.observe(document, "mousemove", this.eventMouseMove);
+					      Event.observe(document, "keypress", this.eventKeypress);
+					    }
+					    this.drags[draggable.element.id] = draggable;
+					    this.drags_size++;
+					  },
+					  
+					  unregister: function(draggable){
+					    delete this.drags[draggable.element.id];
+					    this.drags_size--;
+					    if (this.drags_size < 0)
+					    {
+					    	alert(this.drags_size);
+					    }
+					    if(this.drags_size <= 0) {
+					      Event.stopObserving(document, "mouseup", this.eventMouseUp);
+					      Event.stopObserving(document, "mousemove", this.eventMouseMove);
+					      Event.stopObserving(document, "keypress", this.eventKeypress);
+					    }
+					  },
+					  
+					  activate: function(draggable) {
+					    if(zk.opera || draggable.options.delay) {
+					      this._timeout = setTimeout(function() { 
+					        zDraggables._timeout = null; 
+					        window.focus(); 
+					        zDraggables.activeDraggable = draggable; 
+					      }.bind(this), draggable.options.delay); 
+					    } else {
+					      window.focus(); // allows keypress events if window isn't currently focused, fails for Safari
+					      this.activeDraggable = draggable;
+					    }
+					  },
+					  
+					  deactivate: function() {
+					    this.activeDraggable = null;
+					  },
+					  
+					  updateDrag: function(event) {
+					    if(!this.activeDraggable) return;
+					    var pointer = [Event.pointerX(event), Event.pointerY(event)];
+					    // Mozilla-based browsers fire successive mousemove events with
+					    // the same coordinates, prevent needless redrawing (moz bug?)
+					    if(this._lastPointer && (this._lastPointer.inspect() == pointer.inspect())) return;
+					    this._lastPointer = pointer;
+					    
+					    this.activeDraggable.updateDrag(event, pointer);
+					  },
+					  
+					  endDrag: function(event) {
+					    if(this._timeout) { 
+					      clearTimeout(this._timeout); 
+					      this._timeout = null; 
+					    }
+					    if(!this.activeDraggable) return;
+					    this._lastPointer = null;
+					    this.activeDraggable.endDrag(event);
+					    this.activeDraggable = null;
+					  },
+					  
+					  keyPress: function(event) {
+					    if(this.activeDraggable)
+					      this.activeDraggable.keyPress(event);
+					  },
+					  
+					  addObserver: function(observer) {
+					    this.observers.push(observer);
+					    this._cacheObserverCallbacks();
+					  },
+					  
+					  removeObserver: function(element) {  // element instead of observer fixes mem leaks
+					    this.observers = this.observers.reject( function(o) { return o.element==element });
+					    this._cacheObserverCallbacks();
+					  },
+					  
+					  notify: function(eventName, draggable, event) {  // 'onStart', 'onEnd', 'onDrag'
+					    if(this[eventName+'Count'] > 0)
+					      this.observers.each( function(o) {
+					        if(o[eventName]) o[eventName](eventName, draggable, event);
+					      });
+					    if(draggable.options[eventName]) draggable.options[eventName](draggable, event);
+					  },
+					  
+					  _cacheObserverCallbacks: function() {
+					    ['onStart','onEnd','onDrag'].each( function(eventName) {
+					      zDraggables[eventName+'Count'] = zDraggables.observers.select(
+					        function(o) { return o[eventName]; }
+					      ).length;
+					    });
+					  }
+					}
+				
+			</script>
+			]]>
+	</html>
+</div>

@@ -1,0 +1,424 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+/*
+ * wizards
+ *
+ */
+
+ .wizardWindowSclass div.z-window-highlighted-cnt{
+  padding:0px;
+}
+
+.wizardWindowSclass .z-vbox {
+	table-layout:fixed;
+	width: 100%;
+}
+
+.wizardPageContentContainer {
+	margin-top: 1px;
+	max-height: 500px;
+}
+
+.wizardErrorMessage td {
+	vertical-align: middle;
+	width:100%;
+	height: 20px;
+	background-color:#FFA29A;
+	border: 1px solid #FF7878;
+	padding-bottom:1px;
+	padding-left:5px;
+	color:#D20000;
+
+}
+.wizardErrorMessage tr.z-vbox-sep > td {
+	height:0px;
+	background-color:white;
+	border:none;
+}
+
+.wizardWarningMessage td {
+	vertical-align: middle;
+	width:100%;
+	height: 20px;
+	background-color:#FFE1AC;
+	border: 1px solid #FFC884;
+	padding-bottom:1px;
+	padding-left:5px;
+	color:#D78500;
+
+}
+.wizardWarningMessage tr.z-vbox-sep > td {
+	height:0px;
+	background-color:white;
+	border:none;
+}
+
+.wizardInfoMessage td {
+	vertical-align: middle;
+	width:100%;
+	height: 20px;
+	background-color:#9BFF96;
+	border: 1px solid #7FFF68;
+	padding-bottom:1px;
+	padding-left:5px;
+	color:#509E40;
+
+}
+.wizardInfoMessage tr.z-vbox-sep > td {
+	height:0px;
+	background-color:white;
+	border:none;
+}
+
+
+.contentElementErrorBoxEditor{
+	padding:2px;
+	border:1px solid #FF7878;
+	background-image: url("images/wizardEntryBG.gif");
+	background-repeat:repeat-x;
+	padding-left:30px;
+	padding-bottom:10px;
+}
+
+.contentElementWarningBoxEditor{
+	padding:2px;
+	border:1px solid #FFC884;
+	background-image: url("images/wizardEntryBG.gif");
+	background-repeat:repeat-x;
+	padding-left:30px;
+	padding-bottom:10px;
+}
+
+.contentElementInfoBoxEditor{
+	padding:2px;
+	border:1px solid #7FFF68;
+	background-image: url("images/wizardEntryBG.gif");
+	background-repeat:repeat-x;
+	padding-left:30px;
+	padding-bottom:10px;
+}
+
+.typeSelectorPageContainer{
+	height: 500px;
+}
+
+.typSelectorCmsWizardPage, .decisionCmsWizardPage{
+	padding-top: 2px !important;
+	border:none !important;
+	background-color:transparent !important;
+}
+.typSelectorRow, .decisionSelectorRow{
+	background-color:white;
+}
+
+
+div.typSelectorCmsWizardPage div.z-list-body, div.decisionCmsWizardPage div.z-list-body {
+	padding-top: 2px;
+	border:none;
+}
+
+div.typSelectorCmsWizardPage tr.z-list-item-seld, div.decisionCmsWizardPage tr.z-list-item-seld  {
+	background-color:blue !important;
+	border-color:red !important;
+}
+
+div.typSelectorCmsWizardPage tr.z-list-item-seld td.typSelectorRow .contentElementBox .contentElementDescription,
+div.decisionCmsWizardPage tr.z-list-item-seld td.decisionSelectorRow .contentElementBox .contentElementDescription {
+	color: #444 !important;
+}
+
+div.typSelectorCmsWizardPage tr.z-list-item-seld td.typSelectorRow .contentElementBox .contentElementName .z-label,
+div.decisionCmsWizardPage tr.z-list-item-seld td.decisionSelectorRow .contentElementBox .contentElementName .z-label {
+	color: #444 !important;
+}
+
+span.wizardDecisionPage label{
+	padding-left:5px;
+}
+
+div.wizardAdvancedSearchPage{
+	width:600px;
+	border-bottom:1px solid rgb(192,192,192);
+}
+
+.jasperMediaChooseWizPage {
+	max-height: 400px;
+}
+
+
+
+.contentEditorHeader {
+	background-color: transparent !important;
+	font-size: 12px !important;
+	margin-bottom: 10px !important;
+}
+
+.contentElementBox {
+	border-bottom: 1px solid #dddddd;
+	padding: 5px;
+	color: #666666;
+}
+
+.contentElementBoxEditor {
+	border-bottom:1px solid #efefef;
+	color:#666666;
+	padding:0 5px 5px 10px;
+	height:50px;
+}
+
+.contentElementName {
+	cursor:pointer;
+	padding-bottom: 4px;
+	font-size: 11px;
+}
+
+.contentElementName span {
+	font-weight:bold;
+}
+
+.contentElementDescription {
+	cursor:pointer;
+	font-size: 11px;
+}
+
+.contentElementImage {
+	padding-right: 5px;
+}
+
+.z-window-highlighted-header {
+	color: #444;
+	font-weight: bold;
+	font-size: 11px;
+}
+
+.z-window-highlighted-cnt .contentElementBox {
+	background-image: url(images/wizardEntryBG.gif);
+	background-position: top;
+	background-repeat: repeat-x;
+}
+
+.z-window-highlighted-cnt .z-list-item-over .contentElementBox {
+	background-image: url(images/wizardEntryBG-HL.gif);
+	background-position: top;
+	background-repeat: repeat-x;
+	background-color: #EAEBED;
+}
+
+.z-list-item-over .z-label {
+	color: #416AA3;
+}
+
+div.typSelectorCmsWizardPage div.z-list-cell-cnt {
+    padding: 0;
+    margin: 0;
+}
+
+div.cmsWizardPageContainer div.z-list-cell-cnt table.z-hbox td {
+    vertical-align: middle;
+}
+
+div.decisionCmsWizardPage td.decisionSelectorRow {
+    padding: 0;
+    margin: 0;
+}
+
+div.decisionCmsWizardPage div.z-list-cell-cnt {
+    padding: 0;
+    margin: 0;
+}
+
+div.decisionCmsWizardPage div.z-list-cell-cnt table.z-hbox td {
+    vertical-align: middle;
+}
+
+table.rowContainer tr.z-vbox-sep {
+   height: 1px;
+}
+
+.wizardContentFrame {
+	margin-left:0;
+	margin-right:0;
+	padding: 0 0 0 0;
+	position:relative;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
+
+
+.wizardContentFrame > div{
+	height:auto !important;
+}
+
+
+
+
+.wizardButtonFrame {
+	/*height:26px;*/
+	padding:8px;
+	overflow:hidden;
+	background:url("images/topflat_bg_dark.gif") repeat-x scroll 0 0 #E2E3E7;
+	border:1px solid #999999;
+}
+
+.wizardButtonFrame .wizardCancelButton {
+	background-image:url(images/BUTTON_GRAY_back.gif);
+}
+
+.wizardWindowSclass {
+	border: 3px solid white;
+}
+
+.z-window-highlighted-bl {
+	height: 0;
+}
+
+span.wizardGroupLabel{
+ 	font-weight:bold;
+ 	font-size:11px;
+	color: #444;
+}
+
+span.wizardRowGroupLabel{
+	font-size:11px;
+	color: #444;
+}
+
+table.contentElementBoxEditor td {
+ vertical-align: middle;
+}
+
+.wizardContentFrame table.contentElementBox td {
+ vertical-align: middle;
+}
+
+table.wizardGroupContainer td {
+ padding-bottom:4px;
+}
+
+.wizardGroupContainer .wizardGroupEditorContainer td {
+ padding-bottom:0px;
+}
+
+
+/* will be probably a wizard in the future too */
+
+/* Synchrozniation Config Dialog section - start */
+div.synchroznizationConfig table.currentCatalogHeader {
+	vertical-align:middle;
+}
+
+.synchroznizationConfig .sourceCatalogHeader tr > td span, .targetCatalogHeader tr > td span {
+	font-size:13px;
+	color:gray;
+	font-weight:bold;
+}
+
+div.availableCatalogVersions {
+	border:1px solid #CCCCCC;
+	font-family:Arial;
+	color:gray;
+	font-size:12px;
+	font-weight:normal;
+}
+
+div.forbidenCatalogVersions {
+	border:1px solid #CCCCCC;
+	font-family:Arial;
+	color:gray;
+	font-size:12px;
+	font-weight:normal;
+}
+
+div.forbidenCatalogVersions tr.z-list-item-seld {
+	background-color:transparent;
+}
+
+div.forbidenCatalogVersions tr.z-list-item {
+	background-color:#CCCCCC;
+}
+
+.forbidenCatalogVersions .z-list-item .z-list-item-focus {
+	background-image: none; background-repeat: no-repeat;
+}
+
+.forbidenCatalogVersions table div span {
+	font-family:Arial;
+	color:gray;
+	font-size:12px;
+	font-weight:normal;
+}
+
+.availableCatalogVersions table div span {
+	font-family:Arial;
+	color:gray;
+	font-size:12px;
+	font-weight:normal;
+}
+
+
+.forbidenCatalogVersions span.catalog-mnemonic-label{
+	padding-right:55px;
+}
+
+.catalogVersionLabel .catalog-mnemonic-label{
+	font-size: x-small !important;
+	float:right;
+	padding-right:5px;
+}
+
+.catalogVersionLabel .ruleNameLabelSclass{
+	font-size: x-small !important;
+	float:left;
+	font-weight:bold;
+	color:#404040;
+}
+
+
+.catalogVersionLabel tr > td {
+	font-weight:normal !important;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+.catalogVersionLabel tr > td span{
+	font-weight:normal !important;
+}
+/* Synchrozniation Config Dialog section - end */
+
+.wizardGroupContainer {
+	width: 92%;
+	margin-top: 6px;
+}
+
+.wizardGroupLabel .z-groupbox-hl .z-groupbox-header {
+    padding: 1px 2px 0 0;
+}
+
+.wizardGroupContainer tr.z-vbox-sep { display: none; }
+
+.dateEditorContainer {
+	margin-bottom: 3px;
+}
+
+.wizardGroupEditorContainer .z-combobox-inp {
+    width: 95%;
+}
+
+.fileUpload {
+	background-color: white;
+}
+
+.fileUploadContainer{
+		background-color: blue;
+
+}

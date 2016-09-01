@@ -1,0 +1,198 @@
+.hiddenPseudoBefore:before, .hiddenPseudoAfter:after {
+	display: none !important;
+}
+
+.yContentSlotMenu {
+	-webkit-border-radius: 2px;
+	border-radius: 2px;	
+	margin: 0 0 5px 0;
+	padding: 1px;
+	background: #d2d2d2;
+}
+
+.yContentSlotMenu .border-container {
+	border-radius: 2px;
+	padding: 10px 0;
+	background: #e7e7e7; /* Old browsers */
+	background: -moz-linear-gradient(top,  #e7e7e7 0%, #e2e2e2 50%, #e1e1e1 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e7e7e7), color-stop(50%,#e2e2e2), color-stop(100%,#e1e1e1)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #e7e7e7 0%,#e2e2e2 50%,#e1e1e1 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #e7e7e7 0%,#e2e2e2 50%,#e1e1e1 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #e7e7e7 0%,#e2e2e2 50%,#e1e1e1 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #e7e7e7 0%,#e2e2e2 50%,#e1e1e1 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e7e7e7', endColorstr='#e1e1e1',GradientType=0 ); /* IE6-9 */
+}
+
+.yContentSlotMenu:hover .border-container {
+	background: #f6f6f6; /* Old browsers */
+	background: -moz-linear-gradient(top,  #f6f6f6 0%, #f2f2f2 50%, #ececec 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(50%,#f2f2f2), color-stop(100%,#ececec)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #f6f6f6 0%,#f2f2f2 50%,#ececec 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #f6f6f6 0%,#f2f2f2 50%,#ececec 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #f6f6f6 0%,#f2f2f2 50%,#ececec 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #f6f6f6 0%,#f2f2f2 50%,#ececec 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#ececec',GradientType=0 ); /* IE6-9 */
+}
+
+.yContentSlotMenu.box-red {
+	background: #ffcbcb;
+}
+
+.yContentSlotMenu.box-red .border-container {
+	background: #ffd8d8; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffd8d8 0%, #ffe2e2 49%, #ffd8d8 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd8d8), color-stop(49%,#ffe2e2), color-stop(100%,#ffd8d8)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffd8d8 0%,#ffe2e2 49%,#ffd8d8 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffd8d8 0%,#ffe2e2 49%,#ffd8d8 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffd8d8 0%,#ffe2e2 49%,#ffd8d8 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffd8d8 0%,#ffe2e2 49%,#ffd8d8 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd8d8', endColorstr='#ffd8d8',GradientType=0 ); /* IE6-9 */
+}
+
+.yContentSlotMenu.box-red:hover .border-container {
+	background: #ffdbdb; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffdbdb 0%, #ffe8e8 47%, #ffdbdb 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffdbdb), color-stop(47%,#ffe8e8), color-stop(100%,#ffdbdb)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffdbdb 0%,#ffe8e8 47%,#ffdbdb 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffdbdb 0%,#ffe8e8 47%,#ffdbdb 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffdbdb 0%,#ffe8e8 47%,#ffdbdb 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffdbdb 0%,#ffe8e8 47%,#ffdbdb 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffdbdb', endColorstr='#ffdbdb',GradientType=0 ); /* IE6-9 */
+
+}
+
+.yContentSlotMenu.box-green {
+	background: #CFD6BA;
+}
+
+.yContentSlotMenu.box-green .border-container {
+	background: #e2eac9; /* Old browsers */
+	background: -moz-linear-gradient(top,  #e2eac9 0%, #e7edd5 51%, #e2eac9 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2eac9), color-stop(51%,#e7edd5), color-stop(100%,#e2eac9)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #e2eac9 0%,#e7edd5 51%,#e2eac9 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #e2eac9 0%,#e7edd5 51%,#e2eac9 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #e2eac9 0%,#e7edd5 51%,#e2eac9 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #e2eac9 0%,#e7edd5 51%,#e2eac9 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2eac9', endColorstr='#e2eac9',GradientType=0 ); /* IE6-9 */
+}
+
+.yContentSlotMenu.box-green:hover .border-container {
+	background: #e2eac9; /* Old browsers */
+	background: -moz-linear-gradient(top,  #e2eac9 0%, #e5ead7 49%, #e1e8cc 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2eac9), color-stop(49%,#e5ead7), color-stop(100%,#e1e8cc)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #e2eac9 0%,#e5ead7 49%,#e1e8cc 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #e2eac9 0%,#e5ead7 49%,#e1e8cc 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #e2eac9 0%,#e5ead7 49%,#e1e8cc 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #e2eac9 0%,#e5ead7 49%,#e1e8cc 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2eac9', endColorstr='#e1e8cc',GradientType=0 ); /* IE6-9 */
+}
+
+.yContentSlotMenu .ycsm-left {
+	float: left;
+	margin-left: 5px;
+	font-weight: bold;
+}
+
+.yContentSlotMenu .ycsm-right {
+	float: right;
+	margin-right: 5px;
+}
+
+.yContentSlotMenu .ycsm-right li.ycms-li > a {
+	margin-left: 5px;
+	display: block !important;
+	padding: 0px !important;
+	border: 0px !important;
+	border-right: 0px !important;
+	margin: 0px !important;
+}
+
+.yContentSlotMenu .ycsm-right ul.ycms-ul-lvl-0 > li > a {
+	width: 16px;
+	height: 16px;
+}
+
+.yContentSlotMenu .ycsm-right ul.ycms-ul-lvl-1 > li > a {
+	padding: 2px 5px 2px 24px !important;
+	background-position: left center;
+	font-size: 14px;
+	color: #3E3E3E;
+	text-decoration: none;
+}
+
+.yContentSlotMenu .ycsm-right ul.ycms-ul-lvl-1 > li > a:hover {
+	text-decoration: none;
+	color: #495862;
+	font-size: 14px;
+	color: #3E3E3E;
+	text-decoration: none;
+}
+
+.yContentSlotMenu ul.ycms-ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.yContentSlotMenu ul.ycms-ul-lvl-0 {
+	position: relative;
+}
+
+.yContentSlotMenu ul.ycms-ul-lvl-1 {
+	min-width: 150px;
+	position: absolute !important;
+	z-index: 999999;	
+	display: none;
+	background: #F0F0F0 url(../../../shared/common/images/contextmenu/menu_bg.gif) left repeat-y;
+	border: 1px solid #718BB7;
+	padding: 2px 0;
+}
+
+.yContentSlotMenu ul li.ycms-li {
+	position: relative !important;
+	list-style: none;
+	float: left !important;
+	background: none !important;
+}
+
+.yContentSlotMenu ul.ycms-ul-lvl-1 > li.ycms-li {
+	padding: 0 5px;
+	display: block;
+	float: none !important;
+	margin: 1px;
+}
+
+.yContentSlotMenu ul.ycms-ul-lvl-1 > li.ycms-li:hover {
+	background: url(../../../shared/common/images/contextmenu/m_item.gif) repeat-x !important;
+	border: 1px solid #AACCF6;
+   cursor: normal;
+   margin: 0px;
+}
+
+/*
+.yContentSlotMenu ul.ycms-ul-lvl-0 > li:hover ul.ycms-ul-lvl-1 {
+	display: block;
+}
+*/
+
+.yContentSlotMenu .ycsm-button-ADD, .yContentSlotMenu .ycsm-button-ADD:hover {
+	background: url(../../../shared/common/images/contextmenu_icons/ADD.gif) no-repeat !important;
+	background-color: none !important;
+}
+
+.yContentSlotMenu .ycsm-button-SHOW_ALL, .yContentSlotMenu .ycsm-button-SHOW_ALL:hover {
+	background: url(../../../shared/common/images/contextmenu_icons/SHOW_ALL.png) no-repeat !important;
+	background-color: none !important;
+}
+
+.yContentSlotMenu .ycsm-button-MENU, .yContentSlotMenu .ycsm-button-MENU:hover {
+	background: url(../../../shared/common/images/contextmenu_icons/MENU.png) no-repeat !important;
+}
+
+.yContentSlotMenu .ycsm-button-REMOVE, .yContentSlotMenu .ycsm-button-REMOVE:hover {
+	background: url(../../../shared/common/images/contextmenu_icons/REMOVE.png) no-repeat !important;
+}
+
+.yContentSlotMenu .ycsm-button-EDIT, .yContentSlotMenu .ycsm-button-EDIT:hover {
+	background: url(../../../shared/common/images/contextmenu_icons/EDIT.png) no-repeat !important;
+}

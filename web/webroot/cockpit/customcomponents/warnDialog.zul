@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="ZK Test" language="xul/html"?>
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of SAP
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with SAP.
+  -->
+<window title="${arg.title}" border="normal" width="250pt" closable="true"
+			use="de.hybris.platform.cockpit.components.dialog.WarnDialog"
+			sclass="confirmDialog">
+	<hbox>
+		<div class="${arg.icon}"/>
+		<div sclass="z-messagebox" width="210pt">
+			<label value="${arg.message}" multiline="false"/>
+		</div>
+	</hbox>
+	<separator bar="true"/>
+	<hbox style="margin-left:auto; margin-right:auto">
+	<toolbarbutton identity="${arg.YES}" use="de.hybris.platform.cockpit.components.dialog.WarnDialog$Toolbarbutton"
+		image="/cockpit/images/ok_btn.gif"/>
+	</hbox>
+</window>

@@ -1,0 +1,12 @@
+#header .headerContent .nav {
+    margin: 0 10px 0 0;
+}
+
+#header .headerContent .language > li.yCmsContentSlot {
+    border-right: 0px;
+}
+
+#nav_main li.La > .yCmsComponent > a {
+    padding: 9px 8px 7px 8px;
+    line-height: 1.5;
+}

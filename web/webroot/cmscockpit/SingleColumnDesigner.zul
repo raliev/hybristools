@@ -1,0 +1,22 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
+<window class="singleColumn" apply="de.hybris.liveeditaddon.cockpit.navigationeditor.composers.SingleColumnComposer">
+		<div  id="columnContainer"  droppable="column" draggable="column" onDrop="columnMove(event.dragged)" >
+						<div id="actionContainer" class="actionContainer" >
+							<image id="removeIcon" class="removeIcon" src="/cockpit/images/remove.png" />
+						</div>											
+					<label id="columnLink" class="columnLink" value="${c:l('cmscockpit.navigationwizard.column')}"  /><h:br />
+					<listbox  onDrop="move(event.dragged)" id="columnList" droppable="link"/>
+		</div>
+</window>
+  <zscript><![CDATA[
+        void move(Component dragged) {        	
+	            if (dragged instanceof Listitem) {
+	                self.appendChild(dragged);
+	            } 
+        }
+        
+         void columnMove(Component dragged) {
+	                self.parent.parent.insertBefore(dragged.parent, self.parent);
+        }
+    ]]></zscript>
+</zk>

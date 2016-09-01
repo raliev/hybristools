@@ -1,0 +1,442 @@
+/*
+ * Stylesheet loaded when the site is being viewed in lived edit mode
+ */
+
+/*
+ * liveEditElement class is added by the liveedit.js onto divs that are injected by the cms tags while in live edit mode.
+ * Note that these divs do not normally exist in the html, but are injected during live edit only.
+ *
+ * Select all elements that are direct children of the divs with the liveEditElement class.
+ * and put a red border around the elements.
+ */
+ /* SHOWCASE START */
+div.liveEditElement > *, li.liveEditElement {
+/* SHOWCASE END */
+	cursor: pointer;
+	border: 1px dashed #33ba31 !important;
+    box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    -webkit-sizing: border-box !important;
+    -ms-sizing: border-box !important;
+}
+
+/* SHOWCASE START */
+div:hover.liveEditElement > *, li:hover.liveEditElement {
+/* SHOWCASE END */
+	cursor: pointer;
+	border: 1px solid #E13815 !important;
+	box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    -webkit-sizing: border-box !important;
+    -ms-sizing: border-box !important;
+}
+
+.siteLogo .liveEditElement > * {
+	border: none !important;
+}
+
+.siteLogo :hover.liveEditElement > * {
+	border: none !important;
+}
+
+.nav_main{
+	height: auto !important;
+	clear:both;
+}
+
+/* SHOWCASE START LiveEdit customisations */
+div.liveEditHeader {
+	
+    /* border-color: #96B158 #355500 #355500 #96B158 !important; */
+     border-style: solid !important; 
+    border-width: 1px !important;
+    height: 24px !important;
+    line-height: 20px !important;
+    /* border-radius: 5px 5px 0 0 !important; */
+    clear: both !important;
+    /* margin: 0 0 5px !important; */
+    padding: 5px 5px 0 5px !important;
+    background: url("/cmscockpit/cockpit/css/images/groupbox-corners-flat-dark.png") repeat-x scroll 0 0 transparent;
+    font-weight: bold;
+    color: #444444 !important;
+    font-family: Arial,non-serif;
+    font-size: 11px;
+}
+
+div.liveEditHeader span {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+div:hover.liveEditHeader a {
+	cursor: pointer;
+}
+
+div.template {
+	background:none repeat scroll 0 0 #FFDCDC !important;
+}
+
+div.liveEditGroupBox {
+	border: 1px solid gray !important;
+	box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    -webkit-sizing: border-box !important;
+    -ms-sizing: border-box !important;
+    width: auto !important;
+    /*overflow: hidden !important;*/
+    min-height:50px;
+    height:auto !important;  
+}
+
+.sortable {
+	min-height:30px;
+    height:auto !important;  
+}
+
+.liveEditComponentToolBar
+{
+	position:absolute;
+	right:0px;
+	top:0px;
+	display: none;
+	background-color: #F3F3F3;
+	/*float: right;*/
+	overflow-x: auto;
+	min-width: 65px;
+	width: auto;
+	height: 20px;
+}
+
+div.liveEditComponentToolBar a {
+	padding: 0px 0px 0px 0px !important;
+	float: right;
+}
+
+div.liveEditPageToolBar {
+	/* float: right; */
+	width: 100px;
+	border-style: solid !important; 
+    border-width: 1px !important;
+    line-height: 20px !important;
+    padding: 5px 5px 0 5px !important;
+    background: url("/cmscockpit/cockpit/css/images/groupbox-corners-flat-dark.png") repeat-x scroll 0 0 transparent;
+    color: #444444 !important;
+    font-family: Arial,non-serif;
+    font-size: 11px;
+    z-index: 10000;
+    position: fixed;
+    top: 0px;
+    right:0px;
+    opacity: 0.8;
+}
+
+div.liveEditElement .liveEditEditOnlyMode > *, li.liveEditElement .liveEditEditOnlyMode {
+	border: none !important;
+	float: right;
+}
+
+
+
+div:hover.liveEditComponentToolBar a {
+	cursor: pointer;
+}
+
+div.liveEditComponentToolBar a img {
+	padding: 0px 0px 0px 0px !important;
+}
+
+div.liveEditElement {
+	min-height:30px;
+    height:auto !important; 
+    position: relative;
+    /*  overflow-x: hidden; note this breaks the flow a bit and makes it different from what the user will really see but without some banners/images might overlay other slots and we can't use them */
+   
+}
+
+div.liveEditElementHover {
+	padding:20px 0 0 0;
+}
+
+li.liveEditElement div.liveEditElementHover {
+	padding:0px 0 0 0;
+}
+
+/*** File Drop ***/
+
+
+/*-------------------------
+	Dropbox Element
+--------------------------*/
+.filedrop {
+	border-radius:3px;
+	border: 1px dashed silver !important;
+    box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    -webkit-sizing: border-box !important;
+    -ms-sizing: border-box !important;
+	position: relative;
+	margin:5px 5px 5px 5px;
+	min-height: 50px;
+	min-width: 50px;
+	width: auto;
+	overflow: hidden;
+	padding-bottom: 10px;
+	background-color: white;
+	
+}
+
+.fileDropHoverOver {
+	background-color: silver;
+}
+
+.filedrop .message{
+	font-size: 11px;
+    text-align: center;
+    padding-top:20px;
+    display: block;
+    font-style: italic;
+}
+
+.filedrop .message i{
+	color:#ccc;
+	font-size:10px;
+}
+
+.filedrop:before{
+	border-radius:3px 3px 0 0;
+}
+
+
+
+/*-------------------------
+	Image Previews
+--------------------------*/
+.filedrop .preview{
+	min-width:50px;
+	width: auto;
+	height: 50px;
+	float:left;
+	margin: 55px 0 0 60px;
+	position: relative;
+	text-align: center;
+}
+
+.filedrop .preview img{
+	max-width: 50px;
+	max-height:50px;
+	border:3px solid #fff;
+	display: block;
+	
+	box-shadow:0 0 2px #000;
+}
+
+.filedrop .imageHolder{
+	display: inline-block;
+	position:relative;
+}
+
+.filedrop .uploaded{
+	position: absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background: url('../img/done.png') no-repeat center center rgba(255,255,255,0.5);
+	display: none;
+}
+
+.filedrop .preview.done .uploaded{
+	display: block;
+}
+
+
+
+/*-------------------------
+	Progress Bars
+--------------------------*/
+.filedrop .progressHolder{
+	position: absolute;
+	background-color:#252f38;
+	height:12px;
+	width:100%;
+	left:0;
+	bottom: 0;
+	
+	box-shadow:0 0 2px #000;
+}
+
+.filedrop .progress{
+	background-color:#2586d0;
+	position: absolute;
+	height:100%;
+	left:0;
+	width:0;
+	
+	box-shadow: 0 0 1px rgba(255, 255, 255, 0.4) inset;
+	
+	-moz-transition:0.25s;
+	-webkit-transition:0.25s;
+	-o-transition:0.25s;
+	transition:0.25s;
+}
+
+.filedrop .preview.done .progress{
+	width:100% !important;
+}
+
+/* Fix for site logo */
+#header .siteLogo a div {
+    left: 10px;
+   /* BD - changed this from absolute this because it screws up liveedit */
+    position: relative;
+}
+
+/* Fix for cart */
+#cart_header dl {
+	padding-top: 5px;
+	/*padding-right: 8px;*/
+	float: none;
+}
+
+#cart_header {
+	float: none;
+}
+
+
+.fb_iframe_widget {
+    display: block;
+}
+
+/* SHOWCASE END */
+ 
+.ycsm-button-EDIT_NAVIGATION, .ycsm-button-EDIT_NAVIGATION:hover {
+	background: url(../../../shared/common/images/contextmenu_icons/EDIT_NAVIGATION.png) no-repeat !important;
+	background-color: none !important;
+}
+/*
+## Navigation
+********************************************************************/
+
+#nav_main{
+	border:1px dotted #a5a5a5;
+	border-width:1px 0 ;
+
+	position:relative;
+	z-index:100;
+	clear: both;
+}
+
+
+/*
+#### 1. Navigation Level
+********************************************************************/
+
+#nav_main  li.La{
+	float:left;
+	text-align:center;
+
+}
+
+
+#nav_main  li.La > a{
+	display:block;
+	line-height:2.750em;
+	padding: 0 12px;
+}
+
+
+#nav_main li.La:hover{
+
+}
+
+#nav_main li.parent:hover > a{ 
+
+	background:#eee ;
+	margin:0 0 -1px 0;
+	padding-bottom:1px;
+	box-shadow: 4px 4px 4px rgba(0,0,0,0.4);
+}
+
+#nav_main li.parent:hover > a{ 
+	border-left:1px dotted #a5a5a5;
+	border-right:1px dotted #a5a5a5;
+	padding-left:11px;
+	padding-right:11px;
+}
+
+/*
+#### 2. Navigation Level
+********************************************************************/
+#nav_main ul.Lb{
+	display:none;
+}
+
+
+#nav_main li.La:hover ul.Lb,
+#nav_main li.La a:focus + ul.Lb{
+	display:block;
+}
+
+
+
+
+#nav_main ul.Lb{
+	position:absolute;
+	background:#eee;
+	left:0;
+	right: 0;
+	text-align:left;
+	padding:20px;
+	border:1px dotted #a5a5a5;
+	z-index:99;
+	border-top:0;
+	width: 908px;
+	top:34px;
+	box-shadow: 4px 4px 4px rgba(0,0,0,0.4);
+	
+}
+
+
+
+#nav_main ul.Lb li.Lb{
+	float:left;
+
+}
+
+
+#nav_main ul.Lb li.Lb span.nav-submenu-title{
+	display:block;
+	font-weight:bold;
+	text-transform:uppercase;
+	font-size:1.167em;
+	margin:0 0 10px 0;
+}
+
+
+
+
+#nav_main ul.Lb li.Lb .Lc{
+	float:left;
+	width:181px;
+}
+
+
+
+
+
+/*
+#### Special Offer
+********************************************************************/
+
+#nav_main .La.special_offer{
+	background:#eee;
+	
+}
+
+.button-SYNC_OK, .button-SYNC_OK:hover {
+    background: url(../../../shared/common/images/contextmenu_icons/SYNC_OK.gif) no-repeat !important;
+}
+.button-SYNC_NOT_OK, .button-SYNC_NOT_OK:hover {
+    background: url(../../../shared/common/images/contextmenu_icons/SYNC_NOT_OK.gif) no-repeat !important;
+}

@@ -1,0 +1,25 @@
+<zk>
+	<window xmlns="http://www.zkoss.org/2005/zul"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:h="http://www.w3.org/1999/xhtml"
+		xmlns:zk="http://www.zkoss.org/2005/zk"
+		xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		id="restrictionWizard" 
+		sclass="restrictionWizard_Window"
+		title="Restriction Wizard" 
+		width="300px"
+		height="220px"
+		closable="true" 
+		mode="modal"
+		
+		apply="de.hybris.liveeditaddon.cockpit.restrictioneditor.RestrictionEditorComposer">
+		<style src="/cmscockpit/css/navigationeditor.css" />
+	    <borderlayout>
+	    	<center>
+	    	<div id="mainArea" sclass="restrictionFields">
+	    	</div>
+			    
+			</center>
+		</borderlayout>
+</window>
+</zk>

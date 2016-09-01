@@ -1,0 +1,9 @@
+<aspectj>
+     <weaver options="-Xset:weaveJavaxPackages=true">
+         <include within="com.epam.aspects.." />
+         <include within="com.epam.controllers.*" />
+     </weaver>
+     <aspects>
+         <aspect name="com.epam.aspects.LoggingAspect" />
+     </aspects>
+</aspectj>

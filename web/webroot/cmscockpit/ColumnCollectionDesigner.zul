@@ -1,0 +1,58 @@
+<zk xmlns:h="http://www.w3.org/1999/xhtml" xmlns:zk="http://www.zkoss.org/2005/zk">
+<window  height="400px" width="100%" apply="de.hybris.liveeditaddon.cockpit.navigationeditor.composers.ColumnCollectionComposer">
+			<div class="categoryColumnsContainer">
+				<div id="categoryColumns" class="categoryColumns" droppable="facet">
+					<div id="columnCollection">
+						
+					</div>
+					<div >
+							<label id="newColumnLink" class="columnLink add_column" value="${c:l('cmscockpit.navigationwizard.newcolumn')}"  /><h:br />
+					</div>	
+				</div>
+			</div>
+			<div class="categoryColumns trash">
+				<div class="trashed">
+					<label value="${c:l('cmscockpit.navigationwizard.trashed')}" /><h:br />
+					<listbox onDrop="move(event.dragged)" id="trashedList" droppable="link" />
+				</div>		
+			</div>
+			<h:hr />
+			<div class="columnEdit">
+				<groupbox  class="columnTitle">
+					<caption>
+						<label id="selectedColumnName" value="${c:l('cmscockpit.navigationwizard.selectedcolumn')}" />
+					</caption>
+					<label value="${c:l('cmscockpit.navigationwizard.title')}" />
+					<div
+					id="selectedColumnTitle"
+					use="de.hybris.liveeditaddon.cockpit.multitexteditor.MultiLanguageTextBox"/>		
+				</groupbox >
+				<groupbox  class="columnLink">
+					<caption>
+						<label id="selectedLinkName" value="${c:l('cmscockpit.navigationwizard.selectedlink')}" />
+					</caption>
+					
+					<label value="${c:l('cmscockpit.navigationwizard.linktitle')}" />
+					<div
+					id="linkTitle"
+					class="menuTitleEditor"
+					use="de.hybris.liveeditaddon.cockpit.multitexteditor.MultiLanguageTextBox"/>
+					
+					<label value="${c:l('cmscockpit.navigationwizard.linkurl')}" /><textbox id="selectedLinkURL" disabled="true"/>
+					<label value="${c:l('cmscockpit.navigationwizard.restrictions')}" /><div class="restrictionEditor" id="linkRestrictions" use="de.hybris.liveeditaddon.cockpit.restrictioneditor.RestrictionEditor"/>
+				</groupbox >
+			</div>
+</window>
+  <zscript><![CDATA[
+        void move(Component dragged) {
+        if(!dragged instanceof Treerow)
+        	{
+	            if (self instanceof Listitem) {
+	                self.parent.insertBefore(dragged, self);
+	            } else{
+	                self.appendChild(dragged);
+	            }
+            }
+        }
+    ]]></zscript>
+</zk>

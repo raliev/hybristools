@@ -1,0 +1,65 @@
+table.btnliveeditcontent_editproduct{
+	background-image: url("../../cockpit/css/images/BUTTON_GRAY_LIGHT_back.gif") !important;
+	color: #364458 !important;
+	height: 20px !important;
+}
+
+.btnliveeditcontent_editproduct .z-button-cm{
+	background: url(../images/icon_func_editproduct_i.png) no-repeat scroll 2px top transparent !important;
+	padding-left: 23px !important;
+}
+
+.device-vertical.device-iphoneMobile > iframe, .device-vertical.device-iphoneResponsive > iframe, .device-vertical.device-iphoneDefault > iframe {
+    background: url(../images/devices/iphone_v.png) no-repeat;
+    padding: 140px 80px;
+    overflow-x: hidden;
+}
+
+.device-horizontal.device-iphoneMobile > iframe, .device-horizontal.device-iphoneResponsive > iframe, .device-horizontal.device-iphoneDefault > iframe {
+    background: url(../images/devices/iphone_h.png) no-repeat;
+    padding: 80px 140px;
+    overflow-x: hidden;
+}
+
+.device-vertical.device-ipadResponsive > iframe, .device-vertical.device-ipadDefault > iframe {
+    background: url(../images/devices/ipad_v.png) no-repeat;
+    padding: 40px 42px;
+    overflow-x: hidden;
+    margin-top: 25px;
+}
+
+.device-horizontal.device-ipadResponsive > iframe, .device-horizontal.device-ipadDefault > iframe {
+    background: url(../images/devices/ipad_h.png) no-repeat;
+    padding: 42px 42px;
+    overflow-x: hidden;
+    margin-top: 25px;
+}
+
+.device-vertical.device-nexusResponsive > iframe, .device-vertical.device-nexusDefault > iframe {
+     background: url(../images/devices/nexus_v.png) no-repeat;
+     padding: 155px 59px;
+     overflow-x: hidden;
+
+     margin-top: 25px;
+ }
+
+.device-horizontal.device-nexusResponsive > iframe, .device-horizontal.device-nexusDefault > iframe {
+    background: url(../images/devices/nexus_h.png) no-repeat;
+    padding: 61px 155px;
+    overflow-x: hidden;
+    margin-top: 25px;
+}
+
+.device-vertical.device-samsung4Responsive > iframe, .device-vertical.device-samsung4Default > iframe, .device-vertical.device-samsung4Mobile > iframe {
+    background: url(../images/devices/galaxy_v.png) no-repeat;
+    padding: 70px 19px;
+    overflow-x: hidden;
+    margin-top: 25px;
+}
+
+.device-horizontal.device-samsung4Responsive > iframe, .device-horizontal.device-samsung4Default > iframe, .device-horizontal.device-samsung4Mobile > iframe {
+    background: url(../images/devices/galaxy_h.png) no-repeat;
+    padding: 23px 70px;
+    overflow-x: hidden;
+    margin-top: 25px;
+}

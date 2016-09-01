@@ -1,0 +1,132 @@
+/*
+ * [y] hybris Platform
+ *
+ * Copyright (c) 2000-2016 SAP SE or an SAP affiliate company.
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SAP
+ * ("Confidential Information"). You shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the
+ * license agreement you entered into with SAP.
+ */
+
+.portalWidgetPanel {
+	border: 1px solid #999;
+	border-top: none;
+}
+
+
+.dashboardView {
+	background: #FFF;
+}
+
+.createReportWidgetBtn {
+	line-height: 12px;
+}
+
+.dashboardView .portalContainer {
+	bottom:0;
+	left:0;
+	overflow:auto;
+	position:absolute;
+	top:61px;
+	width: 100%;
+}
+
+.reportWidgetActions {
+	text-align: right;
+	margin-top: 2px;
+	white-space: nowrap;
+}
+
+.reportWidgetActions .z-toolbar-button {
+	margin: 2px;
+	position:relative;
+	top:-3px;
+}
+
+.reportWidgetHeader {
+	width: 100%;
+}
+
+.reportWidgetTitle {
+	line-height: 24px;
+	font-weight: bold;
+	/*white-space: nowrap;*/
+}
+
+
+.reportWidgetContent {
+	background: white;
+}
+
+.reportWidgetContent img {
+	max-width: 100%;
+}
+
+.dashboardView .portalWidgetPanel .z-panel-header .z-caption-l {
+	width: 0;
+}
+
+.dashboardView .portalWidgetPanel {
+	margin: 5px;
+	border:3px solid #7584A2;
+}
+
+.dashboard_caption_container {
+	line-height: 20px;
+	background: url("../../cockpit/css/images/groupbox-tb.png") repeat-x scroll right 0 #E7E7E7;
+	height: 30px;
+	border-bottom:1px solid #A1A1A1;
+}
+
+.dashboard_caption_container .leftCnt {
+	margin: 5px;
+}
+
+.dashboard_caption_container .rightCnt {
+	text-align: right;
+	margin: 5px;
+}
+
+.dashboard_toolbar_component {
+	/*line-height: 20px;*/
+	background: url("../../cockpit/css/images/groupbox-tb.png") repeat-x scroll right 0 #E7E7E7;
+	height: 30px;
+}
+
+.dashboard_toolbar_component .browser_view_mode_switch {
+	opacity: 1 !important;
+	background-image:url(images/pageTabBackHL.gif) !important;
+	background-color: #ccc !important;
+}
+
+.layoutsCnt {
+	margin:10px;
+	overflow:auto;
+	max-width:600px;
+}
+
+.dashboardLayoutBox {
+	border: 2px solid white;
+	cursor: pointer;
+	float:left;
+	margin: 3px;
+}
+
+.dashboardLayoutBox:HOVER {
+	border: 2px solid #ccc;
+}
+
+.layoutSelected.dashboardLayoutBox {
+	border-color: #66AA66;
+	cursor: default;
+}
+
+
+.layoutChooserDescription {
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 24px;
+	margin: 4px;
+}
