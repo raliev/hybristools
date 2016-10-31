@@ -19,7 +19,6 @@
       <requires-extension name="webservicescommons"/>
       <requires-extension name="cms2"/>
       <requires-extension name="commercefacades"/>
-      <requires-extension name="trainingstorefront"/>
 
       <coremodule generated="true" manager="com.epam.jalo.HybristoolsserverManager" packageroot="com.epam"/>
 
