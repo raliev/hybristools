@@ -21,11 +21,6 @@
       <requires-extension name="commercefacades"/>
 
       <coremodule generated="true" manager="com.epam.jalo.HybristoolsserverManager" packageroot="com.epam"/>
-
       <webmodule jspcompile="false" webroot="/tools"/>
-					
-			
-
    </extension>
-      
 </extensioninfo>

@@ -260,7 +260,7 @@ public class FlexibleSearchToolService {
 
 
         FlexibleSearchToolConfiguration newFSC = flexibleSearchToolConfiguration.createAClone();
-        newFSC.setQuery("select {pk},1 from {"+objectName+"} where {pk} = \""+pk+"\"");
+        newFSC.setQuery("select {pk},1 from {"+objectName+"} where {pk} = '" + pk + "'");
         newFSC.setItemtype("");
         newFSC.setPk("");
         newFSC.setModelCodePair(flexibleSearchToolConfiguration.getModelCodePair());
@@ -269,7 +269,7 @@ public class FlexibleSearchToolService {
         newFSC.setConfigurableResultClassList(Arrays.asList(Item.class,String.class));
         newFSC.processParams();
         newFSC.validation();
-        newFSC.setQuery("select {pk},1 from {"+objectName+"} where {pk} = \""+pk+"\"");
+        newFSC.setQuery("select {pk},1 from {"+objectName+"} where {pk} = '" + pk + "'");
 
         List<String> res = flexibleSearchInternal(newFSC, !ROOT_HANDLER);
         if (res.size()<1) { throw new EValidationError("can't find PK "+pk+" for "+objectName); }
