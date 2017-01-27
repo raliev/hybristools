@@ -8,6 +8,7 @@ import de.hybris.platform.servicelayer.config.ConfigurationService;
 import de.hybris.platform.servicelayer.cronjob.CronJobService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,12 +37,16 @@ public class CronJobController {
     @Resource
     ConfigurationService configurationService;
 
+    private static final Logger LOG = Logger.getLogger(CronJobController.class);
+
+
     @RequestMapping(value = "/execute", method = RequestMethod.GET)
     @ResponseBody
     public String execute(
             @RequestParam (value="cronJobName", defaultValue = "", required = true) String cronJobName)
     {
-        CronJobModel cronJobModel = cronJobService.getCronJob(cronJobName);
+
+        CronJobModel cronJobModel = cronJobService.getCronJob(cronJobName.trim());
         cronJobService.performCronJob(cronJobModel);
         return "";
     }

@@ -78,7 +78,7 @@ public class ConfigurationToolController
 
 
 
-        String pathToFile1 = Utilities.getPlatformConfig().getExtensionInfo("hybristoolsserver").getExtensionDirectory().getAbsolutePath()+"/project.properties";
+        String pathToFile1 = Utilities.getPlatformConfig().getExtensionInfo(extension).getExtensionDirectory().getAbsolutePath()+"/project.properties";
         Map<String, String> extensionConf = loadConfigurationFromPropertyFile(pathToFile1);
 
         String pathToFile2 = Utilities.getPlatformConfig().getSystemConfig().getConfigDir().getAbsolutePath()+"/local.properties";
